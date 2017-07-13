@@ -1,0 +1,97 @@
+
+
+.plant_list {
+    position: relative;
+    width: 800px;
+    height: 800px;
+    border: 1px solid #000000;
+}
+
+.plant_list .plant {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background-color: #ff0000;
+    border-radius: 50%;
+}
+
+.plant_list .plant div {
+    display: none;
+}
+
+.plant_list .plant div.name {
+    position: absolute;
+    display: block;
+    left: 27px;
+    top: 0px;
+    line-height: 15px;
+    padding: 5px 0px;
+    width: 100px;
+}
+
+.plant_list .plant img {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    left: 0px;
+    top: 0px;
+    border-radius: 50%;
+}
+
+.plant_list .plant.open {
+    position: absolute;
+    width: 400px;
+    height: 300px;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    padding: 4px;
+    z-index: 2;
+}
+
+.plant_list .plant.open div {
+    display: block;
+}
+
+.plant_list .plant.open div.name {
+    position: static;
+    display: block;
+    line-height: 15px;
+    padding: 5px 0px;
+    width: auto;
+}
+
+.plant_list .plant.open img {
+    position: static;
+    width: 200px;
+    height: 200px;
+    border-radius: 0;
+}
+
+.pop-up {
+    box-shadow: 5px 5px 3px #666666;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    padding: 5px;
+    border: 1px solid #666666;
+    overflow: hidden;
+    width: 420px;
+    margin-left: -210px;
+    margin-top: -146px;
+    text-align: left;
+    z-index: 10;
+}
+
+.pop-up .pu_bkgrnd {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: -1;
+}
+
+
