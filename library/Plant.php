@@ -3,37 +3,26 @@ class Plant {
     private $conn;
     private $garden_id;
     private $plant_id;
-    private $species_id;
-    private $name;
     private $description;
+    private $coord_x;
+    private $coord_y;
+    public $species;
 
-    public function __construct($conn, $garden_id, $data) {
+    public function __construct($conn, $garden_id, $plant_id, $description, $coord_x, $coord_y, $species) {
         $this->conn = $conn;
         $this->garden_id = $garden_id;
-        $this->name = $data['name'];
-        $this->description = $data['description'];
-        $this->coord_x = $data['coord_x'];
-        $this->coord_y = $data['coord_y'];
+        $this->plant_id = $plant_id;
+        $this->description = $description;
+        $this->coord_x = $coord_x;
+        $this->coord_y = $coord_y;
+        $this->species = $species;
         
-        if (isset($data['plant_id'])) {
-            $this->plant_id = $data['plant_id'];
-        } else {
-            if (isset($data['species_id'])) {
-                $this->species_id = $data['species_id'];
-            } else {
-                try {
-                    $sql = "INSERT INTO species (species_id, name) ";
-                    $sql .= "VALUES (null, '{$this->name}')";
-                    $this->conn->exec($sql);
-                    $this->species_id = $this->conn->lastInsertId();
-                } catch (PDOException $e) {
-                    Util::log("Something went wrong when creating new species: " . $e->getMessage(), true);
-                }
-            }
+        if (!$plant_id) {
             try {
                 $now = date("Y-m-d H:i:s");
+                $species_id = $this->species->get_species_id();
                 $sql = "INSERT INTO plants (plant_id, species_id, garden_id, description, coord_x, coord_y, created_date) ";
-                $sql .= "VALUES (null, {$this->species_id}, {$this->garden_id}, '{$this->description}', {$this->coord_x}, {$this->coord_y}, '$now')";
+                $sql .= "VALUES (null, {$species_id}, {$this->garden_id}, '{$this->description}', {$this->coord_x}, {$this->coord_y}, '$now')";
                 $this->conn->exec($sql);
                 $this->plant_id = $this->conn->lastInsertId();
             } catch (PDOException $e) {
@@ -46,10 +35,10 @@ class Plant {
         return $this->plant_id;
     }
     public function get_species_id() {
-        return $this->species_id;
+        return $this->species->get_species_id();
     }
     public function get_name() {
-        return $this->name;
+        return $this->species->get_name();
     }
     public function get_description() {
         return $this->description;
@@ -64,8 +53,8 @@ class Plant {
     public function get_image() {
         if (file_exists(PLANT_IMAGE_PATH . $this->plant_id . ".jpg")) {
             return "var/images/plants/" . $this->plant_id . ".jpg";
-        } elseif (file_exists(SPECIES_IMAGE_PATH . $this->species_id . ".jpg")) {
-            return "var/images/species/" . $this->species_id . ".jpg";
+        } elseif (file_exists(SPECIES_IMAGE_PATH . $this->get_species_id() . ".jpg")) {
+            return "var/images/species/" . $this->get_species_id() . ".jpg";
         } else {
             return "";
         }

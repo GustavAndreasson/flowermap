@@ -26,9 +26,9 @@ class Translate {
     
     private function findString($str) {
         if (array_key_exists($str, $this->lang[$this->language])) {
-            echo $this->lang[$this->language][$str];
+            return $this->lang[$this->language][$str];
         } else {
-            echo $str;
+            return $str;
         }
     }
     
@@ -45,7 +45,7 @@ class Translate {
                 }
                 return $this->findString($str);
             } else {
-                echo $str;
+                return $str;
             }
         } else {
             return $this->findString($str);

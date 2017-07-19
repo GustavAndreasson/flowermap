@@ -27,6 +27,7 @@ require_once(LIBRARY_PATH . "FlowerMap.php");
 require_once(LIBRARY_PATH . "User.php");
 require_once(LIBRARY_PATH . "Garden.php");
 require_once(LIBRARY_PATH . "Plant.php");
+require_once(LIBRARY_PATH . "Species.php");
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);

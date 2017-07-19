@@ -24,6 +24,10 @@ $(function() {
 	return false;
     });
 
+    $("#btn_load_species").click(function() {
+	$("[name=add_plant] .species_data").load("controllers/plant.php", {action: "load_species", url: $("#add_plant_url").val()});
+    });
+
     $(".pop-up .cancel").click(function() {
 	$(this).closest(".pop-up").hide();
     });

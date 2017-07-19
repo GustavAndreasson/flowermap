@@ -15,10 +15,20 @@
      <input type="hidden" name="coord_x" />
      <input type="hidden" name="coord_y" />
      <h2><?= $T->__("Add a plant") ?></h2>
-     <div class="row"><label for="add_plant_name"><?= $T->__("Name") ?></label><input type="text" name="name" id="add_plant_name"></div>
-     <div class="row"><label for="add_plant_description"><?= $T->__("Description") ?></label><input type="textfield" name="description" id="add_plant_description"></div>
-     <div class="row"><label for="add_plant_image"><?= $T->__("Image") ?></label><input type="file" accept="image/jpeg" name="image" id="add_plant_image"></div>
-     <div class="row">
+     <div class="plant">
+          <div class="row"><label for="add_plant_description"><?= $T->__("Description") ?></label><input type="textarea" name="description" id="add_plant_description"></div>
+          <div class="row"><label for="add_plant_image"><?= $T->__("Image") ?></label><input type="file" accept="image/jpeg" name="image" id="add_plant_image"></div>
+     </div>
+     <div class="species">
+          <div class="species_data">
+               <div class="row"><label for="add_plant_name"><?= $T->__("Name") ?></label><input type="text" name="name" id="add_plant_name"></div>
+          </div>
+          <div class="row">
+               <label for="add_plant_url"><?= $T->__("Species URL") ?></label><input type="text" name="url" id="add_plant_url">
+               <button type="button" id="btn_load_species"><?= $T->__("Load species") ?></button>
+          </div>
+     </div>
+     <div class="buttons">
           <button type="button" class="cancel"><?= $T->__("Cancel") ?></button>
           <button type="submit"><?= $T->__("Add plant") ?></button>
      </div>
