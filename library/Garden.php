@@ -17,13 +17,10 @@ class Garden {
                 $tmp_species[$row['species_id']]['name'] = $row['name'];
                 $tmp_species[$row['species_id']]['url'] = $row['url'];
                 $tmp_species[$row['species_id']]['data'][$row['data_name']] = $row['data_value'];
-                //Util::log($row['name'] . " " . $row['url'] . " " . $row['data_name'] . " " . $row['data_value']);
             }
-            //Util::log(print_r($tmp_species, true));
             foreach ($tmp_species as $id => $species) {
                 $this->species[$id] = new Species($this->conn, $id, $species['name'], $species['url'], $species['data']);
             }
-            Util::log(print_r($this->species, true));
         } catch (PDOException $e) {
             Util::log("Something went wrong fetching species list for garden: " . $e->getMessage(), true);
         }
@@ -59,7 +56,7 @@ class Garden {
     }
 
     public function add_plant($description, $coord_x = 0, $coord_y = 0, $species) {
-        $plant = new Plant($this->conn, $this->garden_id, null, $description, $coord_x = 0, $coord_y = 0, $species);
+        $plant = new Plant($this->conn, $this->garden_id, null, $description, $coord_x, $coord_y, $species);
         $this->plants[$plant->get_plant_id()] = $plant;
         return $plant;
     }

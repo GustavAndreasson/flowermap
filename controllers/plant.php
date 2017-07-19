@@ -28,7 +28,7 @@ function load_species($T) {
     foreach ($species_info['data'] as $name => $value) {
         echo '<div class="row"><span class="data_name">' . $name . '</span>';
         echo '<span class="data_value">' . $value . '</span>';
-        echo '<input type="hidden" name="data["' . $name . '"]" value="' . $value . '"></div>';
+        echo '<input type="hidden" name="data[\'' . $name . '\']" value="' . $value . '"></div>';
     }
     echo '<div class="row"><img src="' . $species_info['image'] . '"></div>';
 }

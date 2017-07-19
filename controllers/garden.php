@@ -26,9 +26,15 @@ function add_plant($garden) {
     if ($species_id) {
         $species = $gardent->species[$species_id];
     } else {
-        $species = $garden->add_species($name);
+        if (isset($_REQUEST["data"])) {
+            $data = $_REQUEST["data"];
+        } else {
+            $data = null;
+        }
+        $url = $_REQUEST["url"];
+        $species = $garden->add_species($name, $url, $data);
     }
-    
+
     $plant_id = $garden->add_plant($description, $coord_x, $coord_y, $species)->get_plant_id();
 
     $target_file = PLANT_IMAGE_PATH . $plant_id . ".jpg";

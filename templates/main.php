@@ -20,6 +20,7 @@
           <div class="row"><label for="add_plant_image"><?= $T->__("Image") ?></label><input type="file" accept="image/jpeg" name="image" id="add_plant_image"></div>
      </div>
      <div class="species">
+          <input type="hidden" name="species_id" />
           <div class="species_data">
                <div class="row"><label for="add_plant_name"><?= $T->__("Name") ?></label><input type="text" name="name" id="add_plant_name"></div>
           </div>
