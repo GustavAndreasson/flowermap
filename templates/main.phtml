@@ -1,13 +1,7 @@
 <h2>Lista på trädgårdens växter</h2>
 <div class="plant_list">
 <?php foreach ($fm->user->garden->plants as $plant): ?>
-     <div class="plant" data-plant-id="<?= $plant->get_plant_id() ?>" data-coord-x="<?= $plant->get_coord_x() ?>" data-coord-y="<?= $plant->get_coord_y() ?>">
-          <div class="name"><?= $plant->get_name() ?></div>
-          <div class="description"><?= $plant->get_description() ?></div>
-<?php if ($plant->get_image()): ?>
-          <img src="<?= $plant->get_image() ?>">
-<?php endif; ?>
-     </div>
+      <?php include("plant.phtml") ?>
 <?php endforeach; ?>
 </div>
 <form name="add_plant" class="pop-up" action="controllers/garden.php" method="POST" enctype="multipart/form-data" style="display:none;">

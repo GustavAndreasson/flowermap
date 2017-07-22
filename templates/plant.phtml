@@ -1,0 +1,7 @@
+<div class="plant" data-plant-id="<?= $plant->get_plant_id() ?>" data-coord-x="<?= $plant->get_coord_x() ?>" data-coord-y="<?= $plant->get_coord_y() ?>">
+     <div class="name"><?= $plant->get_name() ?></div>
+     <div class="description"><?= $plant->get_description() ?></div>
+<?php if ($plant->get_image()): ?>
+     <img src="<?= $plant->get_image() ?>">
+<?php endif; ?>
+</div>
