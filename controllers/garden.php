@@ -88,14 +88,16 @@ function load_species_id($garden, $T) {
 function load_species_url($T) {
     $url = $_REQUEST["url"];
     $species_info = Species::load_url_data($url);
-    echo '<div class="row"><label for="add_plant_name">' . $T->__("Name") . '</label>';
-    echo '<input type="text" name="name" id="add_plant_name" value="' . $species_info['name'] . '"></div>';
-    foreach ($species_info['data'] as $name => $value) {
-        echo '<div class="row"><span class="data_name">' . $name . '</span>';
-        echo '<span class="data_value">' . $value . '</span>';
-        echo '<input type="hidden" name="data[\'' . $name . '\']" value="' . $value . '"></div>';
+    if ($species_info) {
+        echo '<div class="row"><label for="add_plant_name">' . $T->__("Name") . '</label>';
+        echo '<input type="text" name="name" id="add_plant_name" value="' . $species_info['name'] . '"></div>';
+        foreach ($species_info['data'] as $name => $value) {
+            echo '<div class="row"><span class="data_name">' . $name . '</span>';
+            echo '<span class="data_value">' . $value . '</span>';
+            echo '<input type="hidden" name="data[\'' . $name . '\']" value="' . $value . '"></div>';
+        }
+        echo '<div class="row">';
+        echo '<input type="hidden" name="species_image" id="add_plant_image" value="' . $species_info['image'] . '">';
+        echo '<img src="' . $species_info['image'] . '"></div>';
     }
-    echo '<div class="row">';
-    echo '<input type="hidden" name="species_image" id="add_plant_image" value="' . $species_info['image'] . '">';
-    echo '<img src="' . $species_info['image'] . '"></div>';
 }
