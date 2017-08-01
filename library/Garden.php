@@ -11,7 +11,8 @@ class Garden {
         $this->species = Array();
         try {
             $sql = "SELECT s.species_id, s.name, s.url, sd.data_name, sd.data_value FROM species s ";
-            $sql .= "LEFT JOIN species_data sd ON s.species_id = sd.species_id";
+            $sql .= "LEFT JOIN species_data sd ON s.species_id = sd.species_id ";
+            $sql .= "ORDER BY s.name";
             $tmp_species = Array();
             foreach ($this->conn->query($sql) as $row) {
                 $tmp_species[$row['species_id']]['name'] = $row['name'];

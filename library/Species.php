@@ -40,7 +40,6 @@ class Species {
                  $sql = substr($sql, 0, -1);
                  $this->conn->exec($sql);
                  if ($img) {
-                     Util::log("saving " . $img . " to disk.");
                      file_put_contents(SPECIES_IMAGE_PATH . $this->species_id . ".jpg", file_get_contents($img));
                  }
              } catch (PDOException $e) {
@@ -63,6 +62,14 @@ class Species {
 
     public function get_data() {
         return $this->data;
+    }
+
+    public function get_image() {
+        if (file_exists(SPECIES_IMAGE_PATH . $this->get_species_id() . ".jpg")) {
+            return "var/images/species/" . $this->get_species_id() . ".jpg";
+        } else {
+            return "";
+        }
     }
 
     public static function load_url_data($url) {
@@ -89,7 +96,6 @@ class Species {
         }
         $response['data'] = $data;
         $response['image'] = $doc->getElementById("image-main")->getAttribute("src");        
-        //file_put_contents(SPECIES_IMAGE_PATH . $this->species_id . ".jpg", file_get_contents($image_url));
         return $response;
     }
 }

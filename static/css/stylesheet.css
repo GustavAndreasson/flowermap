@@ -1,4 +1,18 @@
+.select {
+    border:1px solid #000000;
+}
 
+.select .option {
+    background-color: #DDDDDD;
+}
+
+.select .option:nth-child(2n) {
+    background-color: #EEEEEE;
+}
+
+.select .option.selected {
+    background-color: #BBBBBB;
+}
 
 .plant_list {
     position: relative;
