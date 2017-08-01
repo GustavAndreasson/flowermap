@@ -35,9 +35,9 @@ $(function() {
 	}   
 	$("[name=add_plant] .species_data").load(
 	    "controllers/garden.php",
-	    {
-		action: "load_species_url",
-		url: url,
+	    {action: "load_species_url", url: url},
+	    function () {
+		$("#add_plant_name").val($("[name=add_plant] .species_data [name=loaded_species_name]").val());
 	    }
         );
     });
