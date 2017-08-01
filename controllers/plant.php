@@ -30,5 +30,7 @@ function load_species($T) {
         echo '<span class="data_value">' . $value . '</span>';
         echo '<input type="hidden" name="data[\'' . $name . '\']" value="' . $value . '"></div>';
     }
-    echo '<div class="row"><img src="' . $species_info['image'] . '"></div>';
+    echo '<div class="row">';
+    echo '<input type="hidden" name="species_image" id="add_plant_image" value="' . $species_info['image'] . '">';
+    echo '<img src="' . $species_info['image'] . '"></div>';
 }

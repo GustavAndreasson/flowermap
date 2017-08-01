@@ -61,8 +61,8 @@ class Garden {
         return $plant;
     }
 
-    public function add_species($name, $url = null, $data = null) {
-        $species = new Species($this->conn, null, $name, $url, $data);
+    public function add_species($name, $url = null, $data = null, $img = null) {
+        $species = new Species($this->conn, null, $name, $url, $data, $img);
         $this->species[$species->get_species_id()] = $species;
         return $species;
     }

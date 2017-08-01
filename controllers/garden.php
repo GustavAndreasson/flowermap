@@ -32,7 +32,13 @@ function add_plant($garden) {
             $data = null;
         }
         $url = $_REQUEST["url"];
-        $species = $garden->add_species($name, $url, $data);
+        if (isset($_REQUEST["species_image"])) {
+            $img = $_REQUEST["species_image"];
+            Util::log("adding species with image " . $img);
+        } else {
+            $img = null;
+        }
+        $species = $garden->add_species($name, $url, $data, $img);
     }
 
     $plant_id = $garden->add_plant($description, $coord_x, $coord_y, $species)->get_plant_id();

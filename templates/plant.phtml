@@ -4,4 +4,12 @@
     <?php if ($plant->get_image()): ?>
     <img src="<?= $plant->get_image() ?>">
     <?php endif; ?>
+    <div class="data">
+        <?php foreach($plant->species->get_data() as $name => $value): ?>
+        <div class="field">
+            <span class="name"><?= $name ?></span>
+            <span class="value"><?= $value ?></span>
+        </div>
+        <?php endforeach; ?>
+    </div>
 </div>

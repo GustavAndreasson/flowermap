@@ -6,7 +6,7 @@ class Species {
     private $data;
     private $url;
 
-    public function __construct($conn, $species_id, $name = null, $url = null, $data = null) {
+    public function __construct($conn, $species_id, $name = null, $url = null, $data = null, $img = null) {
         $this->conn = $conn;
         $this->species_id = $species_id;
         $this->name = $name;
@@ -39,6 +39,10 @@ class Species {
                  }
                  $sql = substr($sql, 0, -1);
                  $this->conn->exec($sql);
+                 if ($img) {
+                     Util::log("saving " . $img . " to disk.");
+                     file_put_contents(SPECIES_IMAGE_PATH . $this->species_id . ".jpg", file_get_contents($img));
+                 }
              } catch (PDOException $e) {
                  Util::log("Something went wrong when creating new species: " . $e->getMessage(), true);
              }

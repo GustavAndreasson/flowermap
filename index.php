@@ -19,13 +19,13 @@ if ($fm->is_logged_in()) {
   </head>
   <body>
     <div class="container">
-      <?php include(TEMPLATES_PATH . "header.php"); ?>
+      <?php include(TEMPLATES_PATH . "header.phtml"); ?>
       <div class="main">
 <?php
     if($fm->is_logged_in()) {
-        include(TEMPLATES_PATH . "main.php");
+        include(TEMPLATES_PATH . "main.phtml");
     } else {
-        include(TEMPLATES_PATH . "login.php");
+        include(TEMPLATES_PATH . "login.phtml");
     }
 ?>
       </div>
