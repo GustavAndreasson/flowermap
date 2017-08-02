@@ -14,7 +14,7 @@
     background-color: #BBBBBB;
 }
 
-.plant_list {
+.plant_map {
     position: relative;
     width: 800px;
     height: 800px;
@@ -22,7 +22,7 @@
     background-size: cover;
 }
 
-.plant_list .plant {
+.plant_map .plant {
     position: absolute;
     width: 25px;
     height: 25px;
@@ -30,11 +30,11 @@
     border-radius: 50%;
 }
 
-.plant_list .plant div {
+.plant_map .plant div {
     display: none;
 }
 
-.plant_list .plant div.name {
+.plant_map .plant div.name {
     position: absolute;
     display: block;
     left: 27px;
@@ -44,7 +44,7 @@
     width: 100px;
 }
 
-.plant_list .plant img {
+.plant_map .plant img {
     position: absolute;
     width: 25px;
     height: 25px;
@@ -53,7 +53,7 @@
     border-radius: 50%;
 }
 
-.plant_list .plant.open {
+.plant_map .plant.open {
     position: absolute;
     width: 400px;
     height: 300px;
@@ -64,11 +64,11 @@
     z-index: 2;
 }
 
-.plant_list .plant.open div {
+.plant_map .plant.open div {
     display: block;
 }
 
-.plant_list .plant.open div.name {
+.plant_map .plant.open div.name {
     position: static;
     display: block;
     line-height: 15px;
@@ -76,7 +76,7 @@
     width: auto;
 }
 
-.plant_list .plant.open img {
+.plant_map .plant.open img {
     position: static;
     width: 200px;
     height: 200px;

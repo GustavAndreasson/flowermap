@@ -1,5 +1,5 @@
-<h2>Lista på trädgårdens växter</h2>
-<div class="plant_list" style="background-image: url(<?= $fm->user->garden->get_image() ?>)">
+<h2>Karta över trädgården</h2>
+<div class="plant_map" style="background-image: url(<?= $fm->user->garden->get_image() ?>)">
     <?php foreach ($fm->user->garden->plants as $plant): ?>
     <?php include("plant.phtml") ?>
     <?php endforeach; ?>
