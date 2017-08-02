@@ -56,6 +56,14 @@ class Garden {
         return $this->garden_id;
     }
 
+    public function get_image() {
+        if (file_exists(GARDEN_IMAGE_PATH . $this->get_garden_id() . ".svg")) {
+            return "var/images/gardens/" . $this->get_garden_id() . ".svg";
+        } else {
+            return "";
+        }
+    }
+
     public function add_plant($description, $coord_x = 0, $coord_y = 0, $species) {
         $plant = new Plant($this->conn, $this->garden_id, null, $description, $coord_x, $coord_y, $species);
         $this->plants[$plant->get_plant_id()] = $plant;
