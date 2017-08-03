@@ -35,12 +35,16 @@ function Garden() {
         self.moved();
     }
     
-    this.transform_x = function(x) {
-        return x * (self.div_width / self.width) - self.top_x;
+    this.transform_x = function(x, abs) {
+        var top_x = self.top_x;
+        if (abs) top_x = 0;
+        return (x - top_x) * (self.div_width / self.width);
     };
         
-    this.transform_y = function(y) {
-        return y * (self.div_width / self.height) - self.top_y;
+    this.transform_y = function(y, abs) {
+        var top_y = self.top_y;
+        if (abs) top_y = 0;
+        return (y - top_y) * (self.div_width / self.height);
     };
         
     this.moved = function() {
@@ -52,8 +56,8 @@ function Garden() {
         });
         $(".plant_map").css("background-position", self.transform_x(0) + "px " + self.transform_y(0) + "px");
         $(".plant_map").css("background-size",
-                            (self.transform_x(GARDEN_WIDTH) + self.top_x) + "px " +
-                            (self.transform_y(GARDEN_HEIGHT) + self.top_y) + "px");
+                            (self.transform_x(GARDEN_WIDTH, true)) + "px " +
+                            (self.transform_y(GARDEN_HEIGHT, true)) + "px");
     };
 
     this.init_move = function(e) {
@@ -64,6 +68,7 @@ function Garden() {
 
     this.end_move = function(e) {
         $(".plant_map").off("mousemove");
+        return false;
     };
 
     this.during_move = function(e) {
