@@ -3,6 +3,8 @@
     <?php foreach ($fm->user->garden->plants as $plant): ?>
     <?php include("plant.phtml") ?>
     <?php endforeach; ?>
+    <button type="button" id="btn_zoom_in">+</button>
+    <button type="button" id="btn_zoom_out">-</button>
 </div>
 <?php include("add_plant.phtml") ?>
 <form name="logout" action="controllers/user.php" method="POST">
