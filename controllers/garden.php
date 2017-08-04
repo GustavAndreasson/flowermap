@@ -86,11 +86,28 @@ function load_species_id($garden, $T) {
 }
 
 function load_species_url($T) {
+    $species_info = "";
     $url = $_REQUEST["url"];
-    $species_info = Species::load_url_data($url);
+    if (!$url) {
+        $name = $_REQUEST["name"];
+        $url_name = strtolower($name);
+        $url_name = str_replace(" ", "-", $url_name);
+        $url_name = str_replace("å", "a", $url_name);
+        $url_name = str_replace("ä", "a", $url_name);
+        $url_name = str_replace("ö", "o", $url_name);
+        $url = "http://floralinnea.se/" + $url_name + ".html";
+        $species_info = Species::load_url_data($url);
+        if (!$species_info) {
+            $q_name = str_replace(" ", "+", $name);
+            $url = Species::search_url($q_name);
+            $species_info = Species::load_url_data($url);
+        }
+    } else {
+        $species_info = Species::load_url_data($url);
+    }
     if ($species_info) {
-        //echo '<div class="row"><label for="add_plant_name">' . $T->__("Name") . '</label>';
-        echo '<input type="hidden" name="loaded_species_name" value="' . $species_info['name'] . '">'; //</div>';
+        echo '<input type="hidden" name="loaded_species_name" value="' . $species_info['name'] . '">';
+        echo '<input type="hidden" name="loaded_species_url" value="' . $url . '">';
         foreach ($species_info['data'] as $name => $value) {
             echo '<div class="row"><span class="data_name">' . $name . '</span>';
             echo '<span class="data_value">' . $value . '</span>';
@@ -99,5 +116,8 @@ function load_species_url($T) {
         echo '<div class="row">';
         echo '<input type="hidden" name="species_image" id="add_plant_image" value="' . $species_info['image'] . '">';
         echo '<img src="' . $species_info['image'] . '"></div>';
+    } else {
+        echo '<input type="hidden" name="loaded_species_url" value="' . $url . '">';
+        echo '<div class="error">' . $T->__("No plant found") . '</div>';
     }
 }

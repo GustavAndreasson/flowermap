@@ -5,6 +5,10 @@ body {
     font-family: sans-serif;
 }
 
+h1, h2, h3 {
+    margin-top: 0px;
+}
+
 .header {
     height: 40px;
     border-bottom: 1px solid #000000;
@@ -118,7 +122,7 @@ body {
 
 [name=add_plant] .plant {
     float: left;
-    width: 354px;
+    width: 350px;
 }
 
 [name=add_plant] .plant input[type=textarea] {
@@ -128,8 +132,8 @@ body {
 }
 
 [name=add_plant] .species {
-    float: left;
-    width: 354px;
+    float: right;
+    width: 350px;
 }
 
 [name=add_plant] .species img {
@@ -152,6 +156,7 @@ body {
     background-color: #ffffff;
     padding: 5px;
     border: 1px solid #666666;
+    border-radius: 5px;
     overflow: hidden;
     width: 720px;
     margin-left: -360px;

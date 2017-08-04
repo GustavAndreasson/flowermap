@@ -76,26 +76,45 @@ class Species {
         $response = Array();
         $doc = new DOMDocument();
         $doc->preserveWhiteSpace = FALSE;
-        @$doc->loadHTMLFile($url);
-        $response['name'] = $doc->getElementsByTagName("h1")->item(0)->textContent;
-        $data_table = $doc->getElementById("product-attribute-specs-table")->childNodes->item(2)->childNodes;
-        $data = Array();
-        foreach ($data_table as $row) {
-            $data_name = "";
-            $data_value = "";
-            foreach ($row->childNodes as $node) {
-                if ($node->localName == "th") {
-                    $data_name = $node->textContent;
-                } elseif ($node->localName == "td") {
-                    $data_value = $node->textContent;
+        $success = @$doc->loadHTMLFile($url);
+        if($success) { 
+            $response['name'] = $doc->getElementsByTagName("h1")->item(0)->textContent;
+            $data_table = $doc->getElementById("product-attribute-specs-table")->childNodes->item(2)->childNodes;
+            $data = Array();
+            foreach ($data_table as $row) {
+                $data_name = "";
+                $data_value = "";
+                foreach ($row->childNodes as $node) {
+                    if ($node->localName == "th") {
+                        $data_name = $node->textContent;
+                    } elseif ($node->localName == "td") {
+                        $data_value = $node->textContent;
+                    }
+                }
+                if ($data_name && $data_value) {
+                    $data[$data_name] = $data_value;
                 }
             }
-            if ($data_name && $data_value) {
-                $data[$data_name] = $data_value;
-            }
+            $response['data'] = $data;
+            $response['image'] = $doc->getElementById("image-main")->getAttribute("src");        
+            return $response;
+        } else {
+            return false;
         }
-        $response['data'] = $data;
-        $response['image'] = $doc->getElementById("image-main")->getAttribute("src");        
-        return $response;
+    }
+
+    public static function search_url($query) {
+        $url = "";
+        $q_url = "http://floralinnea.se/catalogsearch/result/?q=" . $query;
+        $doc = new DOMDocument();
+        $doc->preserveWhiteSpace = FALSE;
+        $success = @$doc->loadHTMLFile($q_url);
+        if($success) { //Här är något fel
+            Util::log("content of h2 " . print_r($doc->getElementsByTagName("h2")->item(0)->childNodes, true));
+            $url = $doc->getElementsByTagName("h2")->item(0)->childNodes->item(0)->getAttribute("href");
+        } else {
+            Util::log("failed to load url " . $q_url);
+        }
+        return $url;
     }
 }

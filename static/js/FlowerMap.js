@@ -118,18 +118,13 @@ $(function() {
 
     $("#btn_load_species").click(function() {
 	      var url = $("#add_plant_url").val();
-	      if (!url) {
-	          var name = $("#add_plant_name").val();
-	          name = name.replace(" ", "-");
-	          name = name.toLowerCase();
-	          url = "http://floralinnea.se/" + name + ".html";
-	          $("#add_plant_url").val(url);
-	      }   
+	      var name = $("#add_plant_name").val();
 	      $("[name=add_plant] .species_data").load(
 	          "controllers/garden.php",
-	          {action: "load_species_url", url: url},
+	          {action: "load_species_url", url: url, name: name},
 	          function () {
 		            $("#add_plant_name").val($("[name=add_plant] .species_data [name=loaded_species_name]").val());
+                $("#add_plant_url").val($("[name=add_plant] .species_data [name=loaded_species_url]").val());
 	          }
         );
     });
