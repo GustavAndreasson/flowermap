@@ -1,3 +1,9 @@
 <div class="header">
     <h1><?= $T->__("Flower Map"); ?></h1>
+    <?php if($fm->is_logged_in()): ?>
+    <form name="logout" action="controllers/user.php" method="POST">
+        <input type="hidden" name="action" value="logout" />
+        <button type="submit"><?= $T->__("Logout") ?></button>
+    </form>
+    <?php endif; ?>
 </div>

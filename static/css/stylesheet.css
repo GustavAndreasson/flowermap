@@ -1,3 +1,29 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    font-family: sans-serif;
+}
+
+.header {
+    height: 40px;
+    border-bottom: 1px solid #000000;
+}
+
+.header h1 {
+    font-size: 18px;
+    margin: 10px 10px;
+    float: left;
+}
+
+.header form {
+    float: right;
+}
+
+.main {
+    height: calc(100vh - 41px);
+}
+
 .select {
     border:1px solid #000000;
 }
@@ -17,8 +43,7 @@
 .plant_map {
     position: relative;
     width: 100%;
-    height: 800px;
-    border: 1px solid #000000;
+    height: 100%;
     background-repeat: no-repeat;
 }
 
@@ -55,8 +80,10 @@
 
 .plant_map .plant.open {
     position: absolute;
+    overflow: hidden;
     width: 400px;
-    height: 300px;
+    min-height: 200px;
+    height: auto;
     background-color: #ffffff;
     border: 1px solid #000000;
     border-radius: 5px;
@@ -66,6 +93,7 @@
 
 .plant_map .plant.open div {
     display: block;
+    width: 190px;
 }
 
 .plant_map .plant.open div.name {
@@ -81,6 +109,11 @@
     width: 200px;
     height: 200px;
     border-radius: 0;
+}
+
+.plant_map .plant.open div.data {
+    margin-left: 10px;
+    float: right;
 }
 
 [name=add_plant] .plant {

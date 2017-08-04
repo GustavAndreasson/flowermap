@@ -4,6 +4,7 @@ var GARDEN_WIDTH = 1000;
 function Garden() {
     var self = this;
     //this.zoom = 1;
+    self.moving = false;
     this.top_x = 0;
     this.top_y = 0;
     this.width = GARDEN_WIDTH;
@@ -72,21 +73,26 @@ function Garden() {
     };
 
     this.during_move = function(e) {
+        self.moving = true;
         self.move(self.start_move_x - e.pageX, self.start_move_y - e.pageY)
         self.start_move_x = e.pageX;
         self.start_move_y = e.pageY;
     };
 
     this.mapclick = function(e) {
-	      if ($(".plant_map .plant.open").length) {
-	          $(".plant_map .plant").removeClass("open");
-	      } else {
-	          var posX = e.pageX - $(this).offset().left;
-            var posY = e.pageY - $(this).offset().top;
-	          $("[name=add_plant] [name=coord_x]").val(posX);
-	          $("[name=add_plant] [name=coord_y]").val(posY);
-	          $("[name=add_plant").show();
-	      }
+        if (!self.moving) {
+	          if ($(".plant_map .plant.open").length) {
+	              $(".plant_map .plant").removeClass("open");
+	          } else {
+	              var posX = e.pageX - $(this).offset().left;
+                var posY = e.pageY - $(this).offset().top;
+	              $("[name=add_plant] [name=coord_x]").val(posX);
+	              $("[name=add_plant] [name=coord_y]").val(posY);
+	              $("[name=add_plant").show();
+	          }
+        } else {
+            self.moving = false;
+        }
     };
 
     this.plantclick = function() {
