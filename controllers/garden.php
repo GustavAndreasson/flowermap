@@ -89,18 +89,21 @@ function load_species_url($T) {
     $species_info = "";
     $url = $_REQUEST["url"];
     if (!$url) {
-        $name = $_REQUEST["name"];
+        $name = trim($_REQUEST["name"]);
         $url_name = strtolower($name);
         $url_name = str_replace(" ", "-", $url_name);
         $url_name = str_replace("å", "a", $url_name);
         $url_name = str_replace("ä", "a", $url_name);
         $url_name = str_replace("ö", "o", $url_name);
-        $url = "http://floralinnea.se/" + $url_name + ".html";
+        $url = "http://floralinnea.se/" . $url_name . ".html";
         $species_info = Species::load_url_data($url);
         if (!$species_info) {
-            $q_name = str_replace(" ", "+", $name);
-            $url = Species::search_url($q_name);
-            $species_info = Species::load_url_data($url);
+            Util::log("Could not load url " . $url . ". Searching for " . $name . "...");
+            $url = Species::search_url($name);
+            if ($url) {
+                Util::log("...found " . $url);
+                $species_info = Species::load_url_data($url);
+            }
         }
     } else {
         $species_info = Species::load_url_data($url);

@@ -105,13 +105,18 @@ class Species {
 
     public static function search_url($query) {
         $url = "";
-        $q_url = "http://floralinnea.se/catalogsearch/result/?q=" . $query;
+        $q_url = "http://floralinnea.se/catalogsearch/result/?q=" . urlencode($query);
         $doc = new DOMDocument();
         $doc->preserveWhiteSpace = FALSE;
         $success = @$doc->loadHTMLFile($q_url);
-        if($success) { //Här är något fel
-            Util::log("content of h2 " . print_r($doc->getElementsByTagName("h2")->item(0)->childNodes, true));
-            $url = $doc->getElementsByTagName("h2")->item(0)->childNodes->item(0)->getAttribute("href");
+        if ($success) { //Här är något fel
+            $result = $doc->getElementsByTagName("h2");
+            Util::log("content of h2 " . print_r($result, true));
+            if ($result->length > 0) {
+                $url = $doc->getElementsByTagName("h2")->item(0)->childNodes->item(0)->getAttribute("href");
+            } else {
+                Util::log("found no species at " . $q_url);
+            }
         } else {
             Util::log("failed to load url " . $q_url);
         }
