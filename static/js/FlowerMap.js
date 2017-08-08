@@ -3,18 +3,18 @@ var GARDEN_WIDTH = 1000;
 
 function Garden() {
     var self = this;
-    //this.zoom = 1;
     self.moving = false;
-    this.top_x = 0;
-    this.top_y = 0;
     this.width = GARDEN_WIDTH;
     this.height = GARDEN_HEIGHT;
-    this.div_width = $(".plant_map").width();
-    //this.div_height = $(".plant_map").height();
+    this.div_width = $(".garden").width();
+    this.div_height = $(".garden").height();
+    this.top_x = 0;
+    this.scale = this.div_width / this.width;
+    this.top_y = (this.height - this.div_height / this.scale) / 2;
 
     this.zoom_in = function() {
         self.top_x += 20;
-        self.top_y += 20;
+        self.top_y += 20 * (self.div_height / self.div_width);
         self.width -= 40;
         self.height -= 40;
         self.moved();
@@ -23,7 +23,7 @@ function Garden() {
     
     this.zoom_out = function() {
         self.top_x -= 20;
-        self.top_y -= 20;
+        self.top_y -= 20 * (self.div_height / self.div_width);
         self.width += 40;
         self.height += 40;
         self.moved();
@@ -39,36 +39,39 @@ function Garden() {
     this.transform_x = function(x, abs) {
         var top_x = self.top_x;
         if (abs) top_x = 0;
-        return (x - top_x) * (self.div_width / self.width);
+        return (x - top_x) * self.scale;
     };
         
     this.transform_y = function(y, abs) {
         var top_y = self.top_y;
         if (abs) top_y = 0;
-        return (y - top_y) * (self.div_width / self.height);
+        return (y - top_y) * self.scale;
     };
         
     this.moved = function() {
-        self.div_width = $(".plant_map").width();
-        self.div_height = $(".plant_map").height();
-        $(".plant_map .plant").each(function() {
+        self.div_width = $(".garden").width();
+        self.div_height = $(".garden").height();
+	self.scale = self.div_width / self.width;
+        $(".garden .plant").each(function() {
 	          this.style.left = self.transform_x($(this).data("coordX") - 12) + "px";
 	          this.style.top = self.transform_y($(this).data("coordY") - 12) + "px";
         });
-        $(".plant_map").css("background-position", self.transform_x(0) + "px " + self.transform_y(0) + "px");
-        $(".plant_map").css("background-size",
+        $(".garden").css("background-position", self.transform_x(0) + "px " + self.transform_y(0) + "px");
+        $(".garden").css("background-size",
                             (self.transform_x(GARDEN_WIDTH, true)) + "px " +
                             (self.transform_y(GARDEN_HEIGHT, true)) + "px");
     };
 
     this.init_move = function(e) {
-        $(".plant_map").mousemove(self.during_move);
-        self.start_move_x = e.pageX;
-        self.start_move_y = e.pageY;
+	if (e.witch == 1) {
+            $(".garden").mousemove(self.during_move);
+            self.start_move_x = e.pageX;
+            self.start_move_y = e.pageY;
+	}
     };
 
     this.end_move = function(e) {
-        $(".plant_map").off("mousemove");
+        $(".garden").off("mousemove");
         return false;
     };
 
@@ -81,8 +84,8 @@ function Garden() {
 
     this.mapclick = function(e) {
         if (!self.moving) {
-	          if ($(".plant_map .plant.open").length) {
-	              $(".plant_map .plant").removeClass("open");
+	          if ($(".garden .plant.open").length) {
+	              $(".garden .plant").removeClass("open");
 	          } else {
 	              var posX = e.pageX - $(this).offset().left;
                 var posY = e.pageY - $(this).offset().top;
@@ -96,14 +99,14 @@ function Garden() {
     };
 
     this.plantclick = function() {
-	      $(".plant_map .plant").removeClass("open");
+	      $(".garden .plant").removeClass("open");
 	      $(this).addClass("open");
 	      return false;
     };
 
-    $(".plant_map").click(self.mapclick);
-    $(".plant_map .plant").click(self.plantclick);
-    $(".plant_map").mousedown(self.init_move);
+    $(".garden").click(self.mapclick);
+    $(".garden .plant").click(self.plantclick);
+    $(".garden").mousedown(self.init_move);
     $("body").mouseup(self.end_move);
     $("#btn_zoom_in").click(self.zoom_in);
     $("#btn_zoom_out").click(self.zoom_out);

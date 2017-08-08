@@ -1,4 +1,4 @@
-<div class="plant_map" style="background-image: url(<?= $fm->user->garden->get_image() ?>)">
+<div class="garden" style="background-image: url(<?= $fm->user->garden->get_image() ?>)">
     <?php foreach ($fm->user->garden->plants as $plant): ?>
     <?php include("plant.phtml") ?>
     <?php endforeach; ?>
