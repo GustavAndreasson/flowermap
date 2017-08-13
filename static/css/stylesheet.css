@@ -136,6 +136,12 @@ h1, h2, h3 {
     float: right;
 }
 
+[name=add_plant] {
+    width: 720px;
+    margin-left: -360px;
+    margin-top: -346px;
+}
+
 [name=add_plant] .plant {
     float: left;
     width: 350px;
@@ -174,9 +180,6 @@ h1, h2, h3 {
     border: 1px solid #666666;
     border-radius: 5px;
     overflow: hidden;
-    width: 720px;
-    margin-left: -360px;
-    margin-top: -346px;
     text-align: left;
     z-index: 10;
 }
