@@ -22,8 +22,9 @@ class Plant {
                 $now = date("Y-m-d H:i:s");
                 $species_id = $this->species->get_species_id();
                 $sql = "INSERT INTO plants (plant_id, species_id, garden_id, description, coord_x, coord_y, created_date) ";
-                $sql .= "VALUES (null, {$species_id}, {$this->garden_id}, '{$this->description}', {$this->coord_x}, {$this->coord_y}, '$now')";
-                $this->conn->exec($sql);
+                $sql .= "VALUES (null, ?, ?, ?, ?, ?, ?)";
+                $stmt = $this->conn->prepare($sql);
+                $stmt->execute(array($species_id, $this->garden_id, $this->description, $this->coord_x, $this->coord_y, $now));
                 $this->plant_id = $this->conn->lastInsertId();
             } catch (PDOException $e) {
                 Util::log("Something went wrong when creating new plant: " . $e->getMessage(), true);

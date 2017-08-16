@@ -13,8 +13,10 @@ class Garden {
             $sql = "SELECT s.species_id, s.name, s.url, sd.data_name, sd.data_value FROM species s ";
             $sql .= "LEFT JOIN species_data sd ON s.species_id = sd.species_id ";
             $sql .= "ORDER BY s.name";
+            $stmt =  $this->conn->prepare($sql);
+            $stmt->execute();
             $tmp_species = Array();
-            foreach ($this->conn->query($sql) as $row) {
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $tmp_species[$row['species_id']]['name'] = $row['name'];
                 $tmp_species[$row['species_id']]['url'] = $row['url'];
                 $tmp_species[$row['species_id']]['data'][$row['data_name']] = $row['data_value'];
@@ -30,11 +32,14 @@ class Garden {
             $this->garden_id = $garden_id;
             try {
                 $sql = "SELECT p.plant_id, p.species_id, p.description, p.coord_x, p.coord_y FROM plants p ";
-                $sql .= "WHERE p.garden_id = {$this->garden_id}";
-                foreach ($this->conn->query($sql) as $row) {
-                    $this->plants[$row['plant_id']] = new Plant($this->conn, $this->garden_id, $row['plant_id'],
-                                                                $row['description'], $row['coord_x'], $row['coord_y'],
-                                                                $this->species[$row['species_id']]);
+                $sql .= "WHERE p.garden_id = ?";
+                $stmt =  $this->conn->prepare($sql);
+                $stmt->execute(array($this->garden_id));
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $this->plants[$row['plant_id']] = new Plant(
+                        $this->conn, $this->garden_id, $row['plant_id'],
+                        $row['description'], $row['coord_x'], $row['coord_y'],
+                        $this->species[$row['species_id']]);
                 }
             } catch (PDOException $e) {
                 Util::log("Something went wrong fetching plants for garden: " . $e->getMessage(), true);
@@ -42,8 +47,9 @@ class Garden {
         } elseif ($user_id) {
             try {
                 $sql = "INSERT INTO gardens (garden_id, user_id) ";
-                $sql .= "VALUES (null, $user_id)";
-                $this->conn->exec($sql);
+                $sql .= "VALUES (null, ?)";
+                $stmt = $this->conn->prepare($sql);
+                $stmt->execute(array($user_id));
                 $this->garden_id = $this->conn->lastInsertId();
                 $_SESSION["GARDEN_ID"] = $this->garden_id;
             } catch (PDOException $e) {

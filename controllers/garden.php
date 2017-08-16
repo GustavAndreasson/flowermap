@@ -114,7 +114,7 @@ function load_species_url($T) {
         foreach ($species_info['data'] as $name => $value) {
             echo '<div class="row"><span class="data_name">' . $name . '</span>';
             echo '<span class="data_value">' . $value . '</span>';
-            echo '<input type="hidden" name="data[\'' . $name . '\']" value="' . $value . '"></div>';
+            echo '<input type="hidden" name="data[' . $name . ']" value="' . $value . '"></div>';
         }
         echo '<div class="row">';
         echo '<input type="hidden" name="species_image" id="add_plant_image" value="' . $species_info['image'] . '">';
