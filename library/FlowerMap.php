@@ -31,8 +31,9 @@ class FlowerMap {
     public function login($name, $password) {
         try {
             $pass_hash = password_hash($password, PASSWORD_DEFAULT);
-            $sql = "SELECT password, user_id FROM users WHERE name = '$name'";
-            $result = $this->conn->query($sql)->fetch(PDO::FETCH_ASSOC);
+            $stmt = $this->conn->prepare("SELECT password, user_id FROM users WHERE name = ?");
+            $stmt->execute(array($name));
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($result && password_verify($password, $result['password'])) {
                 $this->user = new User($this->conn, $result['user_id']);
                 $_SESSION["USER_ID"] = $this->user->get_user_id(); 
@@ -51,8 +52,9 @@ class FlowerMap {
             if ($name == "" || $password == "") {
                 return false;
             }
-            $sql = "SELECT user_id FROM users WHERE name = '$name'";
-            $result = $this->conn->query($sql)->fetch(PDO::FETCH_ASSOC);
+            $stmt = $this->conn->prepare("SELECT user_id FROM users WHERE name = ?");
+            $stmt->execute(array($name));
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
             if (!$result) {
                 $pass_hash = password_hash($password, PASSWORD_DEFAULT);
                 $this->user = new User($this->conn, null, $name, $pass_hash);
