@@ -71,11 +71,11 @@ function Garden() {
     };
 
     this.init_move = function(e) {
-	      if (e.witch == 1) {
+	if (e.which == 1) {
             $(".garden").mousemove(self.during_move);
             self.start_move_x = e.pageX;
             self.start_move_y = e.pageY;
-	      }
+	}
     };
 
     this.end_move = function(e) {
@@ -92,30 +92,30 @@ function Garden() {
     
     this.mapclick = function(e) {
         if (!self.moving) {
-	          if ($(".garden .plant.open").length) {
-	              $(".garden .plant").removeClass("open");
-	          } else {
-	              var posX = e.pageX - $(this).offset().left;
+	    if ($(".garden .plant.open").length) {
+	        $(".garden .plant").removeClass("open");
+	    } else {
+	        var posX = e.pageX - $(this).offset().left;
                 var posY = e.pageY - $(this).offset().top;
-	              $("[name=add_plant] [name=coord_x]").val(self.to_map_x(posX));
-	              $("[name=add_plant] [name=coord_y]").val(self.to_map_y(posY));
-	              $("[name=add_plant").show();
-	          }
+	        $("[name=add_plant] [name=coord_x]").val(self.to_map_x(posX));
+	        $("[name=add_plant] [name=coord_y]").val(self.to_map_y(posY));
+	        $("[name=add_plant").show();
+	    }
         } else {
             self.moving = false;
         }
     };
     
     this.plantclick = function() {
-	      $(".garden .plant").removeClass("open");
-	      $(this).addClass("open");
+	$(".garden .plant").removeClass("open");
+	$(this).addClass("open");
         if ($(this).position().left + 400 > self.div_width) {
             this.style.left = (self.div_width - 400) + "px";
         }
         if ($(this).position().top + 200 > self.div_height) {
             this.style.top = (self.div_height - 200) + "px";
         }
-	      return false;
+	return false;
     };
     
     $(".garden").click(self.mapclick);
@@ -134,15 +134,15 @@ $(function() {
     var garden = new Garden();
     
     $("#btn_load_species").click(function() {
-	      var url = $("#add_plant_url").val();
-	      var name = $("#add_plant_name").val();
-	      $("[name=add_plant] .species_data").load(
-	          "controllers/garden.php",
-	          {action: "load_species_url", url: url, name: name},
-	          function () {
-		            $("#add_plant_name").val($("[name=add_plant] .species_data [name=loaded_species_name]").val());
+	var url = $("#add_plant_url").val();
+	var name = $("#add_plant_name").val();
+	$("[name=add_plant] .species_data").load(
+	    "controllers/garden.php",
+	    {action: "load_species_url", url: url, name: name},
+	    function () {
+		$("#add_plant_name").val($("[name=add_plant] .species_data [name=loaded_species_name]").val());
                 $("#add_plant_url").val($("[name=add_plant] .species_data [name=loaded_species_url]").val());
-	          }
+	    }
         );
     });
     
