@@ -61,15 +61,15 @@ function Garden() {
         self.div_height = $(".garden").height();
 	      self.scale = self.div_width / self.width;
         $(".garden .plant").each(function() {
-	          this.style.left = self.to_screen_x($(this).data("coordX") - 12) + "px";
-	          this.style.top = self.to_screen_y($(this).data("coordY") - 12) + "px";
+	    this.style.left = self.to_screen_x($(this).data("coordX") - 12) + "px";
+	    this.style.top = self.to_screen_y($(this).data("coordY") - 12) + "px";
         });
         $(".garden").css("background-position", self.to_screen_x(0) + "px " + self.to_screen_y(0) + "px");
         $(".garden").css("background-size",
-                            (self.to_screen_x(GARDEN_WIDTH, true)) + "px " +
-                            (self.to_screen_y(GARDEN_HEIGHT, true)) + "px");
+                         (self.to_screen_x(GARDEN_WIDTH, true)) + "px " +
+                         (self.to_screen_y(GARDEN_HEIGHT, true)) + "px");
     };
-
+    
     this.init_move = function(e) {
 	if (e.which == 1) {
             $(".garden").mousemove(self.during_move);
@@ -77,7 +77,7 @@ function Garden() {
             self.start_move_y = e.pageY;
 	}
     };
-
+    
     this.end_move = function(e) {
         $(".garden").off("mousemove");
         return false;
