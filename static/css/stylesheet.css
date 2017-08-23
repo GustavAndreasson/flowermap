@@ -139,7 +139,6 @@ h1, h2, h3 {
 [name=add_plant] {
     width: 720px;
     margin-left: -360px;
-    margin-top: -346px;
 }
 
 [name=add_plant] .plant {
@@ -172,7 +171,7 @@ h1, h2, h3 {
 .pop-up {
     box-shadow: 5px 5px 3px #666666;
     position: fixed;
-    top: 50%;
+    top: 75px;
     left: 50%;
     box-sizing: border-box;
     background-color: #ffffff;
@@ -193,4 +192,35 @@ h1, h2, h3 {
     z-index: -1;
 }
 
+@media (max-width: 720px) {
+    .pop-up {
+        width: 100%;
+        height: auto;
+        top: 41px;
+        left: 0;
+        border-width: 1px 0;
+        border-radius: 0;
+    }
+
+    [name=add_plant] {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    [name=add_plant] .plant {
+        float: left;
+        width: 50%;
+    }
+
+    [name=add_plant] .species {
+        float: right;
+        width: 50%;
+    }
+    
+    [name=add_plant] .species img {
+        width: auto;
+        height: auto;
+    }
+
+}
 

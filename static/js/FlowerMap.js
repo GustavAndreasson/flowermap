@@ -59,15 +59,56 @@ function Garden() {
     this.moved = function() {
         self.div_width = $(".garden").width();
         self.div_height = $(".garden").height();
-	      self.scale = self.div_width / self.width;
-        $(".garden .plant").each(function() {
+	self.scale = self.div_width / self.width;
+        $(".garden .plant").each(self.position_plant);
+        /*$(".garden .plant:not(.open)").each(function() {
 	    this.style.left = self.to_screen_x($(this).data("coordX") - 12) + "px";
 	    this.style.top = self.to_screen_y($(this).data("coordY") - 12) + "px";
         });
+        $(".garden .plant.open").each(function() {
+	    var left = self.to_screen_x($(this).data("coordX") - 12);
+	    var top = self.to_screen_y($(this).data("coordY") - 12);
+            if (left + 400 > self.div_width) {
+                this.style.left = (self.div_width - 400) + "px";
+            } else {
+                this.style.left = left + "px";
+            }
+            if (top + 200 > self.div_height) {
+                this.style.top = (self.div_height - 200) + "px";
+            } else {
+                this.style.top = top + "px";
+            }
+        });*/
         $(".garden").css("background-position", self.to_screen_x(0) + "px " + self.to_screen_y(0) + "px");
         $(".garden").css("background-size",
                          (self.to_screen_x(GARDEN_WIDTH, true)) + "px " +
                          (self.to_screen_y(GARDEN_HEIGHT, true)) + "px");
+    };
+
+    this.position_plant = function() {
+        if (!$(this).hasClass("open")) {
+	    this.style.left = self.to_screen_x($(this).data("coordX") - 12) + "px";
+	    this.style.top = self.to_screen_y($(this).data("coordY") - 12) + "px";
+        } else {
+	    var left = self.to_screen_x($(this).data("coordX") - 12);
+	    var top = self.to_screen_y($(this).data("coordY") - 12);
+            var width = $(this).outerWidth() + 2;
+            var height = $(this).outerHeight();
+            if (left + width > self.div_width) {
+                this.style.left = (self.div_width - width) + "px";
+            } else if (left < 0) {
+                this.style.left = "0px";
+            } else {
+                this.style.left = left + "px";
+            }
+            if (top + height > self.div_height) {
+                this.style.top = (self.div_height - height) + "px";
+            } else if (top < 0) {
+                this.style.top = "0px";
+            } else {
+                this.style.top = top + "px";
+            }
+        }
     };
     
     this.init_move = function(e) {
@@ -93,7 +134,7 @@ function Garden() {
     this.mapclick = function(e) {
         if (!self.moving) {
 	    if ($(".garden .plant.open").length) {
-	        $(".garden .plant").removeClass("open");
+	        $(".garden .plant.open").removeClass("open").each(self.position_plant);
 	    } else {
 	        var posX = e.pageX - $(this).offset().left;
                 var posY = e.pageY - $(this).offset().top;
@@ -107,14 +148,9 @@ function Garden() {
     };
     
     this.plantclick = function() {
-	$(".garden .plant").removeClass("open");
-	$(this).addClass("open");
-        if ($(this).position().left + 400 > self.div_width) {
-            this.style.left = (self.div_width - 400) + "px";
-        }
-        if ($(this).position().top + 200 > self.div_height) {
-            this.style.top = (self.div_height - 200) + "px";
-        }
+	$(".garden .plant.open").removeClass("open").each(self.position_plant);
+	$(this).addClass("open").each(self.position_plant);
+        //self.moved();
 	return false;
     };
     

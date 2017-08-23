@@ -14,7 +14,9 @@ if ($fm->is_logged_in()) {
     <meta content = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name = "viewport" />
     <link rel="stylesheet" type="text/css" href="static/css/stylesheet.css">
     <link rel="icon" type="image/x-icon" href="static/img/favicon.ico">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
+    <script src="static/js/jquery.ui.touch-punch.min.js"></script>
     <script src="static/js/FlowerMap.js"></script>
   </head>
   <body>
