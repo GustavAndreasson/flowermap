@@ -3,10 +3,11 @@
 class Garden {
     private $conn;
     private $garden_id;
+    private $name;
     public $plants;
     public $species;
 
-    public function __construct($conn, $garden_id, $user_id = null) {
+    public function __construct($conn, $garden_id, $user_id = null, $name = null) {
         $this->conn = $conn;
         $this->species = Array();
         try {
@@ -31,6 +32,9 @@ class Garden {
         if ($garden_id) {
             $this->garden_id = $garden_id;
             try {
+                $stmt =  $this->conn->prepare("SELECT name FROM gardens WHERE garden_id = ?");
+                $stmt->execute(array($this->garden_id));
+                $this->name = $stmt->fetch(PDO::FETCH_ASSOC)['name'];
                 $sql = "SELECT p.plant_id, p.species_id, p.description, p.coord_x, p.coord_y FROM plants p ";
                 $sql .= "WHERE p.garden_id = ?";
                 $stmt =  $this->conn->prepare($sql);
@@ -46,11 +50,12 @@ class Garden {
             }
         } elseif ($user_id) {
             try {
-                $sql = "INSERT INTO gardens (garden_id, user_id) ";
-                $sql .= "VALUES (null, ?)";
+                $sql = "INSERT INTO gardens (garden_id, user_id, name) ";
+                $sql .= "VALUES (null, ?, ?)";
                 $stmt = $this->conn->prepare($sql);
-                $stmt->execute(array($user_id));
+                $stmt->execute(array($user_id, $name));
                 $this->garden_id = $this->conn->lastInsertId();
+                $this->name = $name;
                 $_SESSION["GARDEN_ID"] = $this->garden_id;
             } catch (PDOException $e) {
                 Util::log("Something went wrong when creating new garden: " . $e->getMessage(), true);
@@ -60,6 +65,20 @@ class Garden {
 
     public function get_garden_id() {
         return $this->garden_id;
+    }
+
+    public function get_name() {
+        return $this->name;
+    }
+
+    public function set_name($name) {
+        try {
+            $stmt =  $this->conn->prepare("UPDATE gardens set name=?");
+            $stmt->execute(array($name));
+            $this->name = $name;
+        } catch (PDOException $e) {
+            Util::log("Something went wrong when updating name of garden: " . $e->getMessage(), true);
+        }
     }
 
     public function get_image() {
