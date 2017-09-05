@@ -166,6 +166,10 @@ $(function() {
 	    }
         );
     });
+
+    $("#btn_edit_garden").click(function() {
+	$("[name=edit_garden]").show();
+    });
     
     $("#slct_species .option").click(function() {
         $("[name=add_plant] .species_data").html("");

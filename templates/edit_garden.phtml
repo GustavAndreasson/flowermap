@@ -1,8 +1,17 @@
 <form name="edit_garden" class="pop-up" action="controllers/garden.php" method="POST" enctype="multipart/form-data" style="display:none;">
+    <div class="pu_bkgrnd"></div>
     <input type="hidden" name="action" value="update_garden">
-    <label for="edit_garden_name"><?= $T->__("Garden name") ?></label>
-    <input type="text" name="name" id="edit_garden_name" />
-    <div class="row"><label for="add_garden_image"><?= $T->__("Image of garden (svg)") ?></label><input type="file" accept="image/svg" name="image" id="add_garden_image"></div>
-    <button type="button" class="cancel"><?= $T->__("Cancel") ?></button>
-    <button type="submit"><?= $T->__("Update garden") ?></button>
+    <h2><?= $T->__("Garden settings") ?></h2>
+    <div class="row">
+	<label for="edit_garden_name"><?= $T->__("Garden name") ?></label>
+	<input type="text" name="name" id="edit_garden_name" value="<?= $fm->user->garden->get_name() ?>"/>
+    </div>
+    <div class="row">
+	<label for="add_garden_image"><?= $T->__("Image of garden (svg)") ?></label>
+	<input type="file" accept="image/svg" name="image" id="add_garden_image">
+    </div>
+    <div class="buttons">
+	<button type="button" class="cancel"><?= $T->__("Cancel") ?></button>
+	<button type="submit"><?= $T->__("Update garden") ?></button>
+    </div>
 </form>
