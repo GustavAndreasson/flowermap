@@ -48,12 +48,16 @@ function Garden() {
         return (y - top_y) * self.scale;
     };
 
-    this.to_map_x = function(x) {
-        return x / self.scale + self.top_x;
+    this.to_map_x = function(x, abs) {
+        var top_x = self.top_x;
+        if (abs) top_x = 0;
+        return x / self.scale + top_x;
     }
 
-    this.to_map_y = function(y) {
-        return y / self.scale + self.top_y;
+    this.to_map_y = function(y, abs) {
+        var top_y = self.top_y;
+        if (abs) top_y = 0;
+        return y / self.scale + top_y;
     }
         
     this.moved = function() {
@@ -74,7 +78,7 @@ function Garden() {
         } else {
 	    var left = self.to_screen_x($(this).data("coordX") - 12);
 	    var top = self.to_screen_y($(this).data("coordY") - 12);
-            var width = $(this).outerWidth() + 2;
+            var width = $(this).outerWidth();
             var height = $(this).outerHeight();
             if (left + width > self.div_width) {
                 this.style.left = (self.div_width - width) + "px";
@@ -108,7 +112,7 @@ function Garden() {
     
     this.during_move = function(e) {
         self.moving = true;
-        self.move(self.start_move_x - e.pageX, self.start_move_y - e.pageY)
+        self.move(self.to_map_x(self.start_move_x - e.pageX, true), self.to_map_y(self.start_move_y - e.pageY, true))
         self.start_move_x = e.pageX;
         self.start_move_y = e.pageY;
     };
