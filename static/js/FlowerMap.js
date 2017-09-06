@@ -98,23 +98,43 @@ function Garden() {
     };
     
     this.init_move = function(e) {
-	if (e.which == 1) {
-            $(".garden").mousemove(self.during_move);
-            self.start_move_x = e.pageX;
-            self.start_move_y = e.pageY;
+	var pageX, pageY;
+	if (e.type == "touchstart") {
+	    pageX = e.originalEvent.touches[0].screenX;
+	    pageY = e.originalEvent.touches[0].screenY;
+	} else {
+	    if (e.which != 1) {
+		return;
+	    }
+	    pageX = e.pageX;
+	    pageY = e.pageY;
 	}
+        $(".garden").on("mousemove touchmove", self.during_move);
+        self.start_move_x = pageX;
+        self.start_move_y = pageY;
     };
     
     this.end_move = function(e) {
-        $(".garden").off("mousemove");
-        return false;
+        $(".garden").off("mousemove touchmove");
+	setTimeout(function() {
+	    self.moving = false;
+	}, 100)
+        return true;
     };
     
     this.during_move = function(e) {
+	var pageX, pageY;
+	if (e.type == "touchmove") {
+	    pageX = e.originalEvent.touches[0].screenX;
+	    pageY = e.originalEvent.touches[0].screenY;
+	} else {
+	    pageX = e.pageX;
+	    pageY = e.pageY;
+	}
         self.moving = true;
-        self.move(self.to_map_x(self.start_move_x - e.pageX, true), self.to_map_y(self.start_move_y - e.pageY, true))
-        self.start_move_x = e.pageX;
-        self.start_move_y = e.pageY;
+        self.move(self.to_map_x(self.start_move_x - pageX, true), self.to_map_y(self.start_move_y - pageY, true))
+        self.start_move_x = pageX;
+        self.start_move_y = pageY;
     };
     
     this.mapclick = function(e) {
@@ -141,8 +161,8 @@ function Garden() {
     
     $(".garden").click(self.mapclick);
     $(".garden .plant").click(self.plantclick);
-    $(".garden").mousedown(self.init_move);
-    $("body").mouseup(self.end_move);
+    $(".garden").on("mousedown touchstart", self.init_move);
+    $("body").on("mouseup touchend", self.end_move);
     $("#btn_zoom_in").click(self.zoom_in);
     $("#btn_zoom_out").click(self.zoom_out);
     $(window).resize(self.moved);
