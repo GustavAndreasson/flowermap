@@ -4,33 +4,51 @@ require_once("../library/config.php");
 
 if (isset($_REQUEST["action"])) {
     $action = $_REQUEST["action"];
+    $plant_id = $_REQUEST["plant_id"];
     $fm = new FlowerMap();
-    if ($fm->is_logged_in()) {
-        $T = new Translate($fm->user->get_language());
+    if ($fm->is_logged_in() && $plant_id) {
+        $plant = $fm->user->garden->plants[$plant_id];
     } else {
-        $T = new Translate();
+        header("Location: /flowermap");
+        exit();
+        return;
     }
     
     switch($action) {
-    case "load_species":
-        load_species($T);
+    case "update_plant":
+        update_plant($plant);
         break;
     default:
         break;
     }
 }
 
-function load_species($T) {
-    $url = $_REQUEST["url"];
-    $species_info = Species::load_url_data($url);
-    echo '<div class="row"><label for="add_plant_name">' . $T->__("Name") . '</label>';
-    echo '<input type="text" name="name" id="add_plant_name" value="' . $species_info['name'] . '"></div>';
-    foreach ($species_info['data'] as $name => $value) {
-        echo '<div class="row"><span class="data_name">' . $name . '</span>';
-        echo '<span class="data_value">' . $value . '</span>';
-        echo '<input type="hidden" name="data[\'' . $name . '\']" value="' . $value . '"></div>';
+function update_plant($plant) {
+    $description = $_REQUEST["description"];
+    $coord_x = $_REQUEST["coord_x"];
+    $coord_y = $_REQUEST["coord_y"];
+
+    if ($coord_x || $coord_y) {
+        $plant->set_coord_x($coord_x);
+        $plant->set_coord_y($coord_y);
     }
-    echo '<div class="row">';
-    echo '<input type="hidden" name="species_image" id="add_plant_image" value="' . $species_info['image'] . '">';
-    echo '<img src="' . $species_info['image'] . '"></div>';
+
+    if ($description) {
+        $plant->set_description($description);
+    }
+
+    $plant->save();
+
+    if ($_FILES["image"]["tmp_name"]) {
+        $target_file = PLANT_IMAGE_PATH . $plant_id . ".jpg";
+        
+        $check = getimagesize($_FILES["image"]["tmp_name"]);
+        
+        if($check !== false) {
+            if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                Util::log("Sorry, there was an error uploading your file.", false);
+            }
+        }
+    }
+
 }

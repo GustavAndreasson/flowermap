@@ -60,4 +60,13 @@ class Plant {
             return "";
         }
     }
+
+    public function save() {
+        $now = date("Y-m-d H:i:s");
+        $species_id = $this->species->get_species_id();
+        $sql = "UPDATE plants SET species_id = ?, description = ?, coord_x = ?, coord_y = ?) ";
+        $sql .= "WHERE plant_id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(array($species_id, $this->description, $this->coord_x, $this->coord_y, $this->plant_id));
+    }
 }
