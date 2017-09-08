@@ -8,22 +8,40 @@ function Garden() {
     this.height = GARDEN_HEIGHT;
     this.div_width = $(".garden").width();
     this.div_height = $(".garden").height();
-    this.scale = this.div_width / this.width;
-    this.top_x = 0;
-    this.top_y = (this.height - this.div_height / this.scale) / 2;
+    if (this.div_width > this.div_height) {
+        this.scale = this.div_width / this.width;
+        this.top_x = 0;
+        this.top_y = (this.height - this.div_height / this.scale) / 2;
+    } else {
+        this.scale = this.div_height / this.height;
+        this.top_y = 0;
+        this.top_x = (this.width - this.div_width / this.scale) / 2;
+    }        
 
     this.zoom_in = function() {
-        self.top_x += 20;
-        self.top_y += 20 * (self.div_height / self.div_width);
-        self.width -= 40;
-        self.height -= 40;
-        self.moved();
+        if (self.width > 40 && self.height > 40) {
+            if (this.div_width > this.div_height) {
+                self.top_x += 20;
+                self.top_y += 20 * (self.div_height / self.div_width);
+            } else {
+                self.top_x += 20 * (self.div_width / self.div_height);
+                self.top_y += 20;
+            }            
+            self.width -= 40;
+            self.height -= 40;
+            self.moved();
+        }
         return false;
     }
     
     this.zoom_out = function() {
-        self.top_x -= 20;
-        self.top_y -= 20 * (self.div_height / self.div_width);
+        if (this.div_width > this.div_height) {
+            self.top_x -= 20;
+            self.top_y -= 20 * (self.div_height / self.div_width);
+        } else {
+            self.top_x -= 20 * (self.div_width / self.div_height);
+            self.top_y -= 20;
+        }            
         self.width += 40;
         self.height += 40;
         self.moved();
@@ -63,7 +81,11 @@ function Garden() {
     this.moved = function() {
         self.div_width = $(".garden").width();
         self.div_height = $(".garden").height();
-	self.scale = self.div_width / self.width;
+        if (self.div_width > self.div_height) {
+            self.scale = self.div_width / self.width;
+        } else {
+            self.scale = self.div_height / self.height;
+        }            
         $(".garden .plant").each(self.position_plant);
         $(".garden").css("background-position", self.to_screen_x(0) + "px " + self.to_screen_y(0) + "px");
         $(".garden").css("background-size",
@@ -73,11 +95,11 @@ function Garden() {
 
     this.position_plant = function() {
         if (!$(this).hasClass("open")) {
-	    this.style.left = self.to_screen_x($(this).data("coordX") - 12) + "px";
-	    this.style.top = self.to_screen_y($(this).data("coordY") - 12) + "px";
+	    this.style.left = (self.to_screen_x($(this).data("coordX")) - 12) + "px";
+	    this.style.top = (self.to_screen_y($(this).data("coordY")) - 12) + "px";
         } else {
-	    var left = self.to_screen_x($(this).data("coordX") - 12);
-	    var top = self.to_screen_y($(this).data("coordY") - 12);
+	    var left = self.to_screen_x($(this).data("coordX")) - 12;
+	    var top = self.to_screen_y($(this).data("coordY")) - 12;
             var width = $(this).outerWidth();
             var height = $(this).outerHeight();
             if (left + width > self.div_width) {

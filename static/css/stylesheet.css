@@ -3,6 +3,7 @@ body {
     padding: 0;
     font-size: 12px;
     font-family: sans-serif;
+    overflow: hidden;
 }
 
 h1, h2, h3 {
@@ -20,13 +21,14 @@ h1, h2, h3 {
     float: left;
 }
 
-.header form {
+.header form, .header button {
     float: right;
 }
 
 .main {
-    height: calc(100vh - 41px);
     overflow: hidden;
+    width: 100%;
+    height: calc(100vh - 41px);
 }
 
 .select {
@@ -162,7 +164,7 @@ h1, h2, h3 {
     height: 354px;
 }
 
-[name=add_plant] .buttons {
+.buttons {
     width: 100%;
     overflow: hidden;
     text-align: right;
