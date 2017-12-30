@@ -187,6 +187,13 @@ function Garden() {
     $("body").on("mouseup touchend", self.end_move);
     $("#btn_zoom_in").click(self.zoom_in);
     $("#btn_zoom_out").click(self.zoom_out);
+    $(".garden").on("wheel", function(e) {
+	if (e.originalEvent.deltaY < 0) {
+	    self.zoom_in();
+	} else {
+	    self.zoom_out();
+	}
+    });
     $(window).resize(self.moved);
     self.moved();
     
@@ -199,6 +206,7 @@ $(function() {
     $("#btn_load_species").click(function() {
 	var url = $("#add_plant_url").val();
 	var name = $("#add_plant_name").val();
+	
 	$("[name=add_plant] .species_data").load(
 	    "controllers/garden.php",
 	    {action: "load_species_url", url: url, name: name},
