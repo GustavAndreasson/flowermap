@@ -217,6 +217,16 @@ $(function() {
         );
     });
 
+    $("#btn_add_species_data").click(function() {
+        var name = $("#add_species_data_name").val();
+        var value = $("#add_species_data_value").val();
+        var html = "<div class='row'><span class='data_name'>" + name;
+        html += "</span><span class='data_value'>" + value + "</span>";
+        html += "<input type='hidden' name='data[" + name + "]' value='" + value;
+        html += "'></div>";
+        $("[name=add_plant] .species_data").append(html);
+    });
+
     $("#btn_edit_garden").click(function() {
 	$("[name=edit_garden]").show();
     });
