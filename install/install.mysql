@@ -1,5 +1,7 @@
 CREATE DATABASE `flowermap` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
+use flowermap;
+
 CREATE TABLE `gardens` (
   `garden_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
@@ -47,5 +49,4 @@ CREATE TABLE `users` (
 
 CREATE USER 'flowermap'@'localhost' IDENTIFIED BY 'flowermappwd';
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON flowermap.* TO
-
+GRANT SELECT, INSERT, UPDATE, DELETE ON flowermap.* TO 'flowermap'@'localhost';
