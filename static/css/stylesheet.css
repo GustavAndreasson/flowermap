@@ -21,14 +21,47 @@ h1, h2, h3 {
     float: left;
 }
 
-.header form, .header button {
+.header button {
     float: right;
+    margin: 10px 10px 10px 0px;
 }
 
 .main {
     overflow: hidden;
     width: 100%;
     height: calc(100vh - 41px);
+}
+
+.login {
+  width: 400px;
+  margin: 50px auto;
+}
+
+.login form {
+  float: left;
+  padding: 20px;
+  width: 100%;
+  border: 1px solid #000000;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+form .row {
+  float: left;
+  width: 100%;
+  margin: 5px 0px;
+}
+
+form label {
+  display: block;
+  float: left;
+  margin-right:5px;
+}
+form input {
+  display: block;
+  float: right;
+  width: 200px;
+  box-sizing: border-box;
 }
 
 .select {
@@ -151,7 +184,7 @@ h1, h2, h3 {
 [name=add_plant] .plant input[type=textarea] {
     width: 100%;
     height: 80px;
-    box-sizing: border-box;	     
+    box-sizing: border-box;
 }
 
 [name=add_plant] .species {
@@ -162,6 +195,11 @@ h1, h2, h3 {
 [name=add_plant] .species img {
     width: 354px;
     height: 354px;
+}
+
+[name=edit_garden] {
+  margin-left: -200px;
+  width: 400px;
 }
 
 .buttons {
@@ -195,18 +233,22 @@ h1, h2, h3 {
 }
 
 @media (max-width: 720px) {
+  .login {
+    width: 90%;
+  }
+
+  .login input {
+    width: 120px;
+  }
+
     .pop-up {
-        width: 100%;
+        width: 100%!important;
+        margin-left: 0!important;
         height: auto;
         top: 41px;
         left: 0;
         border-width: 1px 0;
         border-radius: 0;
-    }
-
-    [name=add_plant] {
-        width: 100%;
-        margin-left: 0;
     }
 
     [name=add_plant] .plant {
@@ -218,11 +260,9 @@ h1, h2, h3 {
         float: right;
         width: 50%;
     }
-    
+
     [name=add_plant] .species img {
         width: auto;
         height: auto;
     }
-
 }
-

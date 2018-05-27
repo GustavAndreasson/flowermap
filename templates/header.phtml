@@ -1,17 +1,17 @@
 <div class="header">
-    <h1>
-        <?= $T->__("Flower Map"); ?>
-        <?php if($fm->is_logged_in()): ?>
-            <?php if($fm->user->garden->get_name()): ?>
-		- <?= $fm->user->garden->get_name(); ?>
-            <?php endif; ?>
-        <?php endif; ?>
-    </h1>
+  <h1>
+    <?= $T->__("Flower Map"); ?>
     <?php if($fm->is_logged_in()): ?>
-	<button type="button" id="btn_edit_garden"><?= $T->__("Garden settings") ?></button>
-	<form name="logout" action="controllers/user.php" method="POST">
-            <input type="hidden" name="action" value="logout" />
-            <button type="submit"><?= $T->__("Logout") ?></button>
-	</form>
+      <?php if($fm->user->garden->get_name()): ?>
+        - <?= $fm->user->garden->get_name(); ?>
+      <?php endif; ?>
     <?php endif; ?>
+  </h1>
+  <?php if($fm->is_logged_in()): ?>
+    <form name="logout" action="controllers/user.php" method="POST">
+      <input type="hidden" name="action" value="logout" />
+      <button type="submit"><?= $T->__("Logout") ?></button>
+    </form>
+    <button type="button" id="btn_edit_garden"><?= $T->__("Garden settings") ?></button>
+  <?php endif; ?>
 </div>
