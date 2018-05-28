@@ -66,6 +66,7 @@ form input {
 
 .select {
     border:1px solid #000000;
+    min-height: 100px;
 }
 
 .select .option {

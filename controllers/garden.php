@@ -11,8 +11,8 @@ if (isset($_REQUEST["action"])) {
     } else {
         $T = new Translate();
     }
- 
-    
+
+
     switch($action) {
     case "update_garden":
         update_garden($garden);
@@ -38,16 +38,16 @@ function update_garden($garden) {
     }
     if ($_FILES["image"]["tmp_name"]) {
         $target_file = GARDEN_IMAGE_PATH . $garden->get_garden_id() . ".svg";
-        
+
         $check = getimagesize($_FILES["image"]["tmp_name"]);
-        
+
         if($check !== false) {
             if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
                 Util::log("Sorry, there was an error uploading your file.", false);
             }
         }
     }
-    
+
     header("Location: /flowermap");
     exit();
 }
@@ -77,19 +77,19 @@ function add_plant($garden) {
     }
 
     $plant_id = $garden->add_plant($description, $coord_x, $coord_y, $species)->get_plant_id();
-    
+
     if ($_FILES["image"]["tmp_name"]) {
         $target_file = PLANT_IMAGE_PATH . $plant_id . ".jpg";
-        
+
         $check = getimagesize($_FILES["image"]["tmp_name"]);
-        
+
         if($check !== false) {
             if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
                 Util::log("Sorry, there was an error uploading your file.", false);
             }
         }
     }
-    
+
     header("Location: /flowermap");
     exit();
 }
@@ -119,7 +119,7 @@ function load_species_url($T) {
         $url_name = str_replace("å", "a", $url_name);
         $url_name = str_replace("ä", "a", $url_name);
         $url_name = str_replace("ö", "o", $url_name);
-        $url = "http://floralinnea.se/" . $url_name . ".html";
+        $url = "https://floralinnea.se/" . $url_name . ".html";
         $species_info = Species::load_url_data($url);
         if (!$species_info) {
             Util::log("Could not load url " . $url . ". Searching for " . $name . "...");
