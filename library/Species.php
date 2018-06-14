@@ -78,6 +78,15 @@ class Species {
         }
     }
 
+    public function json() {
+      $json_data = array();
+      $json_data['id'] = $this->species_id;
+      $json_data['name'] = $this->get_name();
+      $json_data['data'] = $this->get_data();
+      $json_data['url'] = $this->get_url();
+      $json_data['image'] = $this->get_image();
+    }
+
     public static function load_url_data($url) {
       Util::log("Loading data from " . $url);
         $response = Array();
