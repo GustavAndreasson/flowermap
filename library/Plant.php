@@ -16,7 +16,7 @@ class Plant {
         $this->coord_x = $coord_x;
         $this->coord_y = $coord_y;
         $this->species = $species;
-        
+
         if (!$plant_id) {
             try {
                 $now = date("Y-m-d H:i:s");
@@ -68,5 +68,16 @@ class Plant {
         $sql .= "WHERE plant_id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute(array($species_id, $this->description, $this->coord_x, $this->coord_y, $this->plant_id));
+    }
+
+    public function json() {
+        $json_data = array();
+        $json_data['id'] = $this->get_plant_id();
+        $json_data['species_id'] = $this->get_species_id();
+        $json_data['name'] = $this->get_name();
+        $json_data['description'] = $this->get_description();
+        $json_data['coord_x'] = $this->get_coord_x();
+        $json_data['coord_y'] = $this->get_coord_y();
+        $json_data['image'] = $this->get_image();
     }
 }
