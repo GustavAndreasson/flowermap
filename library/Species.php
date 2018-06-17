@@ -85,6 +85,7 @@ class Species {
       $json_data['data'] = $this->get_data();
       $json_data['url'] = $this->get_url();
       $json_data['image'] = $this->get_image();
+      return $json_data;
     }
 
     public static function load_url_data($url) {
@@ -94,6 +95,7 @@ class Species {
         $doc->preserveWhiteSpace = FALSE;
         $success = @$doc->loadHTMLFile($url);
         if($success) {
+          $response['url'] = $url;
             $response['name'] = $doc->getElementsByTagName("h1")->item(0)->textContent;
             $data = Array();
             $t = $doc->getElementById("product-attribute-specs-table");

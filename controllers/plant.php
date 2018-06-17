@@ -12,6 +12,9 @@ if (isset($_REQUEST["action"])) {
     }
 
     switch($action) {
+      case "get_plants":
+        get_plants($garden);
+        break;
     case "add_plant":
         add_plant($garden);
         break;
@@ -21,6 +24,14 @@ if (isset($_REQUEST["action"])) {
     default:
         break;
     }
+}
+
+function get_plants($garden) {
+  $response = array();
+  foreach ($garden->plants as $plant) {
+    $response[$plant->get_plant_id] = $plant->get_json_data();
+  }
+  echo json_encode($response);
 }
 
 function add_plant($garden) {
@@ -46,7 +57,7 @@ function add_plant($garden) {
         }
     }
 
-    echo $plant->json();
+    echo json_encode($plant->get_json_data());
 }
 
 function update_plant($garden) {
@@ -79,5 +90,5 @@ function update_plant($garden) {
         }
     }
 
-    echo $plant->json();
+    echo json_encode($plant->get_json_data());
 }

@@ -70,7 +70,7 @@ class Plant {
         $stmt->execute(array($species_id, $this->description, $this->coord_x, $this->coord_y, $this->plant_id));
     }
 
-    public function json() {
+    public function get_json_data() {
         $json_data = array();
         $json_data['id'] = $this->get_plant_id();
         $json_data['species_id'] = $this->get_species_id();
@@ -79,5 +79,6 @@ class Plant {
         $json_data['coord_x'] = $this->get_coord_x();
         $json_data['coord_y'] = $this->get_coord_y();
         $json_data['image'] = $this->get_image();
+        return $json_data;
     }
 }

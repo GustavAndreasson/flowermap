@@ -14,6 +14,9 @@ if (isset($_REQUEST["action"])) {
   }
 
   switch($action) {
+    case "get_species":
+      get_species($garden);
+      break;
     case "add_species":
       add_species($garden);
       break;
@@ -29,6 +32,14 @@ if (isset($_REQUEST["action"])) {
     default:
       break;
   }
+}
+
+function get_species($garden) {
+  $response = array();
+  foreach ($garden->species as $species) {
+    $response[$species->get_species_id] = $species->get_json_data();
+  }
+  echo json_encode($response);
 }
 
 function add_species($garden) {
@@ -65,17 +76,16 @@ function update_species($garden) {
       }
     }
   }
-  echo json_encode($species->json());
+  echo json_encode($species->get_json_data());
 }
 
 function load_species_id($garden) {
   $id = $_REQUEST["id"];
   $species = $garden->species[$id];
-  echo json_encode($species->json());
+  echo json_encode($species->get_json_data());
 }
 
 function load_species_url() {
-  $species_info = "";
   $url = $_REQUEST["url"];
   if (!$url) {
     $name = trim($_REQUEST["name"]);
