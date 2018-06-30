@@ -16,7 +16,8 @@ if ($fm->is_logged_in()) {
     <link rel="icon" type="image/x-icon" href="static/img/favicon.ico">
     <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
     <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
-    <script src="static/js/jquery.ui.touch-punch.min.js"></script>
+    <script src="static/js/Plant.js"></script>
+    <script src="static/js/Garden.js"></script>
     <script src="static/js/FlowerMap.js"></script>
   </head>
   <body>

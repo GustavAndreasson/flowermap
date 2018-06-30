@@ -1,7 +1,4 @@
 <div class="garden" style="background-image: url(<?= $fm->user->garden->get_image() ?>)">
-    <?php foreach ($fm->user->garden->plants as $plant): ?>
-    <?php include("plant.phtml") ?>
-    <?php endforeach; ?>
     <button type="button" id="btn_zoom_in">+</button>
     <button type="button" id="btn_zoom_out">-</button>
 </div>
