@@ -186,18 +186,20 @@ function Garden() {
 
     this.load_plants = function() {
         $.getJSON(
-            "controller/plant.php",
+            "controllers/plant.php",
             {action: "get_plants"},
             function (plants) {
                 $.each(plants, function(plant_id, plant) {
                     self.plants[plant_id] = new Plant(plant);
                 });
+
+                $(".garden .plant").each(self.position_plant);
             });
     };
 
     this.load_species = function() {
         $.getJSON(
-            "controller/species.php",
+            "controllers/species.php",
             {action: "get_species"},
             function (species) {
                 self.species = species;

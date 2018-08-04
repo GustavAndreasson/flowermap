@@ -29,7 +29,7 @@ if (isset($_REQUEST["action"])) {
 function get_plants($garden) {
   $response = array();
   foreach ($garden->plants as $plant) {
-    $response[$plant->get_plant_id] = $plant->get_json_data();
+    $response[$plant->get_plant_id()] = $plant->get_json_data();
   }
   echo json_encode($response);
 }

@@ -78,7 +78,7 @@ class Species {
         }
     }
 
-    public function json() {
+    public function get_json_data() {
       $json_data = array();
       $json_data['id'] = $this->species_id;
       $json_data['name'] = $this->get_name();

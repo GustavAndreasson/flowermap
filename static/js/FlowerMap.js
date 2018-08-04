@@ -1,5 +1,7 @@
 $(function() {
-  var garden = new Garden();
+  garden = new Garden();
+  garden.load_species();
+  garden.load_plants();
 
   $("#btn_load_species").click(function() {
     var url = $("#add_species_url").val();
@@ -41,13 +43,21 @@ $(function() {
   });
 
   $("#slct_species .option").click(function() {
-    $("[name=add_plant] .species_data").html("");
+    var species_id = $(this).data("value");
+    if (species_id) {
+      $("[name=add_plant] .species .name").html(garden.species[species_id].name);
+      $("[name=add_plant] .species img").attr("src", garden.species[species_id].image);
+      $("[name=add_plant] .species").show();
+    } else {
+      $("[name=add_plant] .species").hide();
+    }
+    /*$("[name=add_plant] .species_data").html("");
     if ($(this).data("value")) {
       $.getJSON(
         "controllers/species.php",
         {action: "load_species_id", id: $(this).data("value")},
         function (species) {
-          var species_string = '<div class="row"><span class="name">' + /*$T->__("Name")*/'Name' + '</span>';
+          var species_string = '<div class="row"><span class="name">' + $T->__("Name") + '</span>';
           species_string += '<span class="value">' + species['name'] + '</span></div>';
           $.each(species['data'], function(name, value) {
               species_string += '<div class="row"><span class="data_name">' + name + '</span>';
@@ -65,7 +75,7 @@ $(function() {
     } else {
       $("[name=add_plant] .new_species").show();
       $("#add_plant_name").attr("name", "name");
-    }
+    }*/
   });
 
 

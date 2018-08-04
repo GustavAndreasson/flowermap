@@ -37,7 +37,7 @@ if (isset($_REQUEST["action"])) {
 function get_species($garden) {
   $response = array();
   foreach ($garden->species as $species) {
-    $response[$species->get_species_id] = $species->get_json_data();
+    $response[$species->get_species_id()] = $species->get_json_data();
   }
   echo json_encode($response);
 }
@@ -57,7 +57,7 @@ function add_species($garden) {
     $img = null;
   }
   $species = $garden->add_species($name, $url, $data, $img);
-  echo json_encode($species->json());
+  echo json_encode($species->get_json_data());
 }
 
 function update_species($garden) {
