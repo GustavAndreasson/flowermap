@@ -188,12 +188,12 @@ form input {
     box-sizing: border-box;
 }
 
-[name=add_plant] .species {
+[name=add_species] .species {
     float: right;
     width: 350px;
 }
 
-[name=add_plant] .species img {
+[name=add_species] .species img {
     width: 354px;
     height: 354px;
 }
@@ -257,12 +257,12 @@ form input {
         width: 50%;
     }
 
-    [name=add_plant] .species {
+    [name=add_species] .species {
         float: right;
         width: 50%;
     }
 
-    [name=add_plant] .species img {
+    [name=add_species] .species img {
         width: auto;
         height: auto;
     }

@@ -187,7 +187,7 @@ function Garden() {
     this.load_plants = function() {
         $.getJSON(
             "controller/plant.php",
-            {action: "get_plants"}
+            {action: "get_plants"},
             function (plants) {
                 $.each(plants, function(plant_id, plant) {
                     self.plants[plant_id] = new Plant(plant);
@@ -198,7 +198,7 @@ function Garden() {
     this.load_species = function() {
         $.getJSON(
             "controller/species.php",
-            {action: "get_species"}
+            {action: "get_species"},
             function (species) {
                 self.species = species;
             });

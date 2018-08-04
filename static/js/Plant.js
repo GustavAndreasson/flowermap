@@ -12,7 +12,7 @@ function Plant(plant) {
         plant_element = '<div class="plant" data-plant-id="' + plant.plant_id;
         plant_element += '" data-coord-x="' + plant.coord_x;
         plant_element += '" data-coord-y="' + plant.coord_y + '">';
-        plant_element += '<div class="name"> + 'plant.name + '</div>';
+        plant_element += '<div class="name">' + plant.name + '</div>';
         plant_element += '<div class="description">' + plant.description + '</div>';
         plant_element += '<img src="' + plant.image + '">';
         plant_element += '<div class="data">';
@@ -24,11 +24,11 @@ function Plant(plant) {
           plant_element += '<?php endforeach; ?>';*/
         plant_element += '</div>';
         plant_element += '</div>';
-    
+
         $(".garden").append(plant_element);
     };
 
     add_plant_html();
-    
+
     return this;
 }

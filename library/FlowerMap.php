@@ -17,7 +17,9 @@ class FlowerMap {
             die();
         }
 
-        session_start(['cookie_lifetime' => 86400 * 30]);
+        if (session_status() == PHP_SESSION_NONE) {
+          session_start(['cookie_lifetime' => 86400 * 30]);
+        }
 
         if (isset($_SESSION["USER_ID"])) {
             $this->user = new User($this->conn, $_SESSION["USER_ID"]);
@@ -36,7 +38,7 @@ class FlowerMap {
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($result && password_verify($password, $result['password'])) {
                 $this->user = new User($this->conn, $result['user_id']);
-                $_SESSION["USER_ID"] = $this->user->get_user_id(); 
+                $_SESSION["USER_ID"] = $this->user->get_user_id();
                 return true;
             } else {
                 return false;
@@ -44,7 +46,7 @@ class FlowerMap {
         } catch (PDOException $e) {
             Util::log("Something went wrong when logging in: " . $e->getMessage(), true);
             return false;
-        } 
+        }
     }
 
     public function register($name, $password) {
@@ -82,4 +84,3 @@ class FlowerMap {
         }
     }
 }
-

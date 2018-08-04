@@ -2,26 +2,26 @@ $(function() {
   var garden = new Garden();
 
   $("#btn_load_species").click(function() {
-    var url = $("#add_plant_url").val();
-    var name = $("#add_plant_name").val();
+    var url = $("#add_species_url").val();
+    var name = $("#add_species_name").val();
 
     $.getJSON(
       "controllers/species.php",
       {action: "load_species_url", url: url, name: name},
       function (species) {
-        var species_string = '<input type="hidden" name="loaded_species_name" value="' . species['name'] . '">';
-        species_string += '<input type="hidden" name="loaded_species_url" value="' . species['url'] . '">';
+        var species_string = '<input type="hidden" name="loaded_species_name" value="' + species['name'] + '">';
+        species_string += '<input type="hidden" name="loaded_species_url" value="' + species['url'] + '">';
         $.each(species['data'], function(name, value) {
-            species_string += '<div class="row"><span class="data_name">' . name . '</span>';
-            species_string += '<span class="data_value">' . value . '</span>';
-            species_string += '<input type="hidden" name="data[' . name . ']" value="' . value . '"></div>';
+            species_string += '<div class="row"><span class="data_name">' + name + '</span>';
+            species_string += '<span class="data_value">' + value + '</span>';
+            species_string += '<input type="hidden" name="data[' + name + ']" value="' + value + '"></div>';
         });
         species_string += '<div class="row">';
-        species_string += '<input type="hidden" name="species_image" id="add_plant_image" value="' . species['image'] . '">';
-        species_string += '<img src="' . species['image'] . '"></div>';
-        $("[name=add_plant] .species_data").html(species_string)
-        $("#add_plant_name").val(species['name']);
-        $("#add_plant_url").val(species['url']);
+        species_string += '<input type="hidden" name="species_image" id="add_plant_image" value="' + species['image'] + '">';
+        species_string += '<img src="' + species['image'] + '"></div>';
+        $("[name=add_species] .species_data").html(species_string)
+        $("#add_species_name").val(species['name']);
+        $("#add_species_url").val(species['url']);
       }
     );
   });
@@ -47,15 +47,15 @@ $(function() {
         "controllers/species.php",
         {action: "load_species_id", id: $(this).data("value")},
         function (species) {
-          var species_string = '<div class="row"><span class="name">' . $T->__("Name") . '</span>';
-          species_string += '<span class="value">' . species['name'] . '</span></div>';
+          var species_string = '<div class="row"><span class="name">' + /*$T->__("Name")*/'Name' + '</span>';
+          species_string += '<span class="value">' + species['name'] + '</span></div>';
           $.each(species['data'], function(name, value) {
-              species_string += '<div class="row"><span class="data_name">' . name . '</span>';
-              species_string += '<span class="data_value">' . value . '</span>';
+              species_string += '<div class="row"><span class="data_name">' + name + '</span>';
+              species_string += '<span class="data_value">' + value + '</span>';
           });
           if (species['image']) {
               species_string += '<div class="row">';
-              species_string += '<img src="' . species['image'] . '"></div>';
+              species_string += '<img src="' + species['image'] + '"></div>';
           }
           $("[name=add_plant] .species_data").html(species_string);
         }
