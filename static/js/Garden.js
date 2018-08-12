@@ -18,8 +18,8 @@ function Garden() {
     this.top_x = (this.width - this.div_width / this.scale) / 2;
   }
 
-    this.plants = [];
-    this.species = [];
+    this.plants =  {};
+    this.species = {};
 
   this.zoom_in = function() {
     if (self.width > 40 && self.height > 40) {
@@ -89,14 +89,17 @@ function Garden() {
     } else {
       self.scale = self.div_height / self.height;
     }
-    $(".garden .plant").each(self.position_plant);
+    $.each(self.plants, function(ix, plant) {
+      plant.position();
+    });
+    //$(".garden .plant").each(self.position_plant);
     $(".garden").css("background-position", self.to_screen_x(0) + "px " + self.to_screen_y(0) + "px");
     $(".garden").css("background-size",
     (self.to_screen_x(GARDEN_WIDTH, true)) + "px " +
     (self.to_screen_y(GARDEN_HEIGHT, true)) + "px");
   };
 
-  this.position_plant = function() {
+  /*this.position_plant = function() {
     if (!$(this).hasClass("open")) {
       this.style.left = (self.to_screen_x($(this).data("coordX")) - 12) + "px";
       this.style.top = (self.to_screen_y($(this).data("coordY")) - 12) + "px";
@@ -120,7 +123,7 @@ function Garden() {
         this.style.top = top + "px";
       }
     }
-  };
+  };*/
 
   this.init_move = function(e) {
     var pageX, pageY;
@@ -190,10 +193,10 @@ function Garden() {
             {action: "get_plants"},
             function (plants) {
                 $.each(plants, function(plant_id, plant) {
-                    self.plants[plant_id] = new Plant(plant);
+                    self.plants[plant_id] = new Plant(plant, self);
                 });
 
-                $(".garden .plant").each(self.position_plant);
+                //$(".garden .plant").each(self.position_plant);
             });
     };
 
