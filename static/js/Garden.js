@@ -179,7 +179,8 @@ function Garden() {
                 });
 
                 //$(".garden .plant").each(self.position_plant);
-            });
+            }
+        );
     };
 
     this.load_species = function() {
@@ -188,7 +189,8 @@ function Garden() {
             {action: "get_species"},
             function (species) {
                 self.species = species;
-            });
+            }
+        );
     };
 
 

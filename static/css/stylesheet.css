@@ -71,6 +71,7 @@ form input {
 
 .select .option {
     background-color: #DDDDDD;
+    cursor: default;
 }
 
 .select .option:nth-child(2n) {

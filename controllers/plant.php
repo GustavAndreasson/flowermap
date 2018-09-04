@@ -35,7 +35,6 @@ function get_plants($garden) {
 }
 
 function add_plant($garden) {
-    $name = $_REQUEST["name"];
     $description = $_REQUEST["description"];
     $coord_x = $_REQUEST["coord_x"];
     $coord_y = $_REQUEST["coord_y"];
