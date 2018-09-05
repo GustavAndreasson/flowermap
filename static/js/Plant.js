@@ -11,22 +11,19 @@ function Plant(plant, garden) {
     this.is_open = false;
 
     function add_plant_html() {
-        plant_element = '<div class="plant" id="plant_' + plant.id;
-        plant_element += '" data-plant-id="' + plant.id + '">';
-        plant_element += '<div class="name">' + plant.name + '</div>';
-        plant_element += '<div class="description">' + plant.description + '</div>';
-        plant_element += '<img src="' + plant.image + '">';
-        plant_element += '<div class="data">';
-        /*plant_element += '<?php foreach($plant->species->get_data() as $name => $value): ?>';
-        plant_element += '<div class="field">';
-        plant_element += '<span class="name"><?= $name ?></span>';
-        plant_element += '<span class="value"><?= $value ?></span>';
-        plant_element += '</div>';
-        plant_element += '<?php endforeach; ?>';*/
-        plant_element += '</div>';
-        plant_element += '</div>';
+        var plant_element = $("#plant_template").clone(true);
+        $(plant_element).attr("id", "plant_" + self.id);
+        $(plant_element).data("plantId", self.id);
+        $(plant_element).find(".name").html(self.name);
+        $(plant_element).find(".description").html(self.description);
+        $(plant_element).find("img").attr("src", self.image);
 
-        $(".garden").append(plant_element);
+        plant_element.click(function (e) {
+            self.garden.plantclick(self.id);
+            e.stopPropagation();
+        });
+
+        $(".garden").append(plant_element.show());
     };
 
     function get_element() {
@@ -70,6 +67,16 @@ function Plant(plant, garden) {
         self.is_open = false;
         get_element().removeClass("open");
         self.position()
+    }
+
+    this.delete = function() {
+        $.post(
+            "controllers/plant.php",
+            {action: "delete_plant", plant_id: self.id},
+            function () {
+                get_element().remove();
+            }
+        );
     }
 
     add_plant_html();

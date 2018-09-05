@@ -97,41 +97,20 @@ $(function() {
         } else {
             $("[name=add_plant] .species").hide();
         }
-        /*$("[name=add_plant] .species_data").html("");
-        if ($(this).data("value")) {
-        $.getJSON(
-        "controllers/species.php",
-        {action: "load_species_id", id: $(this).data("value")},
-        function (species) {
-        var species_string = '<div class="row"><span class="name">' + $T->__("Name") + '</span>';
-        species_string += '<span class="value">' + species['name'] + '</span></div>';
-        $.each(species['data'], function(name, value) {
-        species_string += '<div class="row"><span class="data_name">' + name + '</span>';
-        species_string += '<span class="data_value">' + value + '</span>';
     });
-    if (species['image']) {
-    species_string += '<div class="row">';
-    species_string += '<img src="' + species['image'] + '"></div>';
-}
-$("[name=add_plant] .species_data").html(species_string);
-}
-);
-$("[name=add_plant] .new_species").hide();
-$("#add_plant_name").attr("name", "name_disabled");
-} else {
-$("[name=add_plant] .new_species").show();
-$("#add_plant_name").attr("name", "name");
-}*/
-});
+
+    $("#plant_template .btn_remove").click(garden.delete_plant);
+    $("#plant_template .btn_move").click(garden.move_plant);
+    $("#plant_template .btn_edit").click(garden.edit_plant);
 
 
-$(".pop-up .cancel").click(function() {
-    $(this).closest(".pop-up").hide();
-});
+    $(".pop-up .cancel").click(function() {
+        $(this).closest(".pop-up").hide();
+    });
 
-$(".select .option").click(function() {
-    $(this).siblings().removeClass("selected");
-    $(this).addClass("selected");
-    $(this).siblings("input").val($(this).data("value"));
-});
+    $(".select .option").click(function() {
+        $(this).siblings().removeClass("selected");
+        $(this).addClass("selected");
+        $(this).siblings("input").val($(this).data("value"));
+    });
 });

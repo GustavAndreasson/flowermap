@@ -173,6 +173,14 @@ form input {
     float: right;
 }
 
+.garden .plant.open button {
+    position: relative;
+    margin-left: 10px;
+    float: right;
+    width: auto;
+    height: auto;
+}
+
 [name=add_plant] {
     width: 720px;
     margin-left: -360px;
@@ -202,6 +210,11 @@ form input {
 [name=add_species] .species img {
     width: 354px;
     height: 354px;
+}
+
+[name=add_species] {
+    width: 720px;
+    margin-left: -360px;
 }
 
 [name=edit_garden] {

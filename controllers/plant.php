@@ -12,26 +12,29 @@ if (isset($_REQUEST["action"])) {
     }
 
     switch($action) {
-      case "get_plants":
-        get_plants($garden);
-        break;
-    case "add_plant":
-        add_plant($garden);
-        break;
-    case "update_plant":
-        update_plant($garden);
-        break;
-    default:
-        break;
+        case "get_plants":
+            get_plants($garden);
+            break;
+        case "add_plant":
+            add_plant($garden);
+            break;
+        case "update_plant":
+            update_plant($garden);
+            break;
+        case "delete_plant":
+            delete_plant($garden);
+            break;
+        default:
+            break;
     }
 }
 
 function get_plants($garden) {
-  $response = array();
-  foreach ($garden->plants as $plant) {
-    $response[$plant->get_plant_id()] = $plant->get_json_data();
-  }
-  echo json_encode($response);
+    $response = array();
+    foreach ($garden->plants as $plant) {
+        $response[$plant->get_plant_id()] = $plant->get_json_data();
+    }
+    echo json_encode($response);
 }
 
 function add_plant($garden) {
@@ -60,7 +63,7 @@ function add_plant($garden) {
 }
 
 function update_plant($garden) {
-  $plant_id = $_REQUEST["plant_id"];
+    $plant_id = $_REQUEST["plant_id"];
     $plant = $garden->plants[$plant_id];
     $description = $_REQUEST["description"];
     $coord_x = $_REQUEST["coord_x"];
@@ -90,4 +93,11 @@ function update_plant($garden) {
     }
 
     echo json_encode($plant->get_json_data());
+}
+
+function delete_plant($garden) {
+    $plant_id = $_REQUEST["plant_id"];
+    $plant = $garden->plants[$plant_id];
+    $plant->delete();
+    unset($garden->plants[$plant_id]);
 }

@@ -70,6 +70,12 @@ class Plant {
         $stmt->execute(array($species_id, $this->description, $this->coord_x, $this->coord_y, $this->plant_id));
     }
 
+    public function delete() {
+        $sql = "DELETE FROM plants WHERE plant_id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(array($this->plant_id));
+    }
+
     public function get_json_data() {
         $json_data = array();
         $json_data['id'] = $this->get_plant_id();

@@ -193,6 +193,20 @@ function Garden() {
         );
     };
 
+    this.delete_plant = function() {
+        var plant_id = $(this).parents(".plant").data("plantId");
+        self.plants[plant_id].delete();
+        delete self.plants[plant_id];
+    }
+
+    this.move_plant = function() {
+        var plant_id = $(this).parents(".plant").data("plantId");
+    }
+
+    this.edit_plant = function() {
+        var plant_id = $(this).parents(".plant").data("plantId");
+    }
+
 
     //$(".garden .plant").click(self.plantclick);
     $(".garden").click(self.mapclick);
