@@ -19,11 +19,12 @@ function Plant(plant, garden) {
         $(plant_element).find("img").attr("src", self.image);
 
         plant_element.click(function (e) {
-            self.garden.plantclick(self.id);
+            self.garden.plantclick(self.id, e);
             e.stopPropagation();
         });
 
         $(".garden").append(plant_element.show());
+        self.position();
     };
 
     function get_element() {
@@ -57,6 +58,16 @@ function Plant(plant, garden) {
         }
     }
 
+    this.set_description = function(description) {
+        self.description = description;
+        get_element().find(".description").html(description);
+    }
+
+    this.set_image = function(image) {
+        self.image = image;
+        get_element().find("img").attr("src", image);
+    }
+
     this.open = function() {
         self.is_open = true;
         get_element().addClass("open");
@@ -79,12 +90,20 @@ function Plant(plant, garden) {
         );
     }
 
+    this.save = function() {
+        $.post(
+            "controllers/plant.php",
+            {
+                action: "update_plant",
+                plant_id: self.id,
+                description: self.description,
+                coord_x: self.coord_x,
+                coord_y: self.coord_y
+            }
+        );
+    }
+
     add_plant_html();
-    self.position();
-    get_element().click(function (e) {
-        self.garden.plantclick(self.id);
-        e.stopPropagation();
-    });
 
     return this;
 }

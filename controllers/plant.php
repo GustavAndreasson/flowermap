@@ -65,9 +65,9 @@ function add_plant($garden) {
 function update_plant($garden) {
     $plant_id = $_REQUEST["plant_id"];
     $plant = $garden->plants[$plant_id];
-    $description = $_REQUEST["description"];
-    $coord_x = $_REQUEST["coord_x"];
-    $coord_y = $_REQUEST["coord_y"];
+    $description = isset($_REQUEST["description"]) ? $_REQUEST["description"] : null;
+    $coord_x = isset($_REQUEST["coord_x"]) ? $_REQUEST["coord_x"] : null;
+    $coord_y = isset($_REQUEST["coord_y"]) ? $_REQUEST["coord_y"] : null;
 
     if ($coord_x || $coord_y) {
         $plant->set_coord_x($coord_x);
@@ -80,7 +80,7 @@ function update_plant($garden) {
 
     $plant->save();
 
-    if ($_FILES["image"]["tmp_name"]) {
+    if (isset($_FILES["image"]["tmp_name"]) && $_FILES["image"]["tmp_name"]) {
         $target_file = PLANT_IMAGE_PATH . $plant_id . ".jpg";
 
         $check = getimagesize($_FILES["image"]["tmp_name"]);

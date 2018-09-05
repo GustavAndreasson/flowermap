@@ -21,6 +21,7 @@ function Garden() {
     this.plants =  {};
     this.species = {};
     this.open_plant = null;
+    this.is_plant_moving = false;
 
     this.zoom_in = function() {
         if (self.width > 40 && self.height > 40) {
@@ -141,30 +142,54 @@ function Garden() {
     };
 
     this.mapclick = function(e) {
-        if (!self.moving) {
-            if (self.open_plant) {
-
-                self.plants[self.open_plant].close();
-                self.open_plant = null;
-            } else {
-                var posX = e.pageX - $(this).offset().left;
-                var posY = e.pageY - $(this).offset().top;
-                $("[name=add_plant] [name=coord_x]").val(self.to_map_x(posX));
-                $("[name=add_plant] [name=coord_y]").val(self.to_map_y(posY));
-                $("[name=add_plant").show();
-            }
+        if (self.is_plant_moving) {
+            $(".garden").off("mousemove touchmove");
+            self.is_plant_moving = false;
+            var posX = e.pageX - $(".garden").offset().left;
+            var posY = e.pageY - $(".garden").offset().top;
+            self.plants[self.open_plant].coord_x = self.to_map_x(posX);
+            self.plants[self.open_plant].coord_y = self.to_map_y(posY);
+            self.plants[self.open_plant].position();
+            self.plants[self.open_plant].save();
+            self.open_plant = null;
         } else {
-            self.moving = false;
+            if (!self.moving) {
+                if (self.open_plant) {
+
+                    self.plants[self.open_plant].close();
+                    self.open_plant = null;
+                } else {
+                    var posX = e.pageX - $(".garden").offset().left;
+                    var posY = e.pageY - $(".garden").offset().top;
+                    $("[name=add_plant] [name=coord_x]").val(self.to_map_x(posX));
+                    $("[name=add_plant] [name=coord_y]").val(self.to_map_y(posY));
+                    $("[name=add_plant").show();
+                }
+            } else {
+                self.moving = false;
+            }
         }
     };
 
-    this.plantclick = function(id) {
-        if (id != self.open_plant) {
-            if (self.open_plant) {
-                self.plants[self.open_plant].close();
+    this.plantclick = function(id, e) {
+        if (self.is_plant_moving) {
+            $(".garden").off("mousemove touchmove");
+            self.is_plant_moving = false;
+            var posX = e.pageX - $(".garden").offset().left;
+            var posY = e.pageY - $(".garden").offset().top;
+            self.plants[self.open_plant].coord_x = self.to_map_x(posX);
+            self.plants[self.open_plant].coord_y = self.to_map_y(posY);
+            self.plants[self.open_plant].position();
+            self.plants[self.open_plant].save();
+            self.open_plant = null;
+        } else {
+            if (id != self.open_plant) {
+                if (self.open_plant) {
+                    self.plants[self.open_plant].close();
+                }
+                self.open_plant = id;
+                self.plants[id].open();
             }
-            self.open_plant = id;
-            self.plants[id].open();
         }
         return false;
     };
@@ -177,8 +202,6 @@ function Garden() {
                 $.each(plants, function(plant_id, plant) {
                     self.plants[plant.id] = new Plant(plant, self);
                 });
-
-                //$(".garden .plant").each(self.position_plant);
             }
         );
     };
@@ -194,21 +217,37 @@ function Garden() {
     };
 
     this.delete_plant = function() {
-        var plant_id = $(this).parents(".plant").data("plantId");
-        self.plants[plant_id].delete();
-        delete self.plants[plant_id];
-    }
+        self.plants[self.open_plant].delete();
+        delete self.plants[self.open_plant];
+    };
 
     this.move_plant = function() {
-        var plant_id = $(this).parents(".plant").data("plantId");
-    }
+        self.plants[self.open_plant].close();
+        self.is_plant_moving = true;
+        $(".garden").on("mousemove touchmove", self.plant_move);
+        return false;
+    };
+
+    this.plant_move = function(e) {
+        var posX, posY;
+        if (e.type == "touchmove") {
+            posX = e.originalEvent.touches[0].screenX - $(".garden").offset().left;
+            posY = e.originalEvent.touches[0].screenY - $(".garden").offset().top;
+        } else {
+            posX = e.pageX - $(".garden").offset().left;
+            posY = e.pageY - $(".garden").offset().top;
+        }
+        $("#plant_" + self.open_plant).css("top", (posY - 12) + "px");
+        $("#plant_" + self.open_plant).css("left", (posX - 12) + "px");
+    };
 
     this.edit_plant = function() {
-        var plant_id = $(this).parents(".plant").data("plantId");
-    }
+        $("[name=edit_plant] [name=plant_id]").val(self.open_plant);
+        $("[name=edit_plant] .name").html(self.plants[self.open_plant].name);
+        $("[name=edit_plant] [name=description]").val(self.plants[self.open_plant].description);
+        $("[name=edit_plant]").show();
+    };
 
-
-    //$(".garden .plant").click(self.plantclick);
     $(".garden").click(self.mapclick);
     $(".garden").on("mousedown touchstart", self.init_move);
     $("body").on("mouseup touchend", self.end_move);

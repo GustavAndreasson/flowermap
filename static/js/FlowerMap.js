@@ -45,6 +45,25 @@ $(function() {
         });
     });
 
+    $("[name=edit_plant]").submit(function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            cache: false,
+            url: $(this).attr("action"),
+            data: formData,
+            success: function (data) {
+                var plant = JSON.parse(data);
+                garden.plants[plant.id].set_description(plant.description);
+                garden.plants[plant.id].set_image(plant.image);
+                $("[name=edit_plant]").hide();
+            }
+        });
+    });
+
     $("#btn_add_species").click(function() {
         $("[name=add_species]").show();
     });
