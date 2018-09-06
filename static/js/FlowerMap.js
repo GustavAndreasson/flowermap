@@ -1,7 +1,7 @@
 $(function() {
-    garden = new Garden();
-    garden.load_species();
-    garden.load_plants();
+    if($(".garden").length) {
+        garden = new Garden();
+    }
 
     $("[name=add_plant]").submit(function(e) {
         e.preventDefault();

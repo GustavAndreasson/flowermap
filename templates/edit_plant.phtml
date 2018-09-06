@@ -4,8 +4,14 @@
     <h2><?= $T->__("Edit plant") ?></h2>
     <div class="plant">
         <div class="row"><span class="name"></span></div>
-        <div class="row"><label for="edit_plant_description"><?= $T->__("Description") ?></label><input type="textarea" name="description" id="edit_plant_description"></div>
-        <div class="row"><label for="edit_plant_image"><?= $T->__("Image") ?></label><input type="file" accept="image/jpeg" name="image" id="edit_plant_image"></div>
+        <div class="row">
+            <label for="edit_plant_description"><?= $T->__("Description") ?></label>
+            <input type="textarea" name="description" id="edit_plant_description">
+        </div>
+        <div class="row">
+            <label for="edit_plant_image"><?= $T->__("Image") ?></label>
+            <input type="file" accept="image/*" name="image" id="edit_plant_image">
+        </div>
     </div>
     <div class="buttons">
         <button type="button" class="cancel"><?= $T->__("Cancel") ?></button>

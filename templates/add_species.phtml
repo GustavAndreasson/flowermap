@@ -1,27 +1,27 @@
 <form name="add_species" class="pop-up" action="controllers/species.php" method="POST" enctype="multipart/form-data" style="display:none;">
-  <input type="hidden" name="action" value="add_species" />
-  <h2><?= $T->__("Add a species") ?></h2>
-  <div class="species">
-    <div class="new_species">
-      <h3><?= $T->__("Enter a name or a URL to load a species") ?></h3>
-      <div class="row">
-        <label for="add_species_name"><?= $T->__("Name") ?></label>
-        <input type="text" name="name" id="add_species_name">
-      </div>
-      <div class="row">
-        <label for="add_species_url"><?= $T->__("Species URL") ?></label>
-        <input type="text" name="url" id="add_species_url">
-      </div>
-      <button type="button" id="btn_load_species"><?= $T->__("Load species") ?></button>
+    <input type="hidden" name="action" value="add_species" />
+    <h2><?= $T->__("Add a species") ?></h2>
+    <div class="species">
+        <div class="new_species">
+            <h3><?= $T->__("Enter a name or a URL to load a species") ?></h3>
+            <div class="row">
+                <label for="add_species_name"><?= $T->__("Name") ?></label>
+                <input type="text" name="name" id="add_species_name">
+            </div>
+            <div class="row">
+                <label for="add_species_url"><?= $T->__("Species URL") ?></label>
+                <input type="text" name="url" id="add_species_url">
+            </div>
+            <button type="button" id="btn_load_species"><?= $T->__("Load species") ?></button>
+        </div>
+        <div class="species_data"></div>
+        <div class="row">
+            <input type="text" id="add_species_data_name"><input type="text" id="add_species_data_value">
+            <button type="button" id="btn_add_species_data"><?= $T->__("Add species data") ?></button>
+        </div>
     </div>
-    <div class="species_data"></div>
-    <div class="row">
-      <input type="text" id="add_species_data_name"><input type="text" id="add_species_data_value">
-      <button type="button" id="btn_add_species_data"><?= $T->__("Add species data") ?></button>
+    <div class="buttons">
+        <button type="button" class="cancel"><?= $T->__("Cancel") ?></button>
+        <button type="submit"><?= $T->__("Add species") ?></button>
     </div>
-  </div>
-  <div class="buttons">
-    <button type="button" class="cancel"><?= $T->__("Cancel") ?></button>
-    <button type="submit"><?= $T->__("Add species") ?></button>
-  </div>
 </form>

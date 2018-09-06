@@ -3,25 +3,6 @@ var GARDEN_WIDTH = 1000;
 
 function Garden() {
     var self = this;
-    this.moving = false;
-    this.width = GARDEN_WIDTH;
-    this.height = GARDEN_HEIGHT;
-    this.div_width = $(".garden").width();
-    this.div_height = $(".garden").height();
-    if (this.div_width > this.div_height) {
-        this.scale = this.div_width / this.width;
-        this.top_x = 0;
-        this.top_y = (this.height - this.div_height / this.scale) / 2;
-    } else {
-        this.scale = this.div_height / this.height;
-        this.top_y = 0;
-        this.top_x = (this.width - this.div_width / this.scale) / 2;
-    }
-
-    this.plants =  {};
-    this.species = {};
-    this.open_plant = null;
-    this.is_plant_moving = false;
 
     this.zoom_in = function() {
         if (self.width > 40 && self.height > 40) {
@@ -261,6 +242,29 @@ function Garden() {
         }
     });
     $(window).resize(self.moved);
+
+    self.moving = false;
+    self.width = GARDEN_WIDTH;
+    self.height = GARDEN_HEIGHT;
+    self.div_width = $(".garden").width();
+    self.div_height = $(".garden").height();
+    if (self.div_width > self.div_height) {
+        self.scale = self.div_width / this.width;
+        self.top_x = 0;
+        self.top_y = (self.height - self.div_height / self.scale) / 2;
+    } else {
+        self.scale = self.div_height / self.height;
+        self.top_y = 0;
+        self.top_x = (self.width - self.div_width / self.scale) / 2;
+    }
+
+    self.plants =  {};
+    self.species = {};
+    self.open_plant = null;
+    self.is_plant_moving = false;
+
+    self.load_species();
+    self.load_plants();
     self.moved();
 
     return this;

@@ -14,43 +14,43 @@ class Species {
         $this->data = $data;
         if ($species_id) {
             if (!$name) {
-                 try {
-                     $sql = "SELECT s.species_id, s.name, s.url, sd.data_name, sd.data_value FROM species s ";
-                     $sql .= "JOIN species_data sd ON s.species_id = sd.species_id ";
-                     $sql .= "WHERE s.species_id = ?";
-                     $stmt = $this->conn->prepare($sql);
-                     $stmt->execute(array($this->species_id));
-                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                         $this->name = $row['name'];
-                         $this->url = $row['url'];
-                         $this->data[$row['name']] = $row['value'];
-                     }
-                 } catch (PDOException $e) {
-                     Util::log("Something went wrong when fetching species: " . $e->getMessage(), true);
-                 }
+                try {
+                    $sql = "SELECT s.species_id, s.name, s.url, sd.data_name, sd.data_value FROM species s ";
+                    $sql .= "JOIN species_data sd ON s.species_id = sd.species_id ";
+                    $sql .= "WHERE s.species_id = ?";
+                    $stmt = $this->conn->prepare($sql);
+                    $stmt->execute(array($this->species_id));
+                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        $this->name = $row['name'];
+                        $this->url = $row['url'];
+                        $this->data[$row['name']] = $row['value'];
+                    }
+                } catch (PDOException $e) {
+                    Util::log("Something went wrong when fetching species: " . $e->getMessage(), true);
+                }
             }
         } else {
-             try {
-                 $stmt = $this->conn->prepare("INSERT INTO species (species_id, name, url) VALUES (null, ?, ?)");
-                 $stmt->execute(array($this->name, $this->url));
-                 $this->species_id = $this->conn->lastInsertId();
-                 if ($this->data) {
-                   $args = array();
-                   $sql = "INSERT INTO species_data (species_id, data_name, data_value) VALUES ";
-                   foreach ($this->data as $data_name => $data_value) {
-                       $sql .= "(?, ?, ?),";
-                       array_push($args, $this->species_id, $data_name, $data_value);
-                   }
-                   $sql = substr($sql, 0, -1);
-                   $stmt = $this->conn->prepare($sql);
-                   $stmt->execute($args);
-                 }
-                 if ($img) {
-                     file_put_contents(SPECIES_IMAGE_PATH . $this->species_id . ".jpg", file_get_contents($img));
-                 }
-             } catch (PDOException $e) {
-                 Util::log("Something went wrong when creating new species: " . $e->getMessage(), true);
-             }
+            try {
+                $stmt = $this->conn->prepare("INSERT INTO species (species_id, name, url) VALUES (null, ?, ?)");
+                $stmt->execute(array($this->name, $this->url));
+                $this->species_id = $this->conn->lastInsertId();
+                if ($this->data) {
+                    $args = array();
+                    $sql = "INSERT INTO species_data (species_id, data_name, data_value) VALUES ";
+                    foreach ($this->data as $data_name => $data_value) {
+                        $sql .= "(?, ?, ?),";
+                        array_push($args, $this->species_id, $data_name, $data_value);
+                    }
+                    $sql = substr($sql, 0, -1);
+                    $stmt = $this->conn->prepare($sql);
+                    $stmt->execute($args);
+                }
+                if ($img) {
+                    file_put_contents(SPECIES_IMAGE_PATH . $this->species_id . ".jpg", file_get_contents($img));
+                }
+            } catch (PDOException $e) {
+                Util::log("Something went wrong when creating new species: " . $e->getMessage(), true);
+            }
         }
     }
 
@@ -79,44 +79,44 @@ class Species {
     }
 
     public function get_json_data() {
-      $json_data = array();
-      $json_data['id'] = $this->species_id;
-      $json_data['name'] = $this->get_name();
-      $json_data['data'] = $this->get_data();
-      $json_data['url'] = $this->get_url();
-      $json_data['image'] = $this->get_image();
-      return $json_data;
+        $json_data = array();
+        $json_data['id'] = $this->species_id;
+        $json_data['name'] = $this->get_name();
+        $json_data['data'] = $this->get_data();
+        $json_data['url'] = $this->get_url();
+        $json_data['image'] = $this->get_image();
+        return $json_data;
     }
 
     public static function load_url_data($url) {
-      Util::log("Loading data from " . $url);
+        Util::log("Loading data from " . $url);
         $response = Array();
         $doc = new DOMDocument();
         $doc->preserveWhiteSpace = FALSE;
         $success = @$doc->loadHTMLFile($url);
         if($success) {
-          $response['url'] = $url;
+            $response['url'] = $url;
             $response['name'] = $doc->getElementsByTagName("h1")->item(0)->textContent;
             $data = Array();
             $t = $doc->getElementById("product-attribute-specs-table");
             if ($t && $t->childNodes) {
-              if ($t->childNodes->item(2)) {
-                $data_table = $t->childNodes->item(2)->childNodes;
-                foreach ($data_table as $row) {
-                    $data_name = "";
-                    $data_value = "";
-                    foreach ($row->childNodes as $node) {
-                        if ($node->localName == "th") {
-                            $data_name = $node->textContent;
-                        } elseif ($node->localName == "td") {
-                            $data_value = $node->textContent;
+                if ($t->childNodes->item(2)) {
+                    $data_table = $t->childNodes->item(2)->childNodes;
+                    foreach ($data_table as $row) {
+                        $data_name = "";
+                        $data_value = "";
+                        foreach ($row->childNodes as $node) {
+                            if ($node->localName == "th") {
+                                $data_name = $node->textContent;
+                            } elseif ($node->localName == "td") {
+                                $data_value = $node->textContent;
+                            }
+                        }
+                        if ($data_name && $data_value) {
+                            $data[$data_name] = $data_value;
                         }
                     }
-                    if ($data_name && $data_value) {
-                        $data[$data_name] = $data_value;
-                    }
                 }
-              }
             }
             $response['data'] = $data;
             $response['image'] = $doc->getElementById("image-main")->getAttribute("src");
