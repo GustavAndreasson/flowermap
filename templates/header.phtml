@@ -3,7 +3,7 @@
     <?= $T->__("Flower Map"); ?>
     <?php if($fm->is_logged_in()): ?>
       <?php if($fm->user->garden->get_name()): ?>
-        - <?= $fm->user->garden->get_name(); ?>
+        - <span id = "garden_name"><?= $fm->user->garden->get_name(); ?></span>
       <?php endif; ?>
     <?php endif; ?>
   </h1>
