@@ -2,20 +2,6 @@ $(function() {
     if($(".garden").length) {
         garden = new Garden();
 
-        $("form").submit(function(e) {
-            e.preventDefault();
-            var formData = new FormData(this);
-            $.ajax({
-                type: 'POST',
-                processData: false,
-                contentType: false,
-                cache: false,
-                url: $(this).attr("action"),
-                data: formData,
-                success: this.success
-            });
-        });
-
         $("[name=add_plant]")[0].success = function (data) {
             var plant = JSON.parse(data);
             garden.plants[plant.id] = new Plant(plant, garden);
@@ -105,6 +91,20 @@ $(function() {
         $("#plant_template .btn_move").click(garden.move_plant);
         $("#plant_template .btn_edit").click(garden.edit_plant);
     }
+
+    $("form.ajax").submit(function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            cache: false,
+            url: $(this).attr("action"),
+            data: formData,
+            success: this.success
+        });
+    });
 
     $(".pop-up .cancel").click(function() {
         $(this).closest(".pop-up").hide();

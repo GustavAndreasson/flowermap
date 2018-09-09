@@ -83,4 +83,12 @@ class FlowerMap {
             return false;
         }
     }
+
+    public function get_message() {
+        if (isset($_SESSION["MESSAGE"])) {
+            $message = $_SESSION["MESSAGE"];
+            unset($_SESSION["MESSAGE"]);
+            return $message;
+        }
+    }
 }
