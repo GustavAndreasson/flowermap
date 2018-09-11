@@ -82,8 +82,8 @@ function Plant(plant, garden) {
 
     this.delete = function() {
         $.post(
-            "controllers/plant.php",
-            {action: "delete_plant", plant_id: self.id},
+            "plant/delete",
+            {plant_id: self.id},
             function () {
                 get_element().remove();
             }
@@ -92,9 +92,8 @@ function Plant(plant, garden) {
 
     this.save = function() {
         $.post(
-            "controllers/plant.php",
+            "plant/update",
             {
-                action: "update_plant",
                 plant_id: self.id,
                 description: self.description,
                 coord_x: self.coord_x,

@@ -42,8 +42,8 @@ $(function() {
             var name = $("#add_species_name").val();
 
             $.getJSON(
-                "controllers/species.php",
-                {action: "load_species_url", url: url, name: name},
+                "species/load_url",
+                {url: url, name: name},
                 function (species) {
                     var species_string = '<input type="hidden" name="loaded_species_name" value="' + species['name'] + '">';
                     species_string += '<input type="hidden" name="loaded_species_url" value="' + species['url'] + '">';

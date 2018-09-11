@@ -8,8 +8,7 @@
     <?php endif; ?>
   </h1>
   <?php if($fm->is_logged_in()): ?>
-    <form name="logout" action="controllers/user.php" method="POST">
-      <input type="hidden" name="action" value="logout" />
+    <form name="logout" action="user/logout" method="POST">
       <button type="submit"><?= $T->__("Logout") ?></button>
     </form>
     <button type="button" id="btn_edit_garden"><?= $T->__("Garden settings") ?></button>

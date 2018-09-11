@@ -1,8 +1,7 @@
 <div class="login">
     <div class="message"><?= $fm->get_message() ?></div>
-    <form name="login" action="controllers/user.php" method="POST">
+    <form name="login" action="user/login" method="POST">
         <h2><?= $T->__("Login") ?></h2>
-        <input type="hidden" name="action" value="login" />
         <div class="row">
             <label for="login_name"><?= $T->__("Username") ?></label>
             <input type="text" name="name" id="login_name" />
@@ -15,9 +14,8 @@
             <button type="submit"><?= $T->__("Login") ?></button>
         </div>
     </form>
-    <form name="register" action="controllers/user.php" method="POST">
+    <form name="register" action="user/register" method="POST">
         <h2><?= $T->__("Register") ?></h2>
-        <input type="hidden" name="action" value="register" />
         <div class="row">
             <label for="register_name"><?= $T->__("Username") ?></label>
             <input type="text" name="name" id="register_name" />

@@ -2,7 +2,10 @@
 
 defined("LIBRARY_PATH")
     or define("LIBRARY_PATH", dirname(__FILE__) . '/');
-     
+
+defined("CONTROLLERS_PATH")
+    or define("CONTROLLERS_PATH", dirname(__FILE__) . '/../controllers/');
+
 defined("TEMPLATES_PATH")
     or define("TEMPLATES_PATH", dirname(__FILE__) . '/../templates/');
 
@@ -21,6 +24,7 @@ defined("SPECIES_IMAGE_PATH")
 defined("GARDEN_IMAGE_PATH")
     or define("GARDEN_IMAGE_PATH", dirname(__FILE__) . '/../var/images/gardens/');
 
+require_once(LIBRARY_PATH . "Router.php");
 require_once(LIBRARY_PATH . "Util.php");
 require_once(LIBRARY_PATH . "Translate.php");
 require_once(LIBRARY_PATH . "FlowerMap.php");
@@ -28,6 +32,8 @@ require_once(LIBRARY_PATH . "User.php");
 require_once(LIBRARY_PATH . "Garden.php");
 require_once(LIBRARY_PATH . "Plant.php");
 require_once(LIBRARY_PATH . "Species.php");
+
+require_once(CONTROLLERS_PATH . "AbstractController.php");
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
