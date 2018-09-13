@@ -7,9 +7,8 @@ class GardenController extends AbstractController {
             $this->garden = $fm->user->garden;
             parent::execute($fm);
         } else {
-            echo "NOT LOGGED IN";
+            throw new Exception("No user is logged in", 403);
         }
-        return true;
     }
 
     function update_action() {
