@@ -12,7 +12,7 @@ class GardenController extends AbstractController {
     }
 
     function update_action() {
-        $name = isset($_REQUEST["name"]) ? $_REQUEST["name"] : false;
+        $name = $this->request->get("name");
         if ($name) {
             $this->garden->set_name($name);
         }

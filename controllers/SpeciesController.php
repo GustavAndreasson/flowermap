@@ -20,25 +20,16 @@ class SpeciesController extends AbstractController {
     }
 
     function add_action() {
-        $name = $_REQUEST["name"];
-
-        if (isset($_REQUEST["data"])) {
-            $data = $_REQUEST["data"];
-        } else {
-            $data = null;
-        }
-        $url = $_REQUEST["url"];
-        if (isset($_REQUEST["species_image"])) {
-            $img = $_REQUEST["species_image"];
-        } else {
-            $img = null;
-        }
+        $name = $this->request->get("name");
+        $data = $this->request->get("data");
+        $url = $this->request->get("url");
+        $img = $this->request->get("species_image");
         $species = $this->garden->add_species($name, $url, $data, $img);
         echo json_encode($species->get_json_data());
     }
 
     function update_action() {
-        $species_id = $_REQUEST["species_id"];
+        $species_id = $this->request->get("species_id");
 
         $species = $this->garden->species[$species_id];
 
@@ -57,15 +48,15 @@ class SpeciesController extends AbstractController {
     }
 
     function load_id_action() {
-        $id = $_REQUEST["id"];
+        $id = $this->request->get("id");
         $species = $this->garden->species[$id];
         echo json_encode($species->get_json_data());
     }
 
     function load_url_action() {
-        $url = $_REQUEST["url"];
+        $url = $this->request->get("url");
         if (!$url) {
-            $name = trim($_REQUEST["name"]);
+            $name = trim($this->request->get("name"));
             $url_name = strtolower($name);
             $url_name = str_replace(" ", "-", $url_name);
             $url_name = str_replace("å", "a", $url_name);

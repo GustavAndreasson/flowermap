@@ -20,11 +20,11 @@ class PlantController extends AbstractController {
     }
 
     function add_action() {
-        $description = $_REQUEST["description"];
-        $coord_x = $_REQUEST["coord_x"];
-        $coord_y = $_REQUEST["coord_y"];
+        $description = $this->request->get("description");
+        $coord_x = $this->request->get("coord_x");
+        $coord_y = $this->request->get("coord_y");
 
-        $species_id = $_REQUEST["species_id"];
+        $species_id = $this->request->get("species_id");
         $species = $this->garden->species[$species_id];
 
         $plant = $this->garden->add_plant($description, $coord_x, $coord_y, $species);
@@ -45,11 +45,11 @@ class PlantController extends AbstractController {
     }
 
     function update_action() {
-        $plant_id = $_REQUEST["plant_id"];
+        $plant_id = $this->request->get("plant_id");
         $plant = $this->garden->plants[$plant_id];
-        $description = isset($_REQUEST["description"]) ? $_REQUEST["description"] : null;
-        $coord_x = isset($_REQUEST["coord_x"]) ? $_REQUEST["coord_x"] : null;
-        $coord_y = isset($_REQUEST["coord_y"]) ? $_REQUEST["coord_y"] : null;
+        $description = $this->request->get("description");
+        $coord_x = $this->request->get("coord_x");
+        $coord_y = $this->request->get("coord_y");
 
         if ($coord_x || $coord_y) {
             $plant->set_coord_x($coord_x);
@@ -78,7 +78,7 @@ class PlantController extends AbstractController {
     }
 
     function delete_action() {
-        $plant_id = $_REQUEST["plant_id"];
+        $plant_id = $this->request->get("plant_id");
         $plant = $this->garden->plants[$plant_id];
         $plant->delete();
         unset($this->garden->plants[$plant_id]);
