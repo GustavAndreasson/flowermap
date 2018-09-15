@@ -33,13 +33,13 @@ class SpeciesController extends AbstractController {
 
         $species = $this->garden->species[$species_id];
 
-        if ($_FILES["image"]["tmp_name"]) {
+        if ($this->request->get_file("image")) {
             $target_file = SPECIES_IMAGE_PATH . $species_id . ".jpg";
 
-            $check = getimagesize($_FILES["image"]["tmp_name"]);
+            $check = getimagesize($this->request->get_file("image")["tmp_name"]);
 
             if($check !== false) {
-                if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                if (!move_uploaded_file($this->request->get_file("image")["tmp_name"], $target_file)) {
                     Util::log("Sorry, there was an error uploading your file.", false);
                 }
             }

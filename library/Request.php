@@ -36,7 +36,7 @@ class Request {
     }
 
     public function get_file($name) {
-        if (isset($this->data[$name])) {
+        if (isset($this->data[$name]["tmp_name"])) {
             return $this->data[$name];
         } else {
             return null;

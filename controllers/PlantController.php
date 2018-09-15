@@ -29,13 +29,13 @@ class PlantController extends AbstractController {
 
         $plant = $this->garden->add_plant($description, $coord_x, $coord_y, $species);
 
-        if ($_FILES["image"]["tmp_name"]) {
+        if ($this->request->get_file("image")) {
             $target_file = PLANT_IMAGE_PATH . $plant->get_plant_id . ".jpg";
 
-            $check = getimagesize($_FILES["image"]["tmp_name"]);
+            $check = getimagesize($this->request->get_file("image")["tmp_name"]);
 
             if($check !== false) {
-                if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                if (!move_uploaded_file($this->request->get_file("image")["tmp_name"], $target_file)) {
                     Util::log("Sorry, there was an error uploading your file.", false);
                 }
             }
@@ -62,13 +62,13 @@ class PlantController extends AbstractController {
 
         $plant->save();
 
-        if (isset($_FILES["image"]["tmp_name"]) && $_FILES["image"]["tmp_name"]) {
+        if ($this->request->get_file("image")) {
             $target_file = PLANT_IMAGE_PATH . $plant_id . ".jpg";
 
-            $check = getimagesize($_FILES["image"]["tmp_name"]);
+            $check = getimagesize($this->request->get_file("image"));
 
             if($check !== false) {
-                if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                if (!move_uploaded_file($this->request->get_file("image")["tmp_name"], $target_file)) {
                     Util::log("Sorry, there was an error uploading your file.", false);
                 }
             }
