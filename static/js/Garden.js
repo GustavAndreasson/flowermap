@@ -229,6 +229,95 @@ function Garden() {
         $("[name=edit_plant]").show();
     };
 
+    $("[name=add_plant]")[0].success = function (data) {
+        var plant = JSON.parse(data);
+        self.plants[plant.id] = new Plant(plant, self);
+        $("[name=add_plant]").hide();
+    };
+
+    $("[name=add_species]")[0].success = function (data) {
+        var species = JSON.parse(data);
+        self.species[species.id] = species;
+        $("[name=add_species]").hide();
+        $("[name=add_plant] #slct_species .option").removeClass("selected");
+        var species_html = "<div class=\"option selected\" data-value=\"" + species.id + "\">" + species.name + "</div>";
+        $("[name=add_plant] #slct_species").append(species_html);
+        $("[name=add_plant] .species .name").html(self.species[species.id].name);
+        $("[name=add_plant] .species img").attr("src", self.species[species.id].image);
+        $("[name=add_plant] .species").show();
+    };
+
+    $("[name=edit_plant]")[0].success = function (data) {
+        var plant = JSON.parse(data);
+        self.plants[plant.id].set_description(plant.description);
+        self.plants[plant.id].set_image(plant.image);
+        $("[name=edit_plant]").hide();
+    };
+
+    $("[name=edit_garden]")[0].success = function (data) {
+        var garden_data = JSON.parse(data);
+        $("#garden_name").html(garden_data.name);
+        $("[name=edit_garden]").hide();
+    };
+
+    $("#btn_add_species").click(function() {
+        $("[name=add_species]").show();
+    });
+
+    $("#btn_load_species").click(function() {
+        var url = $("#add_species_url").val();
+        var name = $("#add_species_name").val();
+
+        $.getJSON(
+            "species/load_url",
+            {url: url, name: name},
+            function (species) {
+                var species_string = '<input type="hidden" name="loaded_species_name" value="' + species['name'] + '">';
+                species_string += '<input type="hidden" name="loaded_species_url" value="' + species['url'] + '">';
+                $.each(species['data'], function(name, value) {
+                    species_string += '<div class="row"><span class="data_name">' + name + '</span>';
+                    species_string += '<span class="data_value">' + value + '</span>';
+                    species_string += '<input type="hidden" name="data[' + name + ']" value="' + value + '"></div>';
+                });
+                species_string += '<div class="row">';
+                species_string += '<input type="hidden" name="species_image" id="add_plant_image" value="' + species['image'] + '">';
+                species_string += '<img src="' + species['image'] + '"></div>';
+                $("[name=add_species] .species_data").html(species_string)
+                $("#add_species_name").val(species['name']);
+                $("#add_species_url").val(species['url']);
+            }
+        );
+    });
+
+    $("#btn_add_species_data").click(function() {
+        var name = $("#add_species_data_name").val();
+        var value = $("#add_species_data_value").val();
+        var html = "<div class='row'><span class='data_name'>" + name;
+        html += "</span><span class='data_value'>" + value + "</span>";
+        html += "<input type='hidden' name='data[" + name + "]' value='" + value;
+        html += "'></div>";
+        $("[name=add_plant] .species_data").append(html);
+    });
+
+    $("#btn_edit_garden").click(function() {
+        $("[name=edit_garden]").show();
+    });
+
+    $("#slct_species .option").click(function() {
+        var species_id = $(this).data("value");
+        if (species_id) {
+            $("[name=add_plant] .species .name").html(self.species[species_id].name);
+            $("[name=add_plant] .species img").attr("src", self.species[species_id].image);
+            $("[name=add_plant] .species").show();
+        } else {
+            $("[name=add_plant] .species").hide();
+        }
+    });
+
+    $("#plant_template .btn_remove").click(self.delete_plant);
+    $("#plant_template .btn_move").click(self.move_plant);
+    $("#plant_template .btn_edit").click(self.edit_plant);
+
     $(".garden").click(self.mapclick);
     $(".garden").on("mousedown touchstart", self.init_move);
     $("body").on("mouseup touchend", self.end_move);

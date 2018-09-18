@@ -2,19 +2,25 @@
 class Request {
     private $root;
     private $request_parts;
+    private $query;
     private $data;
     private $files;
     public $method;
 
     public function __construct() {
-        $remove_fm = str_replace("/flowermap", "", $_SERVER['REQUEST_URI']);
-        if ($remove_fm !== $_SERVER['REQUEST_URI']) {
+        $request = str_replace("/flowermap", "", $_SERVER['REQUEST_URI']);
+        if ($request !== $_SERVER['REQUEST_URI']) {
             $this->root = "/flowermap";
         } else {
             $this->root = "";
         }
-        $request_uri = trim($remove_fm, '/');
-        $this->request_parts = explode('/', $request_uri);
+        $request_split = explode('?', $request);
+        $request = $request_split[0];
+        if (isset($request_split[1])) {
+            $this->query = $request_split[1];
+        }
+        $request = trim($request, '/');
+        $this->request_parts = explode('/', $request);
         $this->method = $_SERVER['REQUEST_METHOD'];
         $this->set_data();
     }
@@ -44,12 +50,16 @@ class Request {
     }
 
     private function set_data() {
-        if ($this->method = "POST") {
+        if ($this->method == "POST") {
             foreach ($_POST as $id => $value) {
                 $this->data[$id] = $value;
             }
             foreach ($_FILES as $name => $value) {
                 $this->files[$name] = $value;
+            }
+        } elseif ($this->method == "GET") {
+            foreach ($_GET as $id => $value) {
+                $this->data[$id] = $value;
             }
         }
     }
