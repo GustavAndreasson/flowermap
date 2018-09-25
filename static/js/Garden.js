@@ -38,6 +38,10 @@ function Garden() {
         self.top_x += x;
         self.top_y += y;
         self.moved();
+	if (x == 0 || y == 0) {
+	    return false;
+	}
+	return true;
     }
 
     this.to_screen_x = function(x, abs) {
@@ -116,10 +120,11 @@ function Garden() {
             pageX = e.pageX;
             pageY = e.pageY;
         }
-        self.moving = true;
-        self.move(self.to_map_x(self.start_move_x - pageX, true), self.to_map_y(self.start_move_y - pageY, true))
-        self.start_move_x = pageX;
-        self.start_move_y = pageY;
+        if (self.move(self.to_map_x(self.start_move_x - pageX, true), self.to_map_y(self.start_move_y - pageY, true))) {
+            self.moving = true;
+            self.start_move_x = pageX;
+            self.start_move_y = pageY;
+	}
     };
 
     this.mapclick = function(e) {
