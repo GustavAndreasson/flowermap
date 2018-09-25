@@ -229,14 +229,12 @@ function Garden() {
         $("[name=edit_plant]").show();
     };
 
-    $("[name=add_plant]")[0].success = function (data) {
-        var plant = JSON.parse(data);
+    $("[name=add_plant]")[0].success = function (plant) {
         self.plants[plant.id] = new Plant(plant, self);
         $("[name=add_plant]").hide();
     };
 
-    $("[name=add_species]")[0].success = function (data) {
-        var species = JSON.parse(data);
+    $("[name=add_species]")[0].success = function (species) {
         self.species[species.id] = species;
         $("[name=add_species]").hide();
         $("[name=add_plant] #slct_species .option").removeClass("selected");
@@ -247,15 +245,13 @@ function Garden() {
         $("[name=add_plant] .species").show();
     };
 
-    $("[name=edit_plant]")[0].success = function (data) {
-        var plant = JSON.parse(data);
+    $("[name=edit_plant]")[0].success = function (plant) {
         self.plants[plant.id].set_description(plant.description);
         self.plants[plant.id].set_image(plant.image);
         $("[name=edit_plant]").hide();
     };
 
-    $("[name=edit_garden]")[0].success = function (data) {
-        var garden_data = JSON.parse(data);
+    $("[name=edit_garden]")[0].success = function (garden_data) {
         $("#garden_name").html(garden_data.name);
         $("[name=edit_garden]").hide();
     };

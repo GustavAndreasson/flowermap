@@ -10,6 +10,7 @@ $(function() {
             type: 'POST',
             processData: false,
             contentType: false,
+	    dataType: "json",
             cache: false,
             url: $(this).attr("action"),
             data: formData,
