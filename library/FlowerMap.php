@@ -18,7 +18,11 @@ class FlowerMap {
         }
 
         if (session_status() == PHP_SESSION_NONE) {
-          session_start(['cookie_lifetime' => 86400 * 30]);
+            $session_timeout = 86400; // 24 hours
+            session_start([
+                'cookie_lifetime' => $session_timeout,
+                'gc_maxlifetime' => $session_timeout
+            ]);
         }
 
         if (isset($_SESSION["USER_ID"])) {

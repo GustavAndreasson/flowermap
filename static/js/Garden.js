@@ -38,10 +38,10 @@ function Garden() {
         self.top_x += x;
         self.top_y += y;
         self.moved();
-	if (x == 0 || y == 0) {
-	    return false;
-	}
-	return true;
+        if (x == 0 || y == 0) {
+            return false;
+        }
+        return true;
     }
 
     this.to_screen_x = function(x, abs) {
@@ -124,7 +124,7 @@ function Garden() {
             self.moving = true;
             self.start_move_x = pageX;
             self.start_move_y = pageY;
-	}
+        }
     };
 
     this.mapclick = function(e) {
@@ -302,6 +302,10 @@ function Garden() {
 
     $("#btn_edit_garden").click(function() {
         $("[name=edit_garden]").show();
+    });
+
+    $("#btn_open_species_list").click(function() {
+        $("#species_list").toggle();
     });
 
     $("#slct_species .option").click(function() {

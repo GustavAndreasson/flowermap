@@ -33,8 +33,8 @@ h1, h2, h3 {
 }
 
 .login {
-  width: 400px;
-  margin: 50px auto;
+    width: 400px;
+    margin: 50px auto;
 }
 
 .login .message {
@@ -44,30 +44,30 @@ h1, h2, h3 {
 }
 
 .login form {
-  float: left;
-  padding: 20px;
-  width: 100%;
-  border: 1px solid #000000;
-  margin-bottom: 20px;
-  box-sizing: border-box;
+    float: left;
+    padding: 20px;
+    width: 100%;
+    border: 1px solid #000000;
+    margin-bottom: 20px;
+    box-sizing: border-box;
 }
 
 form .row {
-  float: left;
-  width: 100%;
-  margin: 5px 0px;
+    float: left;
+    width: 100%;
+    margin: 5px 0px;
 }
 
 form label {
-  display: block;
-  float: left;
-  margin-right:5px;
+    display: block;
+    float: left;
+    margin-right:5px;
 }
 form input {
-  display: block;
-  float: right;
-  width: 200px;
-  box-sizing: border-box;
+    display: block;
+    float: right;
+    width: 200px;
+    box-sizing: border-box;
 }
 
 .select {
@@ -86,6 +86,36 @@ form input {
 
 .select .option.selected {
     background-color: #BBBBBB;
+}
+
+.buttons {
+    width: 100%;
+    overflow: hidden;
+    text-align: right;
+}
+
+.pop-up {
+    box-shadow: 5px 5px 3px #666666;
+    position: fixed;
+    top: 75px;
+    left: 50%;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    padding: 5px;
+    border: 1px solid #666666;
+    border-radius: 5px;
+    overflow: hidden;
+    text-align: left;
+    z-index: 10;
+}
+
+.pop-up .pu_bkgrnd {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: -1;
 }
 
 .garden {
@@ -224,48 +254,32 @@ form input {
 }
 
 [name=edit_garden] {
-  margin-left: -200px;
-  width: 400px;
+    margin-left: -200px;
+    width: 400px;
 }
 
-.buttons {
-    width: 100%;
+#species_list {
+    right: 20px;
+    left: auto;
+}
+
+#species_list .species {
     overflow: hidden;
-    text-align: right;
+    margin: 5px 0px;
 }
 
-.pop-up {
-    box-shadow: 5px 5px 3px #666666;
-    position: fixed;
-    top: 75px;
-    left: 50%;
-    box-sizing: border-box;
-    background-color: #ffffff;
-    padding: 5px;
-    border: 1px solid #666666;
-    border-radius: 5px;
-    overflow: hidden;
-    text-align: left;
-    z-index: 10;
-}
-
-.pop-up .pu_bkgrnd {
-    position: fixed;
-    left: 0px;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-    z-index: -1;
+#species_list .species .controls {
+    float: right;
 }
 
 @media (max-width: 720px) {
-  .login {
-    width: 90%;
-  }
+    .login {
+        width: 90%;
+    }
 
-  .login input {
-    width: 120px;
-  }
+    .login input {
+        width: 120px;
+    }
 
     .pop-up {
         width: 100%!important;
