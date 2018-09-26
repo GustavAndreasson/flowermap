@@ -7,5 +7,8 @@ try {
     $controller = Router::route($request);
     $controller->execute($fm);
 } catch(Exception $e) {
+    if ($e->getCode()) {
+        http_response_code($e->getCode());
+    }
     echo $e->getMessage();
 }
