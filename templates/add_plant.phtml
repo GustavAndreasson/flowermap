@@ -5,10 +5,6 @@
     <div class="plant">
         <div class="select" id="slct_species">
             <input type="hidden" name="species_id" />
-            <!--<div class="option selected" data-value="null"><?= $T->__("New species") ?></div>-->
-            <?php foreach($fm->user->garden->species as $id => $species): ?>
-                <div class="option" data-value="<?= $id ?>"><?= $species->get_name() ?></div>
-            <?php endforeach; ?>
         </div>
         <div class="row"><button type="button" id="btn_add_species"><?= $T->__("Add new species") ?></button></div>
         <div class="row">

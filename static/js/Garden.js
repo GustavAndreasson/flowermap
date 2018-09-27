@@ -180,6 +180,18 @@ function Garden() {
         return false;
     };
 
+    this.filter_plants = function() {
+        var filter = [];
+        $.each(self.species, function(species_id, species) {
+            if (species.filtered) {
+                filter.push(1*species_id);
+            }
+        });
+        $.each(self.plants, function(plant_id, plant) {
+            plant.filter(filter);
+        });
+    }
+
     this.load_plants = function() {
         $.getJSON(
             "plant/get",
@@ -197,7 +209,9 @@ function Garden() {
             "species/get",
             {},
             function (species) {
-                self.species = species;
+                $.each(species, function(species_id, spec) {
+                    self.species[species_id] = new Species(spec, self);
+                });
             }
         );
     };
@@ -306,17 +320,6 @@ function Garden() {
 
     $("#btn_open_species_list").click(function() {
         $("#species_list").toggle();
-    });
-
-    $("#slct_species .option").click(function() {
-        var species_id = $(this).data("value");
-        if (species_id) {
-            $("[name=add_plant] .species .name").html(self.species[species_id].name);
-            $("[name=add_plant] .species img").attr("src", self.species[species_id].image);
-            $("[name=add_plant] .species").show();
-        } else {
-            $("[name=add_plant] .species").hide();
-        }
     });
 
     $("#plant_template .btn_remove").click(self.delete_plant);

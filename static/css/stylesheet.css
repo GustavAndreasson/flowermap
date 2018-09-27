@@ -148,6 +148,10 @@ form input {
     border-radius: 50%;
 }
 
+.garden .plant.filtered {
+    opacity: 0.1;
+}
+
 .garden .plant div {
     display: none;
 }

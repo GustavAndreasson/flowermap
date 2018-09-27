@@ -12,11 +12,11 @@ function Plant(plant, garden) {
 
     function add_plant_html() {
         var plant_element = $("#plant_template").clone(true);
-        $(plant_element).attr("id", "plant_" + self.id);
-        $(plant_element).data("plantId", self.id);
-        $(plant_element).find(".name").html(self.name);
-        $(plant_element).find(".description").html(self.description);
-        $(plant_element).find("img").attr("src", self.image);
+        plant_element.attr("id", "plant_" + self.id);
+        plant_element.data("plantId", self.id);
+        plant_element.find(".name").html(self.name);
+        plant_element.find(".description").html(self.description);
+        plant_element.find("img").attr("src", self.image);
 
         plant_element.click(function (e) {
             self.garden.plantclick(self.id, e);
@@ -27,12 +27,12 @@ function Plant(plant, garden) {
         self.position();
     };
 
-    function get_element() {
+    this.get_element = function() {
         return $("#plant_" + self.id);
     }
 
     this.position = function() {
-        var element = get_element();
+        var element = self.get_element();
         if (!self.is_open) {
             element.css("left", (self.garden.to_screen_x(self.coord_x) - 12) + "px");
             element.css("top", (self.garden.to_screen_y(self.coord_y) - 12) + "px");
@@ -60,24 +60,32 @@ function Plant(plant, garden) {
 
     this.set_description = function(description) {
         self.description = description;
-        get_element().find(".description").html(description);
+        self.get_element().find(".description").html(description);
     }
 
     this.set_image = function(image) {
         self.image = image;
-        get_element().find("img").attr("src", image);
+        self.get_element().find("img").attr("src", image);
     }
 
     this.open = function() {
         self.is_open = true;
-        get_element().addClass("open");
+        self.get_element().addClass("open");
         self.position();
     }
 
     this.close = function() {
         self.is_open = false;
-        get_element().removeClass("open");
+        self.get_element().removeClass("open");
         self.position()
+    }
+
+    this.filter = function(filter) {
+        if (filter.length && filter.indexOf(self.species_id) <= -1) {
+            self.get_element().addClass("filtered");
+        } else {
+            self.get_element().removeClass("filtered");
+        }
     }
 
     this.delete = function() {
@@ -85,7 +93,7 @@ function Plant(plant, garden) {
             "plant/delete",
             {plant_id: self.id},
             function () {
-                get_element().remove();
+                self.get_element().remove();
             }
         );
     }

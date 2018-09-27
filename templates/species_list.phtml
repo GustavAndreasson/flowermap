@@ -1,11 +1,9 @@
 <div class="pop-up" id="species_list" style="display:none;">
-    <?php foreach($fm->user->garden->species as $id => $species): ?>
-        <div class="species" id="species_<?= $id ?>">
-            <span class="name"><?= $species->get_name() ?></span>
-            <span class="controls">
-                <input type="checkbox" id="chk_filter_species">
-                <button type="button" id="btn_edit_species"><?= $T->__("Edit") ?></button>
-            </span>
-        </div>
-    <?php endforeach; ?>
+    <div class="species" id="species_template" style="display:none;">
+        <span class="name"></span>
+        <span class="controls">
+            <input type="checkbox" name="chk_filter_species">
+            <button type="button" name="btn_edit_species"><?= $T->__("Edit") ?></button>
+        </span>
+    </div>
 </div>
