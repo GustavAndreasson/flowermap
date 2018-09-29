@@ -29,10 +29,4 @@ $(function() {
     $(".pop-up .cancel").click(function() {
         $(this).closest(".pop-up").hide();
     });
-
-    $(".select .option").click(function() {
-        $(this).siblings().removeClass("selected");
-        $(this).addClass("selected");
-        $(this).siblings("input").val($(this).data("value"));
-    });
 });

@@ -210,7 +210,7 @@ function Garden() {
             {},
             function (species) {
                 $.each(species, function(species_id, spec) {
-                    self.species[species_id] = new Species(spec, self);
+                    self.species[species_id] = new Species(spec).add();
                 });
             }
         );
@@ -253,12 +253,12 @@ function Garden() {
         $("[name=add_plant]").hide();
     };
 
-    $("[name=add_species]")[0].success = function (species) {
+    $("[name=add_species]")[0].success = function (species_data) {
+        species = new Species(species_data).add();
         self.species[species.id] = species;
         $("[name=add_species]").hide();
         $("[name=add_plant] #slct_species .option").removeClass("selected");
-        var species_html = "<div class=\"option selected\" data-value=\"" + species.id + "\">" + species.name + "</div>";
-        $("[name=add_plant] #slct_species").append(species_html);
+        species.get_option().addClass("selected");
         $("[name=add_plant] .species .name").html(self.species[species.id].name);
         $("[name=add_plant] .species img").attr("src", self.species[species.id].image);
         $("[name=add_plant] .species").show();
@@ -276,42 +276,24 @@ function Garden() {
     };
 
     $("#btn_add_species").click(function() {
-        $("[name=add_species]").show();
+        var species = new Species();
+        species.add_to_form($("[name=add_species]").show());
     });
 
-    $("#btn_load_species").click(function() {
-        var url = $("#add_species_url").val();
-        var name = $("#add_species_name").val();
+    $(".btn_load_species").click(function() {
+        var element = $(this).closest("form");
+
+        var url = element.find("[name=url]").val();
+        var name = element.find("[name=name]").val();
 
         $.getJSON(
             "species/load_url",
             {url: url, name: name},
-            function (species) {
-                var species_string = '<input type="hidden" name="loaded_species_name" value="' + species['name'] + '">';
-                species_string += '<input type="hidden" name="loaded_species_url" value="' + species['url'] + '">';
-                $.each(species['data'], function(name, value) {
-                    species_string += '<div class="row"><span class="data_name">' + name + '</span>';
-                    species_string += '<span class="data_value">' + value + '</span>';
-                    species_string += '<input type="hidden" name="data[' + name + ']" value="' + value + '"></div>';
-                });
-                species_string += '<div class="row">';
-                species_string += '<input type="hidden" name="species_image" id="add_plant_image" value="' + species['image'] + '">';
-                species_string += '<img src="' + species['image'] + '"></div>';
-                $("[name=add_species] .species_data").html(species_string)
-                $("#add_species_name").val(species['name']);
-                $("#add_species_url").val(species['url']);
+            function (species_data) {
+                species = new Species(species_data);
+                species.add_to_form(element.show());
             }
         );
-    });
-
-    $("#btn_add_species_data").click(function() {
-        var name = $("#add_species_data_name").val();
-        var value = $("#add_species_data_value").val();
-        var html = "<div class='row'><span class='data_name'>" + name;
-        html += "</span><span class='data_value'>" + value + "</span>";
-        html += "<input type='hidden' name='data[" + name + "]' value='" + value;
-        html += "'></div>";
-        $("[name=add_plant] .species_data").append(html);
     });
 
     $("#btn_edit_garden").click(function() {
