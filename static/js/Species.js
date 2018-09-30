@@ -1,4 +1,4 @@
-function Species(species) {
+function Species(species, garden) {
     var self = this;
     if (species) {
         this.id = species.id;
@@ -6,14 +6,24 @@ function Species(species) {
         this.url = species.url;
         this.image = species.image;
         this.data = species.data;
+        this.garden = garden;
     } else {
         this.id = "";
         this.name = "";
         this.url = "";
         this.image = "";
         this.data = [];
+        this.garden = garden;
     }
     this.filtered = false;
+    this.plants = [];
+
+    this.update = function(species) {
+        this.name = species.name;
+        this.url = species.url;
+        this.image = species.image;
+        this.data = species.data;
+    }
 
     this.add = function () {
         var species_element = $("#species_template").clone(true);
@@ -28,17 +38,12 @@ function Species(species) {
         });
         $("#species_list").append(species_element.show());
 
-        self.species_option = $("<div></div>");
-        self.species_option.addClass("option");
-        self.species_option.data("value", self.id);
-        self.species_option.text(self.name);
-        self.species_option.click(function() {
-            $("[name=add_plant] #slct_species input").val(self.id);
+        var select = new Select("#slct_species");
+        self.option = select.add_option(self.name, self.id, function() {
             $("[name=add_plant] .species .name").html(self.name);
             $("[name=add_plant] .species img").attr("src", self.image);
             $("[name=add_plant] .species").show();
         });
-        $("#slct_species").append(self.species_option);
         return self;
     }
 
@@ -74,7 +79,7 @@ function Species(species) {
     }
 
     this.get_option = function() {
-        return self.species_option;
+        return self.option;
     }
 
     return this;

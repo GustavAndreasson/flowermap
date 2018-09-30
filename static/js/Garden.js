@@ -210,7 +210,7 @@ function Garden() {
             {},
             function (species) {
                 $.each(species, function(species_id, spec) {
-                    self.species[species_id] = new Species(spec).add();
+                    self.species[species_id] = new Species(spec, self).add();
                 });
             }
         );
@@ -254,25 +254,25 @@ function Garden() {
     };
 
     $("[name=add_species]")[0].success = function (species_data) {
-        species = new Species(species_data).add();
+        species = new Species(species_data, self).add();
         self.species[species.id] = species;
         $("[name=add_species]").hide();
-        $("[name=add_plant] #slct_species .option").removeClass("selected");
-        species.get_option().addClass("selected");
-        $("[name=add_plant] .species .name").html(self.species[species.id].name);
-        $("[name=add_plant] .species img").attr("src", self.species[species.id].image);
-        $("[name=add_plant] .species").show();
+        species.get_option().click();
     };
 
     $("[name=edit_plant]")[0].success = function (plant) {
-        self.plants[plant.id].set_description(plant.description);
-        self.plants[plant.id].set_image(plant.image);
+        self.plants[plant.id].update(plant);
         $("[name=edit_plant]").hide();
     };
 
-    $("[name=edit_garden]")[0].success = function (garden_data) {
-        $("#garden_name").html(garden_data.name);
+    $("[name=edit_garden]")[0].success = function (garden) {
+        $("#garden_name").html(garden.name);
         $("[name=edit_garden]").hide();
+    };
+
+    $("[name=edit_species]")[0].success = function (species) {
+        self.species[species.id].update(species);
+        $("[name=edit_species]").hide();
     };
 
     $("#btn_add_species").click(function() {
@@ -290,7 +290,7 @@ function Garden() {
             "species/load_url",
             {url: url, name: name},
             function (species_data) {
-                species = new Species(species_data);
+                species = new Species(species_data, self);
                 species.add_to_form(element.show());
             }
         );

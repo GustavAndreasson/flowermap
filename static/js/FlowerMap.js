@@ -30,3 +30,25 @@ $(function() {
         $(this).closest(".pop-up").hide();
     });
 });
+
+function Select(element) {
+    var self = this;
+    this.element = $(element);
+    this.add_option = function(name, value, onclick) {
+        var option = $("<div></div>");
+        option.addClass("option");
+        option.text(name);
+        option.click(function() {
+            self.element.find("input").val(value);
+            self.element.find(".option").removeClass("selected");
+            option.addClass("selected");
+            if (onclick) {
+                onclick();
+            }
+        });
+        self.element.append(option);
+        return option;
+    }
+
+    return this;
+}

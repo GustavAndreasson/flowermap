@@ -62,12 +62,24 @@ class Species {
         return $this->name;
     }
 
+    public function set_name($name) {
+        $this->name = $name;
+    }
+
     public function get_url() {
         return $this->url;
     }
 
+    public function set_url($url) {
+        $this->url = $url;
+    }
+
     public function get_data() {
         return $this->data;
+    }
+
+    public function set_data($data) {
+        $this->data = $data;
     }
 
     public function get_image() {
@@ -75,6 +87,33 @@ class Species {
             return "var/images/species/" . $this->get_species_id() . ".jpg";
         } else {
             return "";
+        }
+    }
+
+    public function set_image($img) {
+        file_put_contents(SPECIES_IMAGE_PATH . $this->species_id . ".jpg", file_get_contents($img));
+    }
+
+    public function save() {
+        try {
+            $sql = "UPDATE species SET name = ?, url = ? ";
+            $sql .= "WHERE species_id = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute(array($this->name, $this->url, $this->species_id));
+            if ($this->data) {
+                $args = array();
+                $sql = "INSERT INTO species_data (species_id, data_name, data_value) VALUES ";
+                foreach ($this->data as $data_name => $data_value) {
+                    $sql .= "(?, ?, ?),";
+                    array_push($args, $this->species_id, $data_name, $data_value);
+                }
+                $sql = substr($sql, 0, -1);
+                $sql .= " ON DUPLICATE KEY UPDATE data_value = VALUES (data_value)";
+                $stmt = $this->conn->prepare($sql);
+                $stmt->execute($args);
+            }
+        } catch (PDOException $e) {
+            Util::log("Something went wrong when updating species: " . $e->getMessage(), true);
         }
     }
 

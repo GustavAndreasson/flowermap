@@ -30,20 +30,20 @@ class SpeciesController extends AbstractController {
 
     function update_action() {
         $species_id = $this->request->get("species_id");
-
         $species = $this->garden->species[$species_id];
 
-        if ($this->request->get_file("image")) {
-            $target_file = SPECIES_IMAGE_PATH . $species_id . ".jpg";
+        $name = $this->request->get("name");
+        $data = $this->request->get("data");
+        $url = $this->request->get("url");
+        $img = $this->request->get("species_image");
 
-            $check = getimagesize($this->request->get_file("image")["tmp_name"]);
+        $species->set_name($name);
+        $species->set_url($url);
+        $species->set_data($data);
+        $species->set_image($img);
 
-            if($check !== false) {
-                if (!move_uploaded_file($this->request->get_file("image")["tmp_name"], $target_file)) {
-                    Util::log("Sorry, there was an error uploading your file.", false);
-                }
-            }
-        }
+        $species->save();
+
         echo json_encode($species->get_json_data());
     }
 

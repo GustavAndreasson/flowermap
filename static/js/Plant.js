@@ -1,7 +1,8 @@
 function Plant(plant, garden) {
     var self = this;
     this.id = plant.id;
-    this.species_id = plant.species_id;
+    this.species = garden.species[plant.species_id];
+    this.species.plants.push(this);
     this.name = plant.name;
     this.description = plant.description;
     this.image = plant.image;
@@ -68,6 +69,12 @@ function Plant(plant, garden) {
         self.get_element().find("img").attr("src", image);
     }
 
+    this.update = function(plant) {
+        self.set_description(plant.description);
+        self.set_image(plant.image);
+        self.species = garden.species[plant.species_id];
+    }
+
     this.open = function() {
         self.is_open = true;
         self.get_element().addClass("open");
@@ -81,7 +88,7 @@ function Plant(plant, garden) {
     }
 
     this.filter = function(filter) {
-        if (filter.length && filter.indexOf(self.species_id) <= -1) {
+        if (filter.length && filter.indexOf(self.species.id) <= -1) {
             self.get_element().addClass("filtered");
         } else {
             self.get_element().removeClass("filtered");

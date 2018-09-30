@@ -71,7 +71,6 @@ class Plant {
     }
 
     public function save() {
-        $now = date("Y-m-d H:i:s");
         $species_id = $this->species->get_species_id();
         $sql = "UPDATE plants SET species_id = ?, description = ?, coord_x = ?, coord_y = ? ";
         $sql .= "WHERE plant_id = ?";
