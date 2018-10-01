@@ -29,6 +29,14 @@ $(function() {
     $(".pop-up .cancel").click(function() {
         $(this).closest(".pop-up").hide();
     });
+
+    $(document).ajaxStart(function () {
+        $("#loader").show();
+    });
+
+    $(document).ajaxStop(function () {
+        $("#loader").hide();
+    });
 });
 
 function Select(element) {

@@ -192,7 +192,7 @@ function Garden() {
         });
     }
 
-    this.load_plants = function() {
+    this.load_plants = function(callback) {
         $.getJSON(
             "plant/get",
             {},
@@ -200,11 +200,12 @@ function Garden() {
                 $.each(plants, function(plant_id, plant) {
                     self.plants[plant.id] = new Plant(plant, self);
                 });
+                if (callback) callback();
             }
         );
     };
 
-    this.load_species = function() {
+    this.load_species = function(callback) {
         $.getJSON(
             "species/get",
             {},
@@ -212,6 +213,7 @@ function Garden() {
                 $.each(species, function(species_id, spec) {
                     self.species[species_id] = new Species(spec, self).add();
                 });
+                if (callback) callback();
             }
         );
     };
@@ -342,8 +344,7 @@ function Garden() {
     self.open_plant = null;
     self.is_plant_moving = false;
 
-    self.load_species();
-    self.load_plants();
+    self.load_species(self.load_plants);
     self.moved();
 
     return this;

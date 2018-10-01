@@ -14,7 +14,6 @@ function Plant(plant, garden) {
     function add_plant_html() {
         var plant_element = $("#plant_template").clone(true);
         plant_element.attr("id", "plant_" + self.id);
-        plant_element.data("plantId", self.id);
         plant_element.find(".name").html(self.name);
         plant_element.find(".description").html(self.description);
         plant_element.find("img").attr("src", self.image);
@@ -57,6 +56,11 @@ function Plant(plant, garden) {
                 element.css("top", top + "px");
             }
         }
+    }
+
+    this.set_name = function(name) {
+        self.name = name;
+        self.get_element().find(".name").html(name);
     }
 
     this.set_description = function(description) {
