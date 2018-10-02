@@ -10,7 +10,7 @@ h1, h2, h3 {
     margin-top: 0px;
 }
 
-#loader {
+#loader .spinner {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -27,12 +27,12 @@ h1, h2, h3 {
     animation: spin 2s linear infinite;
 }
 
-#loader .bkgrnd {
+#loader {
     position: fixed;
-    top: -10000px;
-    bottom: -10000px;
-    left: -10000px;
-    right: -10000px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     background: #000000;
     opacity: 0.3;
 }
@@ -133,26 +133,29 @@ form input {
 
 .pop-up {
     box-shadow: 5px 5px 3px #666666;
-    position: fixed;
+    position: absolute;
     top: 75px;
-    left: 50%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 720px;
     box-sizing: border-box;
     background-color: #ffffff;
     padding: 5px;
     border: 1px solid #666666;
     border-radius: 5px;
-    overflow: hidden;
     text-align: left;
-    z-index: 10;
+    pointer-events: auto;
 }
 
-.pop-up .pu_bkgrnd {
+.pop-ups {
     position: fixed;
     left: 0px;
     top: 0px;
     right: 0px;
     bottom: 0px;
-    z-index: -1;
+    z-index: 10;
+    pointer-events: none;
 }
 
 .garden {
@@ -260,7 +263,6 @@ form input {
 
 [name=add_plant] {
     width: 720px;
-    margin-left: -360px;
 }
 
 [name=add_plant] .plant {
@@ -284,24 +286,37 @@ form input {
     height: 354px;
 }
 
+[name=add_plant] .marker {
+    position: fixed;
+    width: 16px;
+    height: 16px;
+    border: 3px solid #ff0000;
+    border-radius: 50%;
+    z-index: -1;
+}
+
 [name=add_species] .species img {
     width: 354px;
     height: 354px;
 }
 
 [name=add_species] {
-    width: 720px;
-    margin-left: -360px;
+    width: 620px;
+}
+
+[name=edit_species] {
+    width: 620px;
 }
 
 [name=edit_garden] {
-    margin-left: -200px;
     width: 400px;
 }
 
 #species_list {
     right: 20px;
     left: auto;
+    width: auto;
+    margin: 0;
 }
 
 #species_list .species {
@@ -324,7 +339,7 @@ form input {
 
     .pop-up {
         width: 100%!important;
-        margin-left: 0!important;
+        margin: 0!important;
         height: auto;
         top: 41px;
         left: 0;

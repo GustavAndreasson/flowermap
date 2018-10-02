@@ -141,10 +141,12 @@ function Garden() {
         } else {
             if (!self.moving) {
                 if (self.open_plant) {
-
                     self.plants[self.open_plant].close();
                     self.open_plant = null;
                 } else {
+                    var marker = $("[name=add_plant] .marker");
+                    marker.css("top", (e.pageY - 11) + "px");
+                    marker.css("left", (e.pageX - 11) + "px");
                     var posX = e.pageX - $(".garden").offset().left;
                     var posY = e.pageY - $(".garden").offset().top;
                     $("[name=add_plant] [name=coord_x]").val(self.to_map_x(posX));

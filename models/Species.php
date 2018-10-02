@@ -14,6 +14,7 @@ class Species {
         $this->data = $data;
         if ($species_id) {
             if (!$name) {
+                $this->data = array();
                 try {
                     $sql = "SELECT s.species_id, s.name, s.url, sd.data_name, sd.data_value FROM species s ";
                     $sql .= "JOIN species_data sd ON s.species_id = sd.species_id ";
@@ -23,7 +24,9 @@ class Species {
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         $this->name = $row['name'];
                         $this->url = $row['url'];
-                        $this->data[$row['name']] = $row['value'];
+                        if ($row['data_name']) {
+                            $this->data[$row['data_name']] = $row['data_value'];
+                        }
                     }
                 } catch (PDOException $e) {
                     Util::log("Something went wrong when fetching species: " . $e->getMessage(), true);
@@ -33,7 +36,7 @@ class Species {
             try {
                 $stmt = $this->conn->prepare("INSERT INTO species (species_id, name, url) VALUES (null, ?, ?)");
                 $stmt->execute(array($this->name, $this->url));
-                $this->species_id = $this->conn->lastInsertId();
+                $this->species_id = intval($this->conn->lastInsertId());
                 if ($this->data) {
                     $args = array();
                     $sql = "INSERT INTO species_data (species_id, data_name, data_value) VALUES ";

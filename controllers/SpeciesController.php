@@ -22,6 +22,9 @@ class SpeciesController extends AbstractController {
     function add_action() {
         $name = $this->request->get("name");
         $data = $this->request->get("data");
+        if ($data === null) {
+            $data = array();
+        }
         $url = $this->request->get("url");
         $img = $this->request->get("species_image");
         $species = $this->garden->add_species($name, $url, $data, $img);

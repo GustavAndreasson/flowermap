@@ -20,7 +20,10 @@ class Garden {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $tmp_species[$row['species_id']]['name'] = $row['name'];
                 $tmp_species[$row['species_id']]['url'] = $row['url'];
-                $tmp_species[$row['species_id']]['data'][$row['data_name']] = $row['data_value'];
+                $tmp_species[$row['species_id']]['data'] = array();
+                if ($row['data_name']) {
+                    $tmp_species[$row['species_id']]['data'][$row['data_name']] = $row['data_value'];
+                }
             }
             foreach ($tmp_species as $id => $species) {
                 $this->species[$id] = new Species($this->conn, $id, $species['name'], $species['url'], $species['data']);
