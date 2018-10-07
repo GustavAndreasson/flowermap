@@ -1,98 +1,98 @@
 <?php
 class Plant {
     private $conn;
-    private $garden_id;
-    private $plant_id;
+    private $gardenId;
+    private $plantId;
     private $description;
-    private $coord_x;
-    private $coord_y;
+    private $coordX;
+    private $coordY;
     public $species;
 
-    public function __construct($conn, $garden_id, $plant_id, $description, $coord_x, $coord_y, $species) {
+    public function __construct($conn, $gardenId, $plantId, $description, $coordX, $coordY, $species) {
         $this->conn = $conn;
-        $this->garden_id = $garden_id;
-        $this->plant_id = $plant_id;
+        $this->gardenId = $gardenId;
+        $this->plantId = $plantId;
         $this->description = $description;
-        $this->coord_x = $coord_x;
-        $this->coord_y = $coord_y;
+        $this->coordX = $coordX;
+        $this->coordY = $coordY;
         $this->species = $species;
 
-        if (!$plant_id) {
+        if (!$plantId) {
             try {
                 $now = date("Y-m-d H:i:s");
-                $species_id = $this->species->get_species_id();
+                $speciesId = $this->species->getSpeciesId();
                 $sql = "INSERT INTO plants (plant_id, species_id, garden_id, description, coord_x, coord_y, created_date) ";
                 $sql .= "VALUES (null, ?, ?, ?, ?, ?, ?)";
                 $stmt = $this->conn->prepare($sql);
-                $stmt->execute(array($species_id, $this->garden_id, $this->description, $this->coord_x, $this->coord_y, $now));
-                $this->plant_id = intval($this->conn->lastInsertId());
+                $stmt->execute(array($speciesId, $this->gardenId, $this->description, $this->coordX, $this->coordY, $now));
+                $this->plantId = intval($this->conn->lastInsertId());
             } catch (PDOException $e) {
                 Util::log("Something went wrong when creating new plant: " . $e->getMessage(), true);
             }
         }
     }
 
-    public function get_plant_id() {
-        return $this->plant_id;
+    public function getPlantId() {
+        return $this->plantId;
     }
-    public function get_species_id() {
-        return $this->species->get_species_id();
+    public function getSpeciesId() {
+        return $this->species->getSpeciesId();
     }
-    public function get_name() {
-        return $this->species->get_name();
+    public function getName() {
+        return $this->species->getName();
     }
-    public function get_description() {
+    public function getDescription() {
         return $this->description;
     }
-    public function get_coord_x() {
-        return $this->coord_x;
+    public function getCoordX() {
+        return $this->coordX;
     }
-    public function get_coord_y() {
-        return $this->coord_y;
+    public function getCoordY() {
+        return $this->coordY;
     }
-    public function set_description($description) {
+    public function setDescription($description) {
         $this->description = $description;
     }
-    public function set_coord_x($coord_x) {
-        $this->coord_x = $coord_x;
+    public function setCoordX($coordX) {
+        $this->coordX = $coordX;
     }
-    public function set_coord_y($coord_y) {
-        $this->coord_y = $coord_y;
+    public function setCoordY($coordY) {
+        $this->coordY = $coordY;
     }
 
-    public function get_image() {
-        if (file_exists(PLANT_IMAGE_PATH . $this->plant_id . ".jpg")) {
-            return "var/images/plants/" . $this->plant_id . ".jpg";
-        } elseif (file_exists(SPECIES_IMAGE_PATH . $this->get_species_id() . ".jpg")) {
-            return "var/images/species/" . $this->get_species_id() . ".jpg";
+    public function getImage() {
+        if (file_exists(PLANT_IMAGE_PATH . $this->plantId . ".jpg")) {
+            return "var/images/plants/" . $this->plantId . ".jpg";
+        } elseif (file_exists(SPECIES_IMAGE_PATH . $this->getSpeciesId() . ".jpg")) {
+            return "var/images/species/" . $this->getSpeciesId() . ".jpg";
         } else {
             return "";
         }
     }
 
     public function save() {
-        $species_id = $this->species->get_species_id();
+        $speciesId = $this->species->getSpeciesId();
         $sql = "UPDATE plants SET species_id = ?, description = ?, coord_x = ?, coord_y = ? ";
         $sql .= "WHERE plant_id = ?";
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute(array($species_id, $this->description, $this->coord_x, $this->coord_y, $this->plant_id));
+        $stmt->execute(array($speciesId, $this->description, $this->coordX, $this->coordY, $this->plantId));
     }
 
     public function delete() {
         $sql = "DELETE FROM plants WHERE plant_id = ?";
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute(array($this->plant_id));
+        $stmt->execute(array($this->plantId));
     }
 
-    public function get_json_data() {
-        $json_data = array();
-        $json_data['id'] = $this->get_plant_id();
-        $json_data['species_id'] = $this->get_species_id();
-        $json_data['name'] = $this->get_name();
-        $json_data['description'] = $this->get_description();
-        $json_data['coord_x'] = $this->get_coord_x();
-        $json_data['coord_y'] = $this->get_coord_y();
-        $json_data['image'] = $this->get_image();
-        return $json_data;
+    public function getJsonData() {
+        $jsonData = array();
+        $jsonData['id'] = $this->getPlantId();
+        $jsonData['speciesId'] = $this->getSpeciesId();
+        $jsonData['name'] = $this->getName();
+        $jsonData['description'] = $this->getDescription();
+        $jsonData['coordX'] = $this->getCoordX();
+        $jsonData['coordY'] = $this->getCoordY();
+        $jsonData['image'] = $this->getImage();
+        return $jsonData;
     }
 }

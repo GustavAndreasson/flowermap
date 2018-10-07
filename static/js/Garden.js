@@ -4,14 +4,14 @@ var GARDEN_WIDTH = 1000;
 function Garden() {
     var self = this;
 
-    this.zoom_in = function() {
+    this.zoomIn = function() {
         if (self.width > 40 && self.height > 40) {
-            if (this.div_width > this.div_height) {
-                self.top_x += 20;
-                self.top_y += 20 * (self.div_height / self.div_width);
+            if (this.divWidth > this.divHeight) {
+                self.topX += 20;
+                self.topY += 20 * (self.divHeight / self.divWidth);
             } else {
-                self.top_x += 20 * (self.div_width / self.div_height);
-                self.top_y += 20;
+                self.topX += 20 * (self.divWidth / self.divHeight);
+                self.topY += 20;
             }
             self.width -= 40;
             self.height -= 40;
@@ -20,13 +20,13 @@ function Garden() {
         return false;
     }
 
-    this.zoom_out = function() {
-        if (this.div_width > this.div_height) {
-            self.top_x -= 20;
-            self.top_y -= 20 * (self.div_height / self.div_width);
+    this.zoomOut = function() {
+        if (this.divWidth > this.divHeight) {
+            self.topX -= 20;
+            self.topY -= 20 * (self.divHeight / self.divWidth);
         } else {
-            self.top_x -= 20 * (self.div_width / self.div_height);
-            self.top_y -= 20;
+            self.topX -= 20 * (self.divWidth / self.divHeight);
+            self.topY -= 20;
         }
         self.width += 40;
         self.height += 40;
@@ -35,8 +35,8 @@ function Garden() {
     }
 
     this.move = function(x, y) {
-        self.top_x += x;
-        self.top_y += y;
+        self.topX += x;
+        self.topY += y;
         self.moved();
         if (x == 0 || y == 0) {
             return false;
@@ -44,49 +44,49 @@ function Garden() {
         return true;
     }
 
-    this.to_screen_x = function(x, abs) {
-        var top_x = self.top_x;
-        if (abs) top_x = 0;
-        return (x - top_x) * self.scale;
+    this.toScreenX = function(x, abs) {
+        var topX = self.topX;
+        if (abs) topX = 0;
+        return (x - topX) * self.scale;
     };
 
-    this.to_screen_y = function(y, abs) {
-        var top_y = self.top_y;
-        if (abs) top_y = 0;
-        return (y - top_y) * self.scale;
+    this.toScreenY = function(y, abs) {
+        var topY = self.topY;
+        if (abs) topY = 0;
+        return (y - topY) * self.scale;
     };
 
-    this.to_map_x = function(x, abs) {
-        var top_x = self.top_x;
-        if (abs) top_x = 0;
-        return x / self.scale + top_x;
+    this.toMapX = function(x, abs) {
+        var topX = self.topX;
+        if (abs) topX = 0;
+        return x / self.scale + topX;
     }
 
-    this.to_map_y = function(y, abs) {
-        var top_y = self.top_y;
-        if (abs) top_y = 0;
-        return y / self.scale + top_y;
+    this.toMapY = function(y, abs) {
+        var topY = self.topY;
+        if (abs) topY = 0;
+        return y / self.scale + topY;
     }
 
     this.moved = function() {
-        self.div_width = $(".garden").width();
-        self.div_height = $(".garden").height();
-        if (self.div_width > self.div_height) {
-            self.scale = self.div_width / self.width;
+        self.divWidth = $(".garden").width();
+        self.divHeight = $(".garden").height();
+        if (self.divWidth > self.divHeight) {
+            self.scale = self.divWidth / self.width;
         } else {
-            self.scale = self.div_height / self.height;
+            self.scale = self.divHeight / self.height;
         }
         $.each(self.plants, function(ix, plant) {
             plant.position();
         });
-        //$(".garden .plant").each(self.position_plant);
-        $(".garden").css("background-position", self.to_screen_x(0) + "px " + self.to_screen_y(0) + "px");
+        //$(".garden .plant").each(self.positionPlant);
+        $(".garden").css("background-position", self.toScreenX(0) + "px " + self.toScreenY(0) + "px");
         $(".garden").css("background-size",
-        (self.to_screen_x(GARDEN_WIDTH, true)) + "px " +
-        (self.to_screen_y(GARDEN_HEIGHT, true)) + "px");
+        (self.toScreenX(GARDEN_WIDTH, true)) + "px " +
+        (self.toScreenY(GARDEN_HEIGHT, true)) + "px");
     };
 
-    this.init_move = function(e) {
+    this.initMove = function(e) {
         var pageX, pageY;
         if (e.type == "touchstart") {
             pageX = e.originalEvent.touches[0].screenX;
@@ -98,12 +98,12 @@ function Garden() {
             pageX = e.pageX;
             pageY = e.pageY;
         }
-        $(".garden").on("mousemove touchmove", self.during_move);
-        self.start_move_x = pageX;
-        self.start_move_y = pageY;
+        $(".garden").on("mousemove touchmove", self.duringMove);
+        self.startMoveX = pageX;
+        self.startMoveY = pageY;
     };
 
-    this.end_move = function(e) {
+    this.endMove = function(e) {
         $(".garden").off("mousemove touchmove");
         setTimeout(function() {
             self.moving = false;
@@ -111,7 +111,7 @@ function Garden() {
         return true;
     };
 
-    this.during_move = function(e) {
+    this.duringMove = function(e) {
         var pageX, pageY;
         if (e.type == "touchmove") {
             pageX = e.originalEvent.touches[0].screenX;
@@ -120,37 +120,37 @@ function Garden() {
             pageX = e.pageX;
             pageY = e.pageY;
         }
-        if (self.move(self.to_map_x(self.start_move_x - pageX, true), self.to_map_y(self.start_move_y - pageY, true))) {
+        if (self.move(self.toMapX(self.startMoveX - pageX, true), self.toMapY(self.startMoveY - pageY, true))) {
             self.moving = true;
-            self.start_move_x = pageX;
-            self.start_move_y = pageY;
+            self.startMoveX = pageX;
+            self.startMoveY = pageY;
         }
     };
 
     this.mapclick = function(e) {
-        if (self.is_plant_moving) {
+        if (self.isPlantMoving) {
             $(".garden").off("mousemove touchmove");
-            self.is_plant_moving = false;
+            self.isPlantMoving = false;
             var posX = e.pageX - $(".garden").offset().left;
             var posY = e.pageY - $(".garden").offset().top;
-            self.plants[self.open_plant].coord_x = self.to_map_x(posX);
-            self.plants[self.open_plant].coord_y = self.to_map_y(posY);
-            self.plants[self.open_plant].position();
-            self.plants[self.open_plant].save();
-            self.open_plant = null;
+            self.plants[self.openPlant].coordX = self.toMapX(posX);
+            self.plants[self.openPlant].coordY = self.toMapY(posY);
+            self.plants[self.openPlant].position();
+            self.plants[self.openPlant].save();
+            self.openPlant = null;
         } else {
             if (!self.moving) {
-                if (self.open_plant) {
-                    self.plants[self.open_plant].close();
-                    self.open_plant = null;
+                if (self.openPlant) {
+                    self.plants[self.openPlant].close();
+                    self.openPlant = null;
                 } else {
                     var marker = $("[name=add_plant] .marker");
                     marker.css("top", (e.pageY - 11) + "px");
                     marker.css("left", (e.pageX - 11) + "px");
                     var posX = e.pageX - $(".garden").offset().left;
                     var posY = e.pageY - $(".garden").offset().top;
-                    $("[name=add_plant] [name=coord_x]").val(self.to_map_x(posX));
-                    $("[name=add_plant] [name=coord_y]").val(self.to_map_y(posY));
+                    $("[name=add_plant] [name=coord_x]").val(self.toMapX(posX));
+                    $("[name=add_plant] [name=coord_y]").val(self.toMapY(posY));
                     $("[name=add_plant").show();
                 }
             } else {
@@ -160,46 +160,46 @@ function Garden() {
     };
 
     this.plantclick = function(id, e) {
-        if (self.is_plant_moving) {
+        if (self.isPlantMoving) {
             $(".garden").off("mousemove touchmove");
-            self.is_plant_moving = false;
+            self.isPlantMoving = false;
             var posX = e.pageX - $(".garden").offset().left;
             var posY = e.pageY - $(".garden").offset().top;
-            self.plants[self.open_plant].coord_x = self.to_map_x(posX);
-            self.plants[self.open_plant].coord_y = self.to_map_y(posY);
-            self.plants[self.open_plant].position();
-            self.plants[self.open_plant].save();
-            self.open_plant = null;
+            self.plants[self.openPlant].coordX = self.toMapX(posX);
+            self.plants[self.openPlant].coordY = self.toMapY(posY);
+            self.plants[self.openPlant].position();
+            self.plants[self.openPlant].save();
+            self.openPlant = null;
         } else {
-            if (id != self.open_plant) {
-                if (self.open_plant) {
-                    self.plants[self.open_plant].close();
+            if (id != self.openPlant) {
+                if (self.openPlant) {
+                    self.plants[self.openPlant].close();
                 }
-                self.open_plant = id;
+                self.openPlant = id;
                 self.plants[id].open();
             }
         }
         return false;
     };
 
-    this.filter_plants = function() {
+    this.filterPlants = function() {
         var filter = [];
-        $.each(self.species, function(species_id, species) {
+        $.each(self.species, function(speciesId, species) {
             if (species.filtered) {
-                filter.push(1*species_id);
+                filter.push(1*speciesId);
             }
         });
-        $.each(self.plants, function(plant_id, plant) {
+        $.each(self.plants, function(plantId, plant) {
             plant.filter(filter);
         });
     }
 
-    this.load_plants = function(callback) {
+    this.loadPlants = function(callback) {
         $.getJSON(
             "plant/get",
             {},
             function (plants) {
-                $.each(plants, function(plant_id, plant) {
+                $.each(plants, function(plantId, plant) {
                     self.plants[plant.id] = new Plant(plant, self);
                 });
                 if (callback) callback();
@@ -207,32 +207,32 @@ function Garden() {
         );
     };
 
-    this.load_species = function(callback) {
+    this.loadSpecies = function(callback) {
         $.getJSON(
             "species/get",
             {},
             function (species) {
-                $.each(species, function(species_id, spec) {
-                    self.species[species_id] = new Species(spec, self).add();
+                $.each(species, function(speciesId, spec) {
+                    self.species[speciesId] = new Species(spec, self).add();
                 });
                 if (callback) callback();
             }
         );
     };
 
-    this.delete_plant = function() {
-        self.plants[self.open_plant].delete();
-        delete self.plants[self.open_plant];
+    this.deletePlant = function() {
+        self.plants[self.openPlant].delete();
+        delete self.plants[self.openPlant];
     };
 
-    this.move_plant = function() {
-        self.plants[self.open_plant].close();
-        self.is_plant_moving = true;
-        $(".garden").on("mousemove touchmove", self.plant_move);
+    this.movePlant = function() {
+        self.plants[self.openPlant].close();
+        self.isPlantMoving = true;
+        $(".garden").on("mousemove touchmove", self.plantMove);
         return false;
     };
 
-    this.plant_move = function(e) {
+    this.plantMove = function(e) {
         var posX, posY;
         if (e.type == "touchmove") {
             posX = e.originalEvent.touches[0].screenX - $(".garden").offset().left;
@@ -241,14 +241,14 @@ function Garden() {
             posX = e.pageX - $(".garden").offset().left;
             posY = e.pageY - $(".garden").offset().top;
         }
-        $("#plant_" + self.open_plant).css("top", (posY - 12) + "px");
-        $("#plant_" + self.open_plant).css("left", (posX - 12) + "px");
+        $("#plant_" + self.openPlant).css("top", (posY - 12) + "px");
+        $("#plant_" + self.openPlant).css("left", (posX - 12) + "px");
     };
 
-    this.edit_plant = function() {
-        $("[name=edit_plant] [name=plant_id]").val(self.open_plant);
-        $("[name=edit_plant] .name").html(self.plants[self.open_plant].name);
-        $("[name=edit_plant] [name=description]").val(self.plants[self.open_plant].description);
+    this.editPlant = function() {
+        $("[name=edit_plant] [name=plant_id]").val(self.openPlant);
+        $("[name=edit_plant] .name").html(self.plants[self.openPlant].name);
+        $("[name=edit_plant] [name=description]").val(self.plants[self.openPlant].description);
         $("[name=edit_plant]").show();
     };
 
@@ -257,11 +257,11 @@ function Garden() {
         $("[name=add_plant]").hide();
     };
 
-    $("[name=add_species]")[0].success = function (species_data) {
-        species = new Species(species_data, self).add();
+    $("[name=add_species]")[0].success = function (speciesData) {
+        species = new Species(speciesData, self).add();
         self.species[species.id] = species;
         $("[name=add_species]").hide();
-        species.get_option().click();
+        species.getOption().click();
     };
 
     $("[name=edit_plant]")[0].success = function (plant) {
@@ -281,7 +281,7 @@ function Garden() {
 
     $("#btn_add_species").click(function() {
         var species = new Species();
-        species.add_to_form($("[name=add_species]").show());
+        species.addToForm($("[name=add_species]").show());
     });
 
     $(".btn_load_species").click(function() {
@@ -291,11 +291,11 @@ function Garden() {
         var name = element.find("[name=name]").val();
 
         $.getJSON(
-            "species/load_url",
+            "species/loadUrl",
             {url: url, name: name},
-            function (species_data) {
-                species = new Species(species_data, self);
-                species.add_to_form(element.show());
+            function (speciesData) {
+                species = new Species(speciesData, self);
+                species.addToForm(element.show());
             }
         );
     });
@@ -308,20 +308,20 @@ function Garden() {
         $("#species_list").toggle();
     });
 
-    $("#plant_template .btn_remove").click(self.delete_plant);
-    $("#plant_template .btn_move").click(self.move_plant);
-    $("#plant_template .btn_edit").click(self.edit_plant);
+    $("#plant_template .btn_remove").click(self.deletePlant);
+    $("#plant_template .btn_move").click(self.movePlant);
+    $("#plant_template .btn_edit").click(self.editPlant);
 
     $(".garden").click(self.mapclick);
-    $(".garden").on("mousedown touchstart", self.init_move);
-    $("body").on("mouseup touchend", self.end_move);
-    $("#btn_zoom_in").click(self.zoom_in);
-    $("#btn_zoom_out").click(self.zoom_out);
+    $(".garden").on("mousedown touchstart", self.initMove);
+    $("body").on("mouseup touchend", self.endMove);
+    $("#btn_zoom_in").click(self.zoomIn);
+    $("#btn_zoom_out").click(self.zoomOut);
     $(".garden").on("wheel", function(e) {
         if (e.originalEvent.deltaY < 0) {
-            self.zoom_in();
+            self.zoomIn();
         } else {
-            self.zoom_out();
+            self.zoomOut();
         }
     });
     $(window).resize(self.moved);
@@ -329,24 +329,24 @@ function Garden() {
     self.moving = false;
     self.width = GARDEN_WIDTH;
     self.height = GARDEN_HEIGHT;
-    self.div_width = $(".garden").width();
-    self.div_height = $(".garden").height();
-    if (self.div_width > self.div_height) {
-        self.scale = self.div_width / this.width;
-        self.top_x = 0;
-        self.top_y = (self.height - self.div_height / self.scale) / 2;
+    self.divWidth = $(".garden").width();
+    self.divHeight = $(".garden").height();
+    if (self.divWidth > self.divHeight) {
+        self.scale = self.divWidth / this.width;
+        self.topX = 0;
+        self.topY = (self.height - self.divHeight / self.scale) / 2;
     } else {
-        self.scale = self.div_height / self.height;
-        self.top_y = 0;
-        self.top_x = (self.width - self.div_width / self.scale) / 2;
+        self.scale = self.divHeight / self.height;
+        self.topY = 0;
+        self.topX = (self.width - self.divWidth / self.scale) / 2;
     }
 
     self.plants =  {};
     self.species = {};
-    self.open_plant = null;
-    self.is_plant_moving = false;
+    self.openPlant = null;
+    self.isPlantMoving = false;
 
-    self.load_species(self.load_plants);
+    self.loadSpecies(self.loadPlants);
     self.moved();
 
     return this;

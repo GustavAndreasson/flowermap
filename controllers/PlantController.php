@@ -3,7 +3,7 @@ class PlantController extends AbstractController {
     private $garden;
 
     public function execute($fm) {
-        if ($fm->is_logged_in()) {
+        if ($fm->isLoggedIn()) {
             $this->garden = $fm->user->garden;
             parent::execute($fm);
         } else {
@@ -11,77 +11,77 @@ class PlantController extends AbstractController {
         }
     }
 
-    function get_action() {
+    function getAction() {
         $response = array();
         foreach ($this->garden->plants as $plant) {
-            $response[$plant->get_plant_id()] = $plant->get_json_data();
+            $response[$plant->getPlantId()] = $plant->getJsonData();
         }
         echo json_encode($response);
     }
 
-    function add_action() {
+    function addAction() {
         $description = $this->request->get("description");
-        $coord_x = $this->request->get("coord_x");
-        $coord_y = $this->request->get("coord_y");
+        $coordX = $this->request->get("coord_x");
+        $coordY = $this->request->get("coord_y");
 
-        $species_id = $this->request->get("species_id");
-        $species = $this->garden->species[$species_id];
+        $speciesId = $this->request->get("species_id");
+        $species = $this->garden->species[$speciesId];
 
-        $plant = $this->garden->add_plant($description, $coord_x, $coord_y, $species);
+        $plant = $this->garden->addPlant($description, $coordX, $coordY, $species);
 
-        if ($this->request->get_file("image")) {
-            $target_file = PLANT_IMAGE_PATH . $plant->get_plant_id . ".jpg";
+        if ($this->request->getFile("image")) {
+            $targetFile = PLANT_IMAGE_PATH . $plant->getPlantId() . ".jpg";
 
-            $check = getimagesize($this->request->get_file("image")["tmp_name"]);
+            $check = getimagesize($this->request->getFile("image")["tmp_name"]);
 
             if($check !== false) {
-                if (!move_uploaded_file($this->request->get_file("image")["tmp_name"], $target_file)) {
+                if (!move_uploaded_file($this->request->getFile("image")["tmp_name"], $targetFile)) {
                     Util::log("Sorry, there was an error uploading your file.", false);
                 }
             }
         }
 
-        echo json_encode($plant->get_json_data());
+        echo json_encode($plant->getJsonData());
     }
 
-    function update_action() {
-        $plant_id = $this->request->get("plant_id");
-        $plant = $this->garden->plants[$plant_id];
+    function updateAction() {
+        $plantId = $this->request->get("plant_id");
+        $plant = $this->garden->plants[$plantId];
         $description = $this->request->get("description");
-        $coord_x = $this->request->get("coord_x");
-        $coord_y = $this->request->get("coord_y");
+        $coordX = $this->request->get("coord_x");
+        $coordY = $this->request->get("coord_y");
 
-        if ($coord_x || $coord_y) {
-            $plant->set_coord_x($coord_x);
-            $plant->set_coord_y($coord_y);
+        if ($coordX || $coordY) {
+            $plant->setCoordX($coordX);
+            $plant->setCoordY($coordY);
         }
 
         if ($description) {
-            $plant->set_description($description);
+            $plant->setDescription($description);
         }
 
         $plant->save();
 
-        if ($this->request->get_file("image")) {
-            $target_file = PLANT_IMAGE_PATH . $plant_id . ".jpg";
+        if ($this->request->getFile("image")) {
+            $targetFile = PLANT_IMAGE_PATH . $plantId . ".jpg";
 
-            $check = getimagesize($this->request->get_file("image"));
+            $check = getimagesize($this->request->getFile("image"));
 
             if($check !== false) {
-                if (!move_uploaded_file($this->request->get_file("image")["tmp_name"], $target_file)) {
+                if (!move_uploaded_file($this->request->getFile("image")["tmp_name"], $targetFile)) {
                     Util::log("Sorry, there was an error uploading your file.", false);
                 }
             }
         }
 
-        echo json_encode($plant->get_json_data());
+        echo json_encode($plant->getJsonData());
     }
 
-    function delete_action() {
-        $plant_id = $this->request->get("plant_id");
-        $plant = $this->garden->plants[$plant_id];
+    function deleteAction() {
+        $plantId = $this->request->get("plant_id");
+        $plant = $this->garden->plants[$plantId];
         $plant->delete();
-        unset($this->garden->plants[$plant_id]);
+        unset($this->garden->plants[$plantId]);
     }
 
 }

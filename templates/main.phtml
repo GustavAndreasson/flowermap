@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?= $T->get_language(); ?>">
+<html lang="<?= $T->getLanguage(); ?>">
   <head>
     <title><?= $T->__("Flower Map") ?></title>
     <meta content = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name = "viewport" />
@@ -17,7 +17,7 @@
       <?php include(TEMPLATES_PATH . "header.phtml"); ?>
       <div class="main">
 <?php
-    if($fm->is_logged_in()) {
+    if($fm->isLoggedIn()) {
         include(TEMPLATES_PATH . "garden.phtml");
     } else {
         include(TEMPLATES_PATH . "login.phtml");

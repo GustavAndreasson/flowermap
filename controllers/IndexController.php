@@ -1,10 +1,10 @@
 <?php
 class IndexController extends AbstractController {
-    public function index_action() {
+    public function indexAction() {
         $fm = $this->fm;
 
-        if ($fm->is_logged_in()) {
-            $T = new Translate($fm->user->get_language());
+        if ($fm->isLoggedIn()) {
+            $T = new Translate($fm->user->getLanguage());
         } else {
             $T = new Translate();
         }

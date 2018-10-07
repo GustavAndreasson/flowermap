@@ -1,13 +1,13 @@
 <div class="header">
   <h1>
     <?= $T->__("Flower Map"); ?>
-    <?php if($fm->is_logged_in()): ?>
-      <?php if($fm->user->garden->get_name()): ?>
-        - <span id = "garden_name"><?= $fm->user->garden->get_name(); ?></span>
+    <?php if($fm->isLoggedIn()): ?>
+      <?php if($fm->user->garden->getName()): ?>
+        - <span id = "garden_name"><?= $fm->user->garden->getName(); ?></span>
       <?php endif; ?>
     <?php endif; ?>
   </h1>
-  <?php if($fm->is_logged_in()): ?>
+  <?php if($fm->isLoggedIn()): ?>
     <form name="logout" action="user/logout" method="POST">
       <button type="submit"><?= $T->__("Logout") ?></button>
     </form>

@@ -36,13 +36,13 @@ class FlowerMap {
 
     public function login($name, $password) {
         try {
-            $pass_hash = password_hash($password, PASSWORD_DEFAULT);
+            $passHash = password_hash($password, PASSWORD_DEFAULT);
             $stmt = $this->conn->prepare("SELECT password, user_id FROM users WHERE name = ?");
             $stmt->execute(array($name));
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($result && password_verify($password, $result['password'])) {
                 $this->user = new User($this->conn, $result['user_id']);
-                $_SESSION["USER_ID"] = $this->user->get_user_id();
+                $_SESSION["USER_ID"] = $this->user->getUserId();
                 return true;
             } else {
                 return false;
@@ -62,9 +62,9 @@ class FlowerMap {
             $stmt->execute(array($name));
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             if (!$result) {
-                $pass_hash = password_hash($password, PASSWORD_DEFAULT);
-                $this->user = new User($this->conn, null, $name, $pass_hash);
-                $_SESSION["USER_ID"] = $this->user->get_user_id();
+                $passHash = password_hash($password, PASSWORD_DEFAULT);
+                $this->user = new User($this->conn, null, $name, $passHash);
+                $_SESSION["USER_ID"] = $this->user->getUserId();
                 return true;
             } else {
                 return false;
@@ -80,7 +80,7 @@ class FlowerMap {
         $this->user = null;
     }
 
-    public function is_logged_in() {
+    public function isLoggedIn() {
         if ($this->user) {
             return true;
         } else {
@@ -88,7 +88,7 @@ class FlowerMap {
         }
     }
 
-    public function get_message() {
+    public function getMessage() {
         if (isset($_SESSION["MESSAGE"])) {
             $message = $_SESSION["MESSAGE"];
             unset($_SESSION["MESSAGE"]);

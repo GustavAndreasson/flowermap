@@ -1,7 +1,7 @@
 <?php
 class Request {
     private $root;
-    private $request_parts;
+    private $requestParts;
     private $query;
     private $data;
     private $files;
@@ -14,20 +14,20 @@ class Request {
         } else {
             $this->root = "";
         }
-        $request_split = explode('?', $request);
-        $request = $request_split[0];
-        if (isset($request_split[1])) {
-            $this->query = $request_split[1];
+        $requestSplit = explode('?', $request);
+        $request = $requestSplit[0];
+        if (isset($requestSplit[1])) {
+            $this->query = $requestSplit[1];
         }
         $request = trim($request, '/');
-        $this->request_parts = explode('/', $request);
+        $this->requestParts = explode('/', $request);
         $this->method = $_SERVER['REQUEST_METHOD'];
-        $this->set_data();
+        $this->setData();
     }
 
-    public function get_uri_part($nr) {
-        if (isset($this->request_parts[$nr])) {
-            return $this->request_parts[$nr];
+    public function getUriPart($nr) {
+        if (isset($this->requestParts[$nr])) {
+            return $this->requestParts[$nr];
         } else {
             return false;
         }
@@ -41,15 +41,15 @@ class Request {
         }
     }
 
-    public function get_file($name) {
-        if (isset($this->data[$name]["tmp_name"])) {
+    public function getFile($name) {
+        if (isset($this->data[$name]["tmpName"])) {
             return $this->data[$name];
         } else {
             return null;
         }
     }
 
-    private function set_data() {
+    private function setData() {
         if ($this->method == "POST") {
             foreach ($_POST as $id => $value) {
                 $this->data[$id] = $value;
@@ -64,7 +64,7 @@ class Request {
         }
     }
 
-    public function get_root() {
+    public function getRoot() {
         return $this->root;
     }
 }

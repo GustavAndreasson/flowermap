@@ -1,7 +1,7 @@
 <?php
 class UserController extends AbstractController {
 
-    function login_action() {
+    function loginAction() {
         $name = $this->request->get("name");
         $password = $this->request->get("password");
 
@@ -12,13 +12,13 @@ class UserController extends AbstractController {
         exit();
     }
 
-    function logout_action() {
+    function logoutAction() {
         $this->fm->logout();
         Router::redirect("/");
         exit();
     }
 
-    function register_action() {
+    function registerAction() {
         $name = $this->request->get("name");
         $password = $this->request->get("password");
 

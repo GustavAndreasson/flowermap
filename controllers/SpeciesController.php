@@ -3,7 +3,7 @@ class SpeciesController extends AbstractController {
     private $garden;
 
     public function execute($fm) {
-        if ($fm->is_logged_in()) {
+        if ($fm->isLoggedIn()) {
             $this->garden = $fm->user->garden;
             parent::execute($fm);
         } else {
@@ -11,15 +11,15 @@ class SpeciesController extends AbstractController {
         }
     }
 
-    function get_action() {
+    function getAction() {
         $response = array();
         foreach ($this->garden->species as $species) {
-            $response[$species->get_species_id()] = $species->get_json_data();
+            $response[$species->getSpeciesId()] = $species->getJsonData();
         }
         echo json_encode($response);
     }
 
-    function add_action() {
+    function addAction() {
         $name = $this->request->get("name");
         $data = $this->request->get("data");
         if ($data === null) {
@@ -27,57 +27,57 @@ class SpeciesController extends AbstractController {
         }
         $url = $this->request->get("url");
         $img = $this->request->get("species_image");
-        $species = $this->garden->add_species($name, $url, $data, $img);
-        echo json_encode($species->get_json_data());
+        $species = $this->garden->addSpecies($name, $url, $data, $img);
+        echo json_encode($species->getJsonData());
     }
 
-    function update_action() {
-        $species_id = $this->request->get("species_id");
-        $species = $this->garden->species[$species_id];
+    function updateAction() {
+        $speciesId = $this->request->get("species_id");
+        $species = $this->garden->species[$speciesId];
 
         $name = $this->request->get("name");
         $data = $this->request->get("data");
         $url = $this->request->get("url");
         $img = $this->request->get("species_image");
 
-        $species->set_name($name);
-        $species->set_url($url);
-        $species->set_data($data);
-        $species->set_image($img);
+        $species->setName($name);
+        $species->setUrl($url);
+        $species->setData($data);
+        $species->setImage($img);
 
         $species->save();
 
-        echo json_encode($species->get_json_data());
+        echo json_encode($species->getJsonData());
     }
 
-    function load_id_action() {
+    function loadIdAction() {
         $id = $this->request->get("id");
         $species = $this->garden->species[$id];
-        echo json_encode($species->get_json_data());
+        echo json_encode($species->getJsonData());
     }
 
-    function load_url_action() {
+    function loadUrlAction() {
         $url = $this->request->get("url");
         if (!$url) {
             $name = trim($this->request->get("name"));
-            $url_name = strtolower($name);
-            $url_name = str_replace(" ", "-", $url_name);
-            $url_name = str_replace("å", "a", $url_name);
-            $url_name = str_replace("ä", "a", $url_name);
-            $url_name = str_replace("ö", "o", $url_name);
-            $url = "https://floralinnea.se/" . $url_name . ".html";
-            $species_info = Species::load_url_data($url);
-            if (!$species_info) {
+            $urlName = strtolower($name);
+            $urlName = str_replace(" ", "-", $urlName);
+            $urlName = str_replace("å", "a", $urlName);
+            $urlName = str_replace("ä", "a", $urlName);
+            $urlName = str_replace("ö", "o", $urlName);
+            $url = "https://floralinnea.se/" . $urlName . ".html";
+            $speciesInfo = Species::loadUrlData($url);
+            if (!$speciesInfo) {
                 Util::log("Could not load url " . $url . ". Searching for " . $name . "...");
-                $url = Species::search_url($name);
+                $url = Species::searchUrl($name);
                 if ($url) {
                     Util::log("...found " . $url);
-                    $species_info = Species::load_url_data($url);
+                    $speciesInfo = Species::loadUrlData($url);
                 }
             }
         } else {
-            $species_info = Species::load_url_data($url);
+            $speciesInfo = Species::loadUrlData($url);
         }
-        echo json_encode($species_info);
+        echo json_encode($speciesInfo);
     }
 }

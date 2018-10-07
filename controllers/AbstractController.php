@@ -9,12 +9,12 @@ abstract class AbstractController {
 
     public function execute($fm) {
         $this->fm = $fm;
-        $action = $this->request->get_uri_part(1) ? $this->request->get_uri_part(1) : "index";
-        $action_name = $action . "_action";
-        if (method_exists($this, $action_name)) {
-            $this->$action_name();
+        $action = $this->request->getUriPart(1) ? $this->request->getUriPart(1) : "index";
+        $actionName = $action . "Action";
+        if (method_exists($this, $actionName)) {
+            $this->$actionName();
         } else {
-            throw new Exception("$action_name does not exist in " . get_class($this), 404);
+            throw new Exception("$actionName does not exist in " . get_class($this), 404);
         }
     }
 }

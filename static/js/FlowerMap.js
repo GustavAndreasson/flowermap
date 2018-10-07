@@ -42,7 +42,7 @@ $(function() {
 function Select(element) {
     var self = this;
     this.element = $(element);
-    this.add_option = function(name, value, onclick) {
+    this.addOption = function(name, value, onclick) {
         var option = $("<div></div>");
         option.addClass("option");
         option.text(name);
