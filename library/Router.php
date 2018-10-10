@@ -5,20 +5,16 @@ private static $request;
     public static function route($request) {
         self::$request = $request;
 
-        if ($request->getUriPart(0)) {
-            $controller = strtoupper(substr($request->getUriPart(0), 0, 1)) . substr($request->getUriPart(0), 1);
-        } else {
-            $controller = "Index";
-        }
-
-        $controllerName = $controller . "Controller";
-        if (file_exists(CONTROLLERS_PATH . $controllerName . ".php")) {
-            if (!class_exists($controllerName)) {
-                require(CONTROLLERS_PATH . $controllerName . ".php");
+        $controller = $request->getUriPart(0) ? $request->getUriPart(0) : "index";
+	$controllerName = preg_replace_callback('/(^|-)([a-z])/', function($m) { return strtoupper($m[2]); }, $controller);
+        $controllerClass = $controllerName . "Controller";
+        if (file_exists(CONTROLLERS_PATH . $controllerClass . ".php")) {
+            if (!class_exists($controllerClass)) {
+                require(CONTROLLERS_PATH . $controllerClass . ".php");
             }
-            return new $controllerName($request);
+            return new $controllerClass($request);
         } else {
-            throw new Exception("$controllerName does not exist", 404);
+            throw new Exception("$controllerClass does not exist", 404);
         }
     }
 

@@ -291,7 +291,7 @@ function Garden() {
         var name = element.find("[name=name]").val();
 
         $.getJSON(
-            "species/loadUrl",
+            "species/load-url",
             {url: url, name: name},
             function (speciesData) {
                 species = new Species(speciesData, self);
