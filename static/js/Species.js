@@ -57,7 +57,9 @@ function Species(species, garden) {
     }
 
     this.addToForm = function(form) {
-        form.find("[name=species_id]").val(self.id);
+	if (self.id) {
+	    form.find("[name=species_id]").val(self.id);
+	}
         form.find("[name=name]").val(self.name);
         form.find("[name=url]").val(self.url);
 
