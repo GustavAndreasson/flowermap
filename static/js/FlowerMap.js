@@ -30,6 +30,10 @@ $(function() {
         $(this).closest(".pop-up").hide();
     });
 
+    $(document).ajaxError(function () {
+        location.reload();
+    });
+
     $(document).ajaxStart(function () {
         $("#loader").show();
     });

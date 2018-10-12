@@ -35,6 +35,7 @@ h1, h2, h3 {
     right: 0;
     background: #000000;
     opacity: 0.3;
+    z-index: 1000;
 }
 
 @-webkit-keyframes spin {
