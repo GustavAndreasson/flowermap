@@ -79,7 +79,6 @@ function Garden() {
         $.each(self.plants, function(ix, plant) {
             plant.position();
         });
-        //$(".garden .plant").each(self.positionPlant);
         $(".garden").css("background-position", self.toScreenX(0) + "px " + self.toScreenY(0) + "px");
         $(".garden").css("background-size",
         (self.toScreenX(GARDEN_WIDTH, true)) + "px " +
@@ -129,15 +128,7 @@ function Garden() {
 
     this.mapclick = function(e) {
         if (self.isPlantMoving) {
-            $(".garden").off("mousemove touchmove");
-            self.isPlantMoving = false;
-            var posX = e.pageX - $(".garden").offset().left;
-            var posY = e.pageY - $(".garden").offset().top;
-            self.plants[self.openPlant].coordX = self.toMapX(posX);
-            self.plants[self.openPlant].coordY = self.toMapY(posY);
-            self.plants[self.openPlant].position();
-            self.plants[self.openPlant].save();
-            self.openPlant = null;
+            stopPlantMove(e.pageX, e.pageY);
         } else {
             if (!self.moving) {
                 if (self.openPlant) {
@@ -161,15 +152,7 @@ function Garden() {
 
     this.plantclick = function(id, e) {
         if (self.isPlantMoving) {
-            $(".garden").off("mousemove touchmove");
-            self.isPlantMoving = false;
-            var posX = e.pageX - $(".garden").offset().left;
-            var posY = e.pageY - $(".garden").offset().top;
-            self.plants[self.openPlant].coordX = self.toMapX(posX);
-            self.plants[self.openPlant].coordY = self.toMapY(posY);
-            self.plants[self.openPlant].position();
-            self.plants[self.openPlant].save();
-            self.openPlant = null;
+            stopPlantMove(e.pageX, e.pageY);
         } else {
             if (id != self.openPlant) {
                 if (self.openPlant) {
@@ -181,6 +164,18 @@ function Garden() {
         }
         return false;
     };
+
+    function stopPlantMove(pageX, pageY) {
+        $(".garden").off("mousemove touchmove");
+        self.isPlantMoving = false;
+        var posX = pageX - $(".garden").offset().left;
+        var posY = pageY - $(".garden").offset().top;
+        self.plants[self.openPlant].coordX = self.toMapX(posX);
+        self.plants[self.openPlant].coordY = self.toMapY(posY);
+        self.plants[self.openPlant].position();
+        self.plants[self.openPlant].save();
+        self.openPlant = null;
+    }
 
     this.filterPlants = function() {
         var filter = [];
