@@ -5,76 +5,58 @@ function Garden() {
     var self = this;
 
     function zoomIn() {
-        if (self.width > 40 && self.height > 40) {
-            if (this.divWidth > this.divHeight) {
-                self.topX += 20;
-                self.topY += 20 * (self.divHeight / self.divWidth);
-            } else {
-                self.topX += 20 * (self.divWidth / self.divHeight);
-                self.topY += 20;
-            }
-            self.width -= 40;
-            self.height -= 40;
-            self.moved();
-        }
+        self.scale *= 1.1;
+        self.moved();
         return false;
     }
 
     function zoomOut() {
-        if (this.divWidth > this.divHeight) {
-            self.topX -= 20;
-            self.topY -= 20 * (self.divHeight / self.divWidth);
-        } else {
-            self.topX -= 20 * (self.divWidth / self.divHeight);
-            self.topY -= 20;
-        }
-        self.width += 40;
-        self.height += 40;
+        self.scale /= 1.1;
         self.moved();
         return false;
     }
 
     function move(x, y) {
-        self.topX += x;
-        self.topY += y;
+        self.posX += x;
+        self.posY += y;
         self.moved();
-        if (x == 0 || y == 0) {
+        if (x == 0 && y == 0) {
             return false;
         }
         return true;
     }
 
     this.toScreenX = function(x, abs) {
-        var topX = self.topX;
-        if (abs) topX = 0;
-        return (x - topX) * self.scale;
+        if (abs) return x * self.scale;
+        var dx = (x - self.posX) * self.scale;
+        return self.divWidth / 2 + dx;
     };
 
     this.toScreenY = function(y, abs) {
-        var topY = self.topY;
-        if (abs) topY = 0;
-        return (y - topY) * self.scale;
+        if (abs) return y * self.scale;
+        var dy = (y - self.posY) * self.scale;
+        return self.divHeight / 2 + dy;
     };
 
     this.toMapX = function(x, abs) {
-        var topX = self.topX;
-        if (abs) topX = 0;
-        return x / self.scale + topX;
+        if (abs) return x / self.scale;
+        var dx = x - self.divWidth / 2;
+        return dx / self.scale + self.posX;
     }
 
     this.toMapY = function(y, abs) {
-        var topY = self.topY;
-        if (abs) topY = 0;
-        return y / self.scale + topY;
+        if (abs) return y / self.scale;
+        var dy = y - self.divHeight / 2;
+        return dy / self.scale + self.posY;
     }
 
     this.moved = function() {
         self.divWidth = $(".garden").width();
         self.divHeight = $(".garden").height();
         if (self.divWidth > self.divHeight) {
-            self.scale = self.divWidth / self.width;
+            self.width = self.divWidth / self.scale;
         } else {
-            self.scale = self.divHeight / self.height;
+            self.height = self.divHeight / self.scale;
         }
         $.each(self.plants, function(ix, plant) {
             plant.position();
@@ -90,6 +72,14 @@ function Garden() {
         if (e.type == "touchstart") {
             pageX = e.originalEvent.touches[0].screenX;
             pageY = e.originalEvent.touches[0].screenY;
+            if (e.originalEvent.touches[1] !== undefined) {
+                var pageX2 = e.originalEvent.touches[1].screenX;
+                var pageY2 = e.originalEvent.touches[1].screenY;
+                var distX = pageX - pageX2;
+                var distY = pageY - pageY2;
+                var dist = Math.sqrt(distX * distX + distY * distY);
+                self.startMoveZ = dist;
+            }
         } else {
             if (e.which != 1) {
                 return;
@@ -104,6 +94,7 @@ function Garden() {
 
     function endMove(e) {
         $(".garden").off("mousemove touchmove");
+        self.startMoveZ = null;
         setTimeout(function() {
             self.moving = false;
         }, 100)
@@ -115,6 +106,19 @@ function Garden() {
         if (e.type == "touchmove") {
             pageX = e.originalEvent.touches[0].screenX;
             pageY = e.originalEvent.touches[0].screenY;
+            if (e.originalEvent.touches[1] !== undefined) {
+                var pageX2 = e.originalEvent.touches[1].screenX;
+                var pageY2 = e.originalEvent.touches[1].screenY;
+                var distX = pageX - pageX2;
+                var distY = pageY - pageY2;
+                var dist = Math.sqrt(distX * distX + distY * distY);
+                if (self.startMoveZ) {
+                    self.scale *= dist / self.startMoveZ;
+                }
+                pageX = (pageX + pageX2) / 2;
+                pageY = (pageY + pageY2) / 2;
+                self.startMoveZ = dist;
+            }
         } else {
             pageX = e.pageX;
             pageY = e.pageY;
@@ -322,21 +326,17 @@ function Garden() {
     $(window).resize(self.moved);
 
     self.moving = false;
-    self.width = GARDEN_WIDTH;
-    self.height = GARDEN_HEIGHT;
     self.divWidth = $(".garden").width();
     self.divHeight = $(".garden").height();
+    self.posX = GARDEN_WIDTH / 2;
+    self.posY = GARDEN_HEIGHT / 2;
     if (self.divWidth > self.divHeight) {
-        self.scale = self.divWidth / this.width;
-        self.topX = 0;
-        self.topY = (self.height - self.divHeight / self.scale) / 2;
+        self.scale = self.divWidth / GARDEN_WIDTH;
     } else {
-        self.scale = self.divHeight / self.height;
-        self.topY = 0;
-        self.topX = (self.width - self.divWidth / self.scale) / 2;
+        self.scale = self.divHeight / GARDEN_HEIGHT;
     }
 
-    self.plants =  {};
+    self.plants = {};
     self.species = {};
     self.openPlant = null;
     self.isPlantMoving = false;
