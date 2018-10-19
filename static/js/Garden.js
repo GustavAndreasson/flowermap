@@ -4,7 +4,7 @@ var GARDEN_WIDTH = 1000;
 function Garden() {
     var self = this;
 
-    this.zoomIn = function() {
+    function zoomIn() {
         if (self.width > 40 && self.height > 40) {
             if (this.divWidth > this.divHeight) {
                 self.topX += 20;
@@ -20,7 +20,7 @@ function Garden() {
         return false;
     }
 
-    this.zoomOut = function() {
+    function zoomOut() {
         if (this.divWidth > this.divHeight) {
             self.topX -= 20;
             self.topY -= 20 * (self.divHeight / self.divWidth);
@@ -34,7 +34,7 @@ function Garden() {
         return false;
     }
 
-    this.move = function(x, y) {
+    function move(x, y) {
         self.topX += x;
         self.topY += y;
         self.moved();
@@ -85,7 +85,7 @@ function Garden() {
         (self.toScreenY(GARDEN_HEIGHT, true)) + "px");
     };
 
-    this.initMove = function(e) {
+    function initMove (e) {
         var pageX, pageY;
         if (e.type == "touchstart") {
             pageX = e.originalEvent.touches[0].screenX;
@@ -97,12 +97,12 @@ function Garden() {
             pageX = e.pageX;
             pageY = e.pageY;
         }
-        $(".garden").on("mousemove touchmove", self.duringMove);
+        $(".garden").on("mousemove touchmove", duringMove);
         self.startMoveX = pageX;
         self.startMoveY = pageY;
     };
 
-    this.endMove = function(e) {
+    function endMove(e) {
         $(".garden").off("mousemove touchmove");
         setTimeout(function() {
             self.moving = false;
@@ -110,7 +110,7 @@ function Garden() {
         return true;
     };
 
-    this.duringMove = function(e) {
+    function duringMove(e) {
         var pageX, pageY;
         if (e.type == "touchmove") {
             pageX = e.originalEvent.touches[0].screenX;
@@ -119,14 +119,14 @@ function Garden() {
             pageX = e.pageX;
             pageY = e.pageY;
         }
-        if (self.move(self.toMapX(self.startMoveX - pageX, true), self.toMapY(self.startMoveY - pageY, true))) {
+        if (move(self.toMapX(self.startMoveX - pageX, true), self.toMapY(self.startMoveY - pageY, true))) {
             self.moving = true;
             self.startMoveX = pageX;
             self.startMoveY = pageY;
         }
     };
 
-    this.mapclick = function(e) {
+    function mapclick(e) {
         if (self.isPlantMoving) {
             stopPlantMove(e.pageX, e.pageY);
         } else {
@@ -215,19 +215,19 @@ function Garden() {
         );
     };
 
-    this.deletePlant = function() {
+    function deletePlant() {
         self.plants[self.openPlant].delete();
         delete self.plants[self.openPlant];
     };
 
-    this.movePlant = function() {
+    function movePlant() {
         self.plants[self.openPlant].close();
         self.isPlantMoving = true;
-        $(".garden").on("mousemove touchmove", self.plantMove);
+        $(".garden").on("mousemove touchmove", plantMove);
         return false;
     };
 
-    this.plantMove = function(e) {
+    function plantMove(e) {
         var posX, posY;
         if (e.type == "touchmove") {
             posX = e.originalEvent.touches[0].screenX - $(".garden").offset().left;
@@ -240,7 +240,7 @@ function Garden() {
         $("#plant_" + self.openPlant).css("left", (posX - 12) + "px");
     };
 
-    this.editPlant = function() {
+    function editPlant() {
         $("[name=edit_plant] [name=plant_id]").val(self.openPlant);
         $("[name=edit_plant] .name").html(self.plants[self.openPlant].name);
         $("[name=edit_plant] [name=description]").val(self.plants[self.openPlant].description);
@@ -303,20 +303,20 @@ function Garden() {
         $("#species_list").toggle();
     });
 
-    $("#plant_template .btn_remove").click(self.deletePlant);
-    $("#plant_template .btn_move").click(self.movePlant);
-    $("#plant_template .btn_edit").click(self.editPlant);
+    $("#plant_template .btn_remove").click(deletePlant);
+    $("#plant_template .btn_move").click(movePlant);
+    $("#plant_template .btn_edit").click(editPlant);
 
-    $(".garden").click(self.mapclick);
-    $(".garden").on("mousedown touchstart", self.initMove);
-    $("body").on("mouseup touchend", self.endMove);
-    $("#btn_zoom_in").click(self.zoomIn);
-    $("#btn_zoom_out").click(self.zoomOut);
+    $(".garden").click(mapclick);
+    $(".garden").on("mousedown touchstart", initMove);
+    $("body").on("mouseup touchend", endMove);
+    $("#btn_zoom_in").click(zoomIn);
+    $("#btn_zoom_out").click(zoomOut);
     $(".garden").on("wheel", function(e) {
         if (e.originalEvent.deltaY < 0) {
-            self.zoomIn();
+            zoomIn();
         } else {
-            self.zoomOut();
+            zoomOut();
         }
     });
     $(window).resize(self.moved);
