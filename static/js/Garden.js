@@ -79,6 +79,8 @@ function Garden() {
                 var distY = pageY - pageY2;
                 var dist = Math.sqrt(distX * distX + distY * distY);
                 self.startMoveZ = dist;
+            } else {
+                self.startMoveZ = null;
             }
         } else {
             if (e.which != 1) {
@@ -118,6 +120,8 @@ function Garden() {
                 pageX = (pageX + pageX2) / 2;
                 pageY = (pageY + pageY2) / 2;
                 self.startMoveZ = dist;
+            } else {
+                self.startMoveZ = null;
             }
         } else {
             pageX = e.pageX;
