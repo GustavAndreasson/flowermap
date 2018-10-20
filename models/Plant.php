@@ -88,7 +88,6 @@ class Plant {
         $jsonData = array();
         $jsonData['id'] = $this->getPlantId();
         $jsonData['speciesId'] = $this->getSpeciesId();
-        $jsonData['name'] = $this->getName();
         $jsonData['description'] = $this->getDescription();
         $jsonData['coordX'] = $this->getCoordX();
         $jsonData['coordY'] = $this->getCoordY();

@@ -3,7 +3,7 @@ function Plant(plant, garden) {
     this.id = plant.id;
     this.species = garden.species[plant.speciesId];
     this.species.plants.push(this);
-    this.name = plant.name;
+    this.name = this.species.name;
     this.description = plant.description;
     this.image = plant.image;
     this.coordX = plant.coordX;
