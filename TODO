@@ -6,3 +6,6 @@ Suggest existing species
 Multiple gardens per user
 List of hits when searching
 Move popups
+Optimize (dont load plant/species unless needed)
+Restore session from cookie
+Move user handling to user model
