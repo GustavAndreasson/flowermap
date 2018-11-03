@@ -68,6 +68,7 @@ function Garden() {
     };
 
     function initMove (e) {
+        e.preventDefault();
         var pageX, pageY;
         if (e.type == "touchstart") {
             pageX = e.originalEvent.touches[0].screenX;
@@ -79,6 +80,7 @@ function Garden() {
                 var distY = pageY - pageY2;
                 var dist = Math.sqrt(distX * distX + distY * distY);
                 self.startMoveZ = dist;
+                //alert("init" + dist + " " + self.startMoveZ + " " + pageX + "," + pageY + " " + pageX2 + "," + pageY2);
             } else {
                 self.startMoveZ = null;
             }
@@ -95,6 +97,7 @@ function Garden() {
     };
 
     function endMove(e) {
+        e.preventDefault();
         $(".garden").off("mousemove touchmove");
         self.startMoveZ = null;
         setTimeout(function() {
@@ -104,6 +107,7 @@ function Garden() {
     };
 
     function duringMove(e) {
+        e.preventDefault();
         var pageX, pageY;
         if (e.type == "touchmove") {
             pageX = e.originalEvent.touches[0].screenX;
@@ -113,12 +117,16 @@ function Garden() {
                 var pageY2 = e.originalEvent.touches[1].screenY;
                 var distX = pageX - pageX2;
                 var distY = pageY - pageY2;
-                var dist = Math.sqrt(distX * distX + distY * distY);
-                if (self.startMoveZ) {
-                    self.scale *= dist / self.startMoveZ;
-                }
                 pageX = (pageX + pageX2) / 2;
                 pageY = (pageY + pageY2) / 2;
+                var dist = Math.sqrt(distX * distX + distY * distY);
+                if (self.startMoveZ) {
+                    //alert("during " + dist + " " + self.startMoveZ + " " + pageX + "," + pageY + " " + pageX2 + "," + pageY2);
+                    self.scale *= dist / self.startMoveZ;
+                } else {
+                    self.startMoveX = pageX;
+                    self.startMoveY = pageY;
+                }
                 self.startMoveZ = dist;
             } else {
                 self.startMoveZ = null;
