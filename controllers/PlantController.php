@@ -13,7 +13,7 @@ class PlantController extends AbstractController {
 
     function getAction() {
         $response = array();
-        foreach ($this->garden->plants as $plant) {
+        foreach ($this->garden->getPlants() as $plant) {
             $response[$plant->getPlantId()] = $plant->getJsonData();
         }
         echo json_encode($response);
@@ -25,9 +25,8 @@ class PlantController extends AbstractController {
         $coordY = $this->request->get("coord_y");
 
         $speciesId = $this->request->get("species_id");
-        $species = $this->garden->species[$speciesId];
 
-        $plant = $this->garden->addPlant($description, $coordX, $coordY, $species);
+        $plant = $this->garden->addPlant($description, $coordX, $coordY, $speciesId);
 
         if ($this->request->getFile("image")) {
             $targetFile = PLANT_IMAGE_PATH . $plant->getPlantId() . ".jpg";
@@ -46,7 +45,7 @@ class PlantController extends AbstractController {
 
     function updateAction() {
         $plantId = $this->request->get("plant_id");
-        $plant = $this->garden->plants[$plantId];
+        $plant = $this->garden->getPlants($plantId);
         $description = $this->request->get("description");
         $coordX = $this->request->get("coord_x");
         $coordY = $this->request->get("coord_y");
@@ -79,9 +78,7 @@ class PlantController extends AbstractController {
 
     function deleteAction() {
         $plantId = $this->request->get("plant_id");
-        $plant = $this->garden->plants[$plantId];
-        $plant->delete();
-        unset($this->garden->plants[$plantId]);
+        $this->garden->deletePlants($plantId);
     }
 
 }

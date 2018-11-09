@@ -13,7 +13,7 @@ class SpeciesController extends AbstractController {
 
     function getAction() {
         $response = array();
-        foreach ($this->garden->species as $species) {
+        foreach ($this->garden->getSpecies() as $species) {
             $response[$species->getSpeciesId()] = $species->getJsonData();
         }
         echo json_encode($response);
@@ -33,7 +33,7 @@ class SpeciesController extends AbstractController {
 
     function updateAction() {
         $speciesId = $this->request->get("species_id");
-        $species = $this->garden->species[$speciesId];
+        $species = $this->garden->getSpecies($speciesId);
 
         $name = $this->request->get("name");
         $data = $this->request->get("data");
@@ -52,7 +52,7 @@ class SpeciesController extends AbstractController {
 
     function loadIdAction() {
         $id = $this->request->get("id");
-        $species = $this->garden->species[$id];
+        $species = $this->garden->getSpecies($id);
         echo json_encode($species->getJsonData());
     }
 

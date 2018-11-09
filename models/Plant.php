@@ -6,25 +6,24 @@ class Plant {
     private $description;
     private $coordX;
     private $coordY;
-    public $species;
+    public $speciesId;
 
-    public function __construct($conn, $gardenId, $plantId, $description, $coordX, $coordY, $species) {
+    public function __construct($conn, $gardenId, $plantId, $description, $coordX, $coordY, $speciesId) {
         $this->conn = $conn;
         $this->gardenId = $gardenId;
         $this->plantId = $plantId;
         $this->description = $description;
         $this->coordX = $coordX;
         $this->coordY = $coordY;
-        $this->species = $species;
+        $this->speciesId = $speciesId;
 
         if (!$plantId) {
             try {
                 $now = date("Y-m-d H:i:s");
-                $speciesId = $this->species->getSpeciesId();
                 $sql = "INSERT INTO plants (plant_id, species_id, garden_id, description, coord_x, coord_y, created_date) ";
                 $sql .= "VALUES (null, ?, ?, ?, ?, ?, ?)";
                 $stmt = $this->conn->prepare($sql);
-                $stmt->execute(array($speciesId, $this->gardenId, $this->description, $this->coordX, $this->coordY, $now));
+                $stmt->execute(array($this->speciesId, $this->gardenId, $this->description, $this->coordX, $this->coordY, $now));
                 $this->plantId = intval($this->conn->lastInsertId());
             } catch (PDOException $e) {
                 Util::log("Something went wrong when creating new plant: " . $e->getMessage(), true);
@@ -36,10 +35,7 @@ class Plant {
         return $this->plantId;
     }
     public function getSpeciesId() {
-        return $this->species->getSpeciesId();
-    }
-    public function getName() {
-        return $this->species->getName();
+        return $this->speciesId;
     }
     public function getDescription() {
         return $this->description;
@@ -71,11 +67,10 @@ class Plant {
     }
 
     public function save() {
-        $speciesId = $this->species->getSpeciesId();
         $sql = "UPDATE plants SET species_id = ?, description = ?, coord_x = ?, coord_y = ? ";
         $sql .= "WHERE plant_id = ?";
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute(array($speciesId, $this->description, $this->coordX, $this->coordY, $this->plantId));
+        $stmt->execute(array($this->speciesId, $this->description, $this->coordX, $this->coordY, $this->plantId));
     }
 
     public function delete() {
