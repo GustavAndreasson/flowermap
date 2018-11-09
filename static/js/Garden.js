@@ -129,7 +129,11 @@ function Garden() {
                 }
                 self.startMoveZ = dist;
             } else {
-                self.startMoveZ = null;
+                if (self.startMoveZ) {
+                    self.startMoveZ = null;
+                    self.startMoveX = pageX;
+                    self.startMoveY = pageY;
+                }
             }
         } else {
             pageX = e.pageX;
