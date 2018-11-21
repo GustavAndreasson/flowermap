@@ -83,7 +83,7 @@ function Species(species, garden) {
     }
 
     function dataRow(name, value) {
-        dataString = '<div class="row"><span class="data_name">' + name + '</span>';
+        var dataString = '<div class="row"><span class="data_name">' + name + '</span>';
         dataString += '<span class="data_value">' + value + '</span>';
         dataString += '<input type="hidden" name="data[' + name + ']" value="' + value + '"></div>';
         return dataString;
