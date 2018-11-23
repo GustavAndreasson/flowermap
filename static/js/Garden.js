@@ -323,6 +323,10 @@ function Garden() {
         $("#species_list").toggle();
     });
 
+    $(".header .menu .menu-button").click(function() {
+        var menu = $(this).parent(".menu").toggleClass('open');
+    });
+
     $("#plant_template .btn_remove").click(deletePlant);
     $("#plant_template .btn_move").click(movePlant);
     $("#plant_template .btn_edit").click(editPlant);

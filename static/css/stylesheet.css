@@ -353,10 +353,12 @@ form input {
     .header .menu .menu-button {
         display: inline-block;
         padding: 5px;
+        vertical-align: middle;
     }
 
     .header .menu .menu-button img {
         height: 30px;
+        display: block;
     }
 
     .header .menu .menu-item {
@@ -366,6 +368,8 @@ form input {
     .header .menu.open .menu-item {
         display: block;
         border-left: 1px solid #000000;
+        border-top: 1px solid #aaaaaa;
+        padding-left: 10px;
     }
 
     .login {
