@@ -1,11 +1,17 @@
 <?php
 class UserController extends AbstractController {
+    private $user;
+
+    public function execute($fm) {
+        $this->user = $fm->user;
+        parent::execute($fm);
+    }
 
     function loginAction() {
         $name = $this->request->get("name");
         $password = $this->request->get("password");
 
-        if (!$this->fm->login($name, $password)) {
+        if (!$this->user->login($name, $password)) {
             $_SESSION["MESSAGE"] = "Fel användarnamn eller lösenord";
         }
         Router::redirect("/");
@@ -13,7 +19,7 @@ class UserController extends AbstractController {
     }
 
     function logoutAction() {
-        $this->fm->logout();
+        $this->user->logout();
         Router::redirect("/");
         exit();
     }
@@ -22,7 +28,7 @@ class UserController extends AbstractController {
         $name = $this->request->get("name");
         $password = $this->request->get("password");
 
-        if (!$this->fm->register($name, $password)) {
+        if (!$this->user->register($name, $password)) {
             $_SESSION["MESSAGE"] = "Det finns redan en användare med det här användarnamnet";
         }
         Router::redirect("/");

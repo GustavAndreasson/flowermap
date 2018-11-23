@@ -1,4 +1,4 @@
-Menu
+Menu styling
 Public gardens
 Android address field/main div size bug
 Better mobile styling
@@ -8,4 +8,3 @@ List of hits when searching
 Move popups
 Optimize (dont load plant/species unless needed)
 Restore session from cookie
-Move user handling to user model
