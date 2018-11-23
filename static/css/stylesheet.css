@@ -60,8 +60,23 @@ h1, h2, h3 {
 }
 
 .header button {
-    float: right;
     margin: 10px 10px 10px 0px;
+}
+
+.header .menu {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    z-index: 10;
+    text-align: right;
+}
+
+.header .menu .menu-button {
+    display: none;
+}
+
+.header .menu .menu-item {
+    display: inline-block;
 }
 
 .main {
@@ -330,6 +345,29 @@ form input {
 }
 
 @media (max-width: 720px) {
+    .header .menu.open {
+        background-color: #ffffff;
+        border-bottom: 1px solid #000000;
+    }
+
+    .header .menu .menu-button {
+        display: inline-block;
+        padding: 5px;
+    }
+
+    .header .menu .menu-button img {
+        height: 30px;
+    }
+
+    .header .menu .menu-item {
+        display: none;
+    }
+
+    .header .menu.open .menu-item {
+        display: block;
+        border-left: 1px solid #000000;
+    }
+
     .login {
         width: 90%;
     }

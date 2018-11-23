@@ -1,17 +1,26 @@
 <div class="header">
-  <h1>
-    <?= $T->__("Flower Map"); ?>
+    <h1>
+        <?= $T->__("Flower Map"); ?>
+        <?php if($fm->isLoggedIn()): ?>
+            <?php if($fm->user->garden->getName()): ?>
+                - <span id = "garden_name"><?= $fm->user->garden->getName(); ?></span>
+            <?php endif; ?>
+        <?php endif; ?>
+    </h1>
     <?php if($fm->isLoggedIn()): ?>
-      <?php if($fm->user->garden->getName()): ?>
-        - <span id = "garden_name"><?= $fm->user->garden->getName(); ?></span>
-      <?php endif; ?>
+        <div class="menu">
+            <div class="menu-button"><img src="static/img/menu.png"></div>
+            <div class="menu-item">
+                <button type="button" id="btn_edit_garden"><?= $T->__("Garden settings") ?></button>
+            </div>
+            <div class="menu-item">
+                <button type="button" id="btn_open_species_list"><?= $T->__("Species") ?></button>
+            </div>
+            <div class="menu-item">
+                <form name="logout" action="user/logout" method="POST">
+                    <button type="submit"><?= $T->__("Logout") ?></button>
+                </form>
+            </div>
+        </div>
     <?php endif; ?>
-  </h1>
-  <?php if($fm->isLoggedIn()): ?>
-    <form name="logout" action="user/logout" method="POST">
-      <button type="submit"><?= $T->__("Logout") ?></button>
-    </form>
-    <button type="button" id="btn_open_species_list"><?= $T->__("Species") ?></button>
-    <button type="button" id="btn_edit_garden"><?= $T->__("Garden settings") ?></button>
-  <?php endif; ?>
 </div>
