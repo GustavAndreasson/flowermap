@@ -97,7 +97,7 @@ function Garden() {
     };
 
     function endMove(e) {
-        e.preventDefault();
+        //e.preventDefault();
         $(".garden").off("mousemove touchmove");
         self.startMoveZ = null;
         setTimeout(function() {
