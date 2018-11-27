@@ -7,15 +7,13 @@ class Garden {
     private $plants;
     private $species;
 
-    public function __construct($conn, $gardenId, $userId = null, $name = null) {
+    public function __construct($conn, $userId, $gardenId = null, $name = "") {
         $this->conn = $conn;
         $this->species = array();
-
-        $this->plants = Array();
+        $this->plants = array();
         if ($gardenId) {
             $this->gardenId = $gardenId;
-
-        } elseif ($userId) {
+        } else {
             try {
                 $sql = "INSERT INTO gardens (garden_id, user_id, name) ";
                 $sql .= "VALUES (null, ?, ?)";
@@ -23,7 +21,6 @@ class Garden {
                 $stmt->execute(array($userId, $name));
                 $this->gardenId = $this->conn->lastInsertId();
                 $this->name = $name;
-                $_SESSION["GARDEN_ID"] = $this->gardenId;
             } catch (PDOException $e) {
                 Util::log("Something went wrong when creating new garden: " . $e->getMessage(), true);
             }
@@ -35,13 +32,24 @@ class Garden {
     }
 
     public function getName() {
+        if ($name === null) {
+	  try {
+	    $sql = "SELECT name FROM gardens WHERE garden_id = ?";
+	    $stmt = $this->conn->prepare($sql);
+	    $stmt->execute(array($this->gardenId));
+	    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+	    $this->name = $result['name'];
+	  } catch (PDOException $e) {
+	    Util::log("Something went wrong when getting garden name: " . $e->getMessage(), true);
+	  }
+	}
         return $this->name;
     }
 
     public function setName($name) {
         try {
-            $stmt =  $this->conn->prepare("UPDATE gardens set name=?");
-            $stmt->execute(array($name));
+            $stmt =  $this->conn->prepare("UPDATE gardens SET name = ? WHERE garden_id = ?");
+            $stmt->execute(array($name, $this->gardenId));
             $this->name = $name;
         } catch (PDOException $e) {
             Util::log("Something went wrong when updating name of garden: " . $e->getMessage(), true);

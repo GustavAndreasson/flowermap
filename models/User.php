@@ -14,7 +14,7 @@ class User {
                 $stmt->execute(array($this->userId));
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
                 if ($result) {
-                    $this->garden = new Garden($this->conn, $result['current_garden_id'], $this->userId);
+                    $this->garden = new Garden($this->conn, $this->userId, $result['current_garden_id']);
                 }
             } catch (PDOException $e) {
                 Util::log("Something went wrong fetching garden for user: " . $e->getMessage(), true);
@@ -39,16 +39,13 @@ class User {
             if ($result && password_verify($password, $result['password'])) {
                 $this->userId = $result['user_id'];
                 $_SESSION["USER_ID"] = $this->userId;
-                try {
-                    $stmt = $this->conn->prepare("SELECT current_garden_id FROM users WHERE user_id = ?");
-                    $stmt->execute(array($this->userId));
-                    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-                    if ($result) {
-                        $this->garden = new Garden($this->conn, $result['current_garden_id'], $this->userId);
-                    }
-                } catch (PDOException $e) {
-                    Util::log("Something went wrong fetching garden for user: " . $e->getMessage(), true);
-                }
+
+		$stmt = $this->conn->prepare("SELECT current_garden_id FROM users WHERE user_id = ?");
+		$stmt->execute(array($this->userId));
+		$result = $stmt->fetch(PDO::FETCH_ASSOC);
+		if ($result) {
+		  $this->garden = new Garden($this->conn, $this->userId, $result['current_garden_id']);
+		}
                 return true;
             } else {
                 return false;
@@ -79,7 +76,8 @@ class User {
                 $stmt->execute(array($name, $passHash));
                 $this->userId = $this->conn->lastInsertId();
                 $_SESSION["USER_ID"] = $this->userId;
-                $this->garden = new Garden($this->conn, null, $this->userId);
+		$this->name = $name;
+                $this->garden = new Garden($this->conn, $this->userId, null, $this->name);
                 $gardenId = $this->garden->getGardenId();
                 $stmt = $this->conn->prepare("UPDATE users SET current_garden_id = ? where user_id = ?");
                 $stmt->execute(array($gardenId, $this->userId));
@@ -88,7 +86,7 @@ class User {
                 $this->logout();
                 return false;
             }
-            $_SESSION["USER_ID"] = $this->user->getUserId();
+            $_SESSION["USER_ID"] = $this->userId;
             return true;
         } else {
             return false;
