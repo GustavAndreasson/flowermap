@@ -7,20 +7,24 @@ class Garden {
     private $plants;
     private $species;
 
-    public function __construct($conn, $userId, $gardenId = null, $name = "") {
+    public function __construct($conn, $userId, $gardenId = null, $name = null) {
         $this->conn = $conn;
+	$this->userId = $userId;
+	$this->name = $name;
         $this->species = array();
         $this->plants = array();
         if ($gardenId) {
             $this->gardenId = $gardenId;
         } else {
+	    if ($this->name === null) {
+	        $this->name = "";
+	    }
             try {
                 $sql = "INSERT INTO gardens (garden_id, user_id, name) ";
                 $sql .= "VALUES (null, ?, ?)";
                 $stmt = $this->conn->prepare($sql);
-                $stmt->execute(array($userId, $name));
+                $stmt->execute(array($this->userId, $this->name));
                 $this->gardenId = $this->conn->lastInsertId();
-                $this->name = $name;
             } catch (PDOException $e) {
                 Util::log("Something went wrong when creating new garden: " . $e->getMessage(), true);
             }
@@ -32,7 +36,7 @@ class Garden {
     }
 
     public function getName() {
-        if ($name === null) {
+        if ($this->name === null) {
 	  try {
 	    $sql = "SELECT name FROM gardens WHERE garden_id = ?";
 	    $stmt = $this->conn->prepare($sql);
