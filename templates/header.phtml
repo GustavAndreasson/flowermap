@@ -2,9 +2,7 @@
     <h1>
         <?= $T->__("Flower Map"); ?>
         <?php if($fm->isLoggedIn()): ?>
-            <?php if($fm->user->garden->getName()): ?>
-                - <span id = "garden_name"><?= $fm->user->garden->getName(); ?></span>
-            <?php endif; ?>
+	    - <span id = "garden_name"><?= $fm->user->garden->getName(); ?></span>
         <?php endif; ?>
     </h1>
     <?php if($fm->isLoggedIn()): ?>
