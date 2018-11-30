@@ -32,7 +32,6 @@ class User {
 
     public function login($name, $password) {
         try {
-            $passHash = password_hash($password, PASSWORD_DEFAULT);
             $stmt = $this->conn->prepare("SELECT password, user_id FROM users WHERE name = ?");
             $stmt->execute(array($name));
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
