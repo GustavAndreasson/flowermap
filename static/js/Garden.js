@@ -68,7 +68,6 @@ function Garden() {
     };
 
     function initMove (e) {
-        e.preventDefault();
         var pageX, pageY;
         if (e.type == "touchstart") {
             pageX = e.originalEvent.touches[0].screenX;
@@ -97,7 +96,6 @@ function Garden() {
     };
 
     function endMove(e) {
-        //e.preventDefault();
         $(".garden").off("mousemove touchmove");
         self.startMoveZ = null;
         setTimeout(function() {
